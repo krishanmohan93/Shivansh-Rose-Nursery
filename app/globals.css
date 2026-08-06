@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary */
+    --primary: #00450d;
+    --primary-container: #1b5e20;
+    --primary-fixed: #acf4a4;
+    --on-primary: #ffffff;
+
+    /* Secondary */
+    --secondary: #006e1c;
+    --secondary-container: #98f994;
+    --on-secondary: #ffffff;
+
+    /* Tertiary */
+    --tertiary: #004516;
+    --tertiary-container: #185e27;
+    --on-tertiary: #ffffff;
+
+    /* Background / Surface */
+    --background: #fcf9f8;
+    --background-cream: #fffdf6;
+    --surface: #fcf9f8;
+    --surface-lowest: #ffffff;
+    --surface-low: #f6f3f2;
+    --surface-default: #f0eded;
+    --surface-high: #eae7e7;
+    --surface-highest: #e5e2e1;
+    --surface-glass: rgba(255, 255, 255, 0.7);
+
+    /* Feedback / Borders */
+    --error: #ba1a1a;
+    --error-container: #ffdad6;
+    --outline: #717a6d;
+    --border-leaf: #e8f5e9;
+  }
+
+  body {
+    background-color: var(--background);
+    color: #1e293b;
+    font-family: var(--font-inter), sans-serif;
+  }
+
+  /* Typography Type Scale Helpers */
+  .display-large {
+    font-family: var(--font-playfair), serif;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 1.15;
+  }
+  @media (min-width: 768px) {
+    .display-large {
+      font-size: 56px;
+    }
+  }
+
+  .headline-medium {
+    font-family: var(--font-playfair), serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1.25;
+  }
+
+  .body-large {
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .body-medium {
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .button-label {
+    font-family: var(--font-poppins), sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  .caption-text {
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+}
+
+@layer utilities {
+  .glass-nav {
+    background: var(--surface-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 69, 13, 0.08);
+  }
+
+  .glass-card {
+    background: var(--surface-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+  }
+}

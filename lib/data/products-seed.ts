@@ -1,0 +1,490 @@
+import { Product } from '@/types/database';
+
+export const SEED_PRODUCTS: Product[] = [
+  // --------------------------------------------------------------------------
+  // TOP SELLING INDOOR PLANTS (plants/indoor)
+  // --------------------------------------------------------------------------
+  {
+    id: 'ind-01',
+    name: 'Peace Lily (Spathiphyllum)',
+    slug: 'peace-lily',
+    category_id: 'cat-indoor',
+    short_description: 'Elegant white spathe blooms & lush dark green air-purifying foliage.',
+    description: 'The Peace Lily is one of the most beloved indoor flowering plants. Recommended by NASA for removing indoor toxins like benzene and formaldehyde.',
+    suitable_for: ['Indoor', 'Living Room', 'Bedroom', 'Office Desk'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Low to Medium Indirect Light',
+    water: 'Water when top 1" soil feels dry (Weekly)',
+    availability_status: 'In Stock',
+    sizes: ['Small (1 ft)', 'Medium (1.5 ft)', 'Large Bushy (2.5 ft)'],
+    colors: ['Pure White Flowers'],
+    cloudinary_url: '/images/plants/peace lily.jpg',
+    features: ['NASA Air Purifying', 'White Spathe Blooms', 'Low Light Tolerant'],
+    specifications: { 'Ideal Placement': 'Bedrooms & Air Conditioned Offices', 'Toxicity': 'Keep away from pets' },
+    is_published: true,
+    is_featured: true,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'ind-02',
+    name: 'Lucky Bamboo (Dracaena Sanderiana)',
+    slug: 'lucky-bamboo',
+    category_id: 'cat-indoor',
+    short_description: 'Sacred Feng Shui & Vastu plant associated with fortune and positive energy.',
+    description: 'Lucky Bamboo is a classic gift plant that can grow directly in water or soil. Represents health, prosperity, and harmony in home decor.',
+    suitable_for: ['Office Desk', 'Study Table', 'Mandir Area', 'Center Table'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Filtered Indoor Light',
+    water: 'Change bowl water weekly / Soil moist',
+    availability_status: 'In Stock',
+    sizes: ['2-Tier Spiral', '3-Tier Braided', '5-Tier Tower'],
+    colors: ['Bright Bamboo Green'],
+    cloudinary_url: '/images/plants/Lucky bamboo.jpg',
+    features: ['Feng Shui & Vastu Favorite', 'Grows in Water & Glass Bowls', 'Low Maintenance'],
+    specifications: { 'Vastu Placement': 'East or North-East Corner' },
+    is_published: true,
+    is_featured: true,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'ind-03',
+    name: 'Snake Plant (Sansevieria Laurentii)',
+    slug: 'snake-plant-laurentii',
+    category_id: 'cat-indoor',
+    short_description: 'Hardy air-purifying plant with golden variegated sword-like leaves.',
+    description: 'Converts CO2 to oxygen 24/7 overnight. Extremely resilient and ideal for bedrooms and low-light apartment corners.',
+    suitable_for: ['Bedroom', 'Office Desk', 'Indoor', 'Low Light Corner'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Tolerates Low Light to Bright Light',
+    water: 'Water every 2-3 weeks (Drought Tolerant)',
+    availability_status: 'In Stock',
+    sizes: ['Small (10 inch)', 'Medium (1.5 ft)', 'Tall (3 ft)'],
+    colors: ['Green with Yellow Border'],
+    cloudinary_url: '/images/plants/Snake+Plant.webp',
+    features: ['24/7 Oxygen Release', 'Low Maintenance', 'Drought Resistant'],
+    specifications: { 'NASA Certified': 'Removes Benzene & Formaldehyde' },
+    is_published: true,
+    is_featured: true,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'ind-04',
+    name: 'Dieffenbachia Plant (Dumb Cane)',
+    slug: 'dieffenbachia-plant',
+    category_id: 'cat-indoor',
+    short_description: 'Lush tropical foliage plant with creamy white and lime variegated leaves.',
+    description: 'Dieffenbachia features large, broad variegated leaves that instantly bring a lush tropical greenhouse feel to any interior room.',
+    suitable_for: ['Living Room Corner', 'Office Lounge', 'Shaded Balcony'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Medium Indirect Sunlight',
+    water: 'Water 1-2 times a week',
+    availability_status: 'In Stock',
+    sizes: ['Medium (1.5 ft)', 'Bushy (2.5 ft)'],
+    colors: ['Lime & Cream Variegated'],
+    cloudinary_url: '/images/plants/Daifan.jpg',
+    features: ['Vibrant Variegation', 'Broad Ornamental Leaves', 'Fast Growing'],
+    specifications: { 'Care Index': 'Very Easy Indoor Plant' },
+    is_published: true,
+    is_featured: false,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'ind-05',
+    name: 'Areca Palm Tree',
+    slug: 'areca-palm',
+    category_id: 'cat-indoor',
+    short_description: 'Feathery tropical palm fronds acting as a natural indoor humidifier.',
+    description: 'Areca Palm creates a serene resort-like atmosphere indoors while actively increasing room humidity and filtering indoor toxins.',
+    suitable_for: ['Living Room', 'Balcony Corner', 'Society Clubhouse'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Filtered Bright Sunlight',
+    water: 'Keep soil moist, water 2 times a week',
+    availability_status: 'In Stock',
+    sizes: ['3-4 ft Bushy', '5-6 ft Cluster'],
+    colors: ['Bright Green'],
+    cloudinary_url: '/images/plants/Areca pam tree.webp',
+    features: ['Natural Humidifier', 'Non-Toxic to Pets', 'Bushy Tropical Canopy'],
+    specifications: { 'Pot Requirement': '12-14 inch Planter' },
+    is_published: true,
+    is_featured: false,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'ind-06',
+    name: 'Burgundy Rubber Plant (Ficus Elastica)',
+    slug: 'rubber-plant',
+    category_id: 'cat-indoor',
+    short_description: 'High-gloss deep burgundy leaves for modern luxury interiors.',
+    description: 'Stunning architectural indoor tree with thick glossy leather-like leaves. Adds dramatic color contrast to contemporary spaces.',
+    suitable_for: ['Living Room', 'Office Foyer', 'Modern Apartment'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Bright Indirect Sunlight',
+    water: 'Water weekly when topsoil dries',
+    availability_status: 'In Stock',
+    sizes: ['2 ft Table Pot', '4 ft Floor Tree'],
+    colors: ['Deep Burgundy Black'],
+    cloudinary_url: '/images/plants/Ruber Plant.jpg',
+    features: ['High-Gloss Leather Leaves', 'Architectural Appeal', 'Easy Care'],
+    specifications: { 'Leaf Polish': 'Clean with damp cloth' },
+    is_published: true,
+    is_featured: true,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+
+  // --------------------------------------------------------------------------
+  // TOP SELLING OUTDOOR & FLOWERING PLANTS (plants/outdoor)
+  // --------------------------------------------------------------------------
+  {
+    id: 'out-01',
+    name: 'Hybrid English Rose',
+    slug: 'hybrid-english-rose',
+    category_id: 'cat-outdoor',
+    short_description: 'Fragrant, heavy blooming rose bushes in vibrant red, yellow, & pink.',
+    description: 'Our signature Shivansh Rose Nursery hybrid rose bushes bloom continuously with large, fragrant, multi-layered flowers.',
+    suitable_for: ['Balcony Garden', 'Terrace Garden', 'Front Porch', 'Outdoor'],
+    plant_care_difficulty: 'Moderate',
+    sunlight: 'Full Direct Sun (4-6 hrs)',
+    water: 'Water daily in summer',
+    availability_status: 'In Stock',
+    sizes: ['Bushy 12 inch Pot', '1.5 ft Budded Bush'],
+    colors: ['Velvet Red', 'Sunburst Yellow', 'Blush Pink', 'Pure White'],
+    cloudinary_url: '/images/plants/rose.png',
+    features: ['Continuous Flowering', 'Intense Fragrance', 'Shivansh Nursery Specialty'],
+    specifications: { 'Bloom Season': 'Round the Year' },
+    is_published: true,
+    is_featured: true,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'out-02',
+    name: 'Mogra Plant (Arabian Jasmine)',
+    slug: 'mogra-jasmine',
+    category_id: 'cat-outdoor',
+    short_description: 'Divine intoxicating fragrant white jasmine blossoms.',
+    description: 'Highly revered for its sweet divine perfume. Blooms heavily throughout spring, summer, and monsoon for home worship and gajras.',
+    suitable_for: ['Balcony Grill', 'Terrace Garden', 'Puja Flower Garden'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Full Direct Sun',
+    water: 'Water daily',
+    availability_status: 'In Stock',
+    sizes: ['1 ft Bushy Pot', '2 ft Flowery Bush'],
+    colors: ['Pure White Flowers'],
+    cloudinary_url: '/images/plants/Mogra.jpg',
+    features: ['Intoxicating Divine Aroma', 'Heavy Blooming', 'Puja & Ritual Essential'],
+    specifications: { 'Aroma Rating': '5/5 Supreme' },
+    is_published: true,
+    is_featured: true,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'out-03',
+    name: 'Aparajita Gokarna (Blue Pea Vine)',
+    slug: 'aparajita-gokarna',
+    category_id: 'cat-outdoor',
+    short_description: 'Sacred vibrant royal blue flowers on a delicate blooming climber.',
+    description: 'Sacred to Lord Shiva and Vishnu. Beautiful outdoor vine that produces vivid blue butterfly-shaped blossoms continuously.',
+    suitable_for: ['Balcony Railing', 'Outdoor Archway', 'Terrace Grill'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Full Sun to Partial Sunlight',
+    water: 'Regular watering',
+    availability_status: 'In Stock',
+    sizes: ['1.5 ft Vine Pot', '3 ft Climbing Frame'],
+    colors: ['Royal Sapphire Blue', 'Pure White'],
+    cloudinary_url: '/images/plants/Aprazita.jpg',
+    features: ['Sacred Vastu Plant', 'Continuous Blue Flowers', 'Fast Growing Vine'],
+    specifications: { 'Vastu Significance': 'Brings peace and positive energy' },
+    is_published: true,
+    is_featured: true,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'out-04',
+    name: 'Jaswant (Hibiscus Bush)',
+    slug: 'hibiscus-gudhal-bush',
+    category_id: 'cat-outdoor',
+    short_description: 'Vibrant tropical trumpet flowers in deep red, yellow & coral pink.',
+    description: 'Classic Indian garden flowering plant with large showy blooms. Sacred red Gudhal flowers offered in daily Ganesh puja.',
+    suitable_for: ['Puja Flower Garden', 'Balcony', 'Society Landscape'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Full Direct Sun',
+    water: 'Daily morning watering',
+    availability_status: 'In Stock',
+    sizes: ['1.5 ft Pot', '3 ft Bush'],
+    colors: ['Crimson Red', 'Bright Yellow', 'Coral Pink', 'Orange'],
+    cloudinary_url: '/images/plants/jaswant.jpg',
+    features: ['Daily Fresh Flowers', 'Attracts Pollinators', 'Puja Essential'],
+    specifications: { 'Soil': 'Rich organic potting mix' },
+    is_published: true,
+    is_featured: false,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'out-05',
+    name: 'Bougainvillea Glabra (Multi-Color Cluster)',
+    slug: 'bougainvillea-multi-color',
+    category_id: 'cat-outdoor',
+    short_description: 'Hardy sun-loving climber with explosive colorful paper flowers.',
+    description: 'Perfect for balcony grills, archways, and outdoor boundary walls. Requires high sunlight and minimal maintenance.',
+    suitable_for: ['Balcony Railing', 'Outdoor Archway', 'Terrace Garden'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Direct Full Sun',
+    water: 'Moderate water, drought hardy',
+    availability_status: 'In Stock',
+    sizes: ['2 ft Bush', '4 ft Climber Trail'],
+    colors: ['Magenta', 'Orange', 'White', 'Purple'],
+    cloudinary_url: '/images/plants/Bouganveliya.jpg',
+    features: ['Sun Loving', 'Drought Resistant', 'Vibrant Paper Bracts'],
+    specifications: { 'Maintenance': 'Prune after flowering' },
+    is_published: true,
+    is_featured: false,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'out-06',
+    name: 'Sewanti (Chrysanthemum Flowering Bush)',
+    slug: 'sewanti-chrysanthemum',
+    category_id: 'cat-outdoor',
+    short_description: 'Dense cluster blooms in yellow, maroon, pink & white.',
+    description: 'Celebrated festival flower bush producing dense bouquets of multi-petaled vibrant flowers. Brightens up balcony gardens.',
+    suitable_for: ['Balcony Garden', 'Terrace Flower Pot', 'Window Sill'],
+    plant_care_difficulty: 'Easy',
+    sunlight: 'Direct Full Sun',
+    water: 'Water 1-2 times daily in heat',
+    availability_status: 'In Stock',
+    sizes: ['1 ft Dense Flowering Pot'],
+    colors: ['Bright Yellow', 'Deep Maroon', 'Soft Pink', 'Pure White'],
+    cloudinary_url: '/images/plants/sevanti.webp',
+    features: ['Dense Cluster Flowers', 'Long Lasting Blooms', 'Festive Favorite'],
+    specifications: { 'Bloom Duration': '3-4 weeks per bloom' },
+    is_published: true,
+    is_featured: true,
+    is_popular: true,
+    show_on_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+
+  // --------------------------------------------------------------------------
+  // CERAMIC POTS (pots/ceramic)
+  // --------------------------------------------------------------------------
+  {
+    id: 'pot-c01',
+    name: 'Nordic Ribbed White Ceramic Planter',
+    slug: 'nordic-ribbed-white-ceramic-planter',
+    category_id: 'cat-pots-ceramic',
+    short_description: 'Minimalist vertical ribbed ceramic pot with matching saucer.',
+    description: 'Handglazed premium ceramic planter featuring textured fluted ribs and built-in drainage holes for healthy indoor root growth.',
+    suitable_for: ['Living Room Table', 'Office Desk', 'Plant Display Shelf'],
+    plant_care_difficulty: 'N/A',
+    availability_status: 'In Stock',
+    sizes: ['6 inch', '8 inch', '10 inch', '12 inch'],
+    colors: ['Matte Off-White', 'Warm Sand', 'Sage Green'],
+    cloudinary_url: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=800&auto=format&fit=crop',
+    features: ['Handcrafted Ceramic', 'Bottom Drainage Hole', 'UV Protected Glaze'],
+    specifications: { 'Material': 'High-Fired Clay', 'Finish': 'Matte Satin' },
+    is_published: true,
+    is_featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'pot-c02',
+    name: 'Terracotta Glazed Bell Ceramic Pot',
+    slug: 'terracotta-glazed-bell-ceramic-pot',
+    category_id: 'cat-pots-ceramic',
+    short_description: 'Dual-tone glazed ceramic pot with warm rustic earthen base.',
+    description: 'Combines traditional terracotta warm tones with glossy mint-green glazing on top. Perfect for monsteras and rubber plants.',
+    suitable_for: ['Balcony Corner', 'Living Room Floor', 'Console Table'],
+    plant_care_difficulty: 'N/A',
+    availability_status: 'In Stock',
+    sizes: ['8 inch', '10 inch', '14 inch Heavy'],
+    colors: ['Terracotta & Mint Green', 'Terracotta & Turquoise'],
+    cloudinary_url: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=800&auto=format&fit=crop',
+    features: ['Dual Tone Finish', 'Breathable Clay Base', 'Heavy Anti-Tip Base'],
+    specifications: { 'Material': 'Natural Terracotta Ceramic' },
+    is_published: true,
+    is_featured: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+
+  // --------------------------------------------------------------------------
+  // CHINESE PREMIUM POTS (pots/chinese-premium)
+  // --------------------------------------------------------------------------
+  {
+    id: 'pot-cp01',
+    name: 'Chinese Imperial Gold Lattice Ceramic Jar',
+    slug: 'chinese-imperial-gold-lattice-jar',
+    category_id: 'cat-pots-chinese-premium',
+    short_description: 'Luxury high-gloss Chinese porcelain planter with intricate gold lattice motifs.',
+    description: 'Imported Chinese premium porcelain planter handcrafted with golden dragon and lotus filigree pattern for high-end luxury interiors.',
+    suitable_for: ['Luxury Villa Living Room', 'Hotel Foyer', 'Executive Office'],
+    plant_care_difficulty: 'N/A',
+    availability_status: 'Limited Stock',
+    sizes: ['10 inch Medium', '14 inch Large Jar', '18 inch Royal Floor Pot'],
+    colors: ['Royal Gold & Porcelain White', 'Imperial Blue & Gold'],
+    cloudinary_url: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?q=80&w=800&auto=format&fit=crop',
+    features: ['High-Shine Porcelain', 'Hand-Painted Gold Motifs', 'Imported Exclusive Collection'],
+    specifications: { 'Material': 'Jingdezhen Grade Porcelain', 'Finish': 'High Gloss Metallic' },
+    is_published: true,
+    is_featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+
+  // --------------------------------------------------------------------------
+  // FIBER POTS (pots/fiber)
+  // --------------------------------------------------------------------------
+  {
+    id: 'pot-f01',
+    name: 'Tapered Tall Fiber FRP Planter',
+    slug: 'tapered-tall-fiber-frp-planter',
+    category_id: 'cat-pots-fiber',
+    short_description: 'Ultra-lightweight high-strength fiber glass planter for modern architectural spaces.',
+    description: 'Designed for residential societies, office lobbies, and outdoor gardens. Weatherproof, frost-proof, unbreakable FRP fiber construction.',
+    suitable_for: ['Society Entrance', 'Hotel Lobby', 'Terrace Garden', 'Villa Driveway'],
+    plant_care_difficulty: 'N/A',
+    availability_status: 'In Stock',
+    sizes: ['2 ft Height', '3 ft Height', '4 ft Giant Pillar'],
+    colors: ['Textured Concrete Grey', 'Matte Black', 'Snow White', 'Bronze Finish'],
+    cloudinary_url: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=800&auto=format&fit=crop',
+    features: ['Unbreakable FRP Fiber', 'Ultra Lightweight', 'All-Weather UV Proof'],
+    specifications: { 'Material': 'Fiberglass Reinforced Polymer', 'Warranty': '5 Years Weatherproof' },
+    is_published: true,
+    is_featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+
+  // --------------------------------------------------------------------------
+  // SOIL (MITTI) POTS (pots/soil-mitti)
+  // --------------------------------------------------------------------------
+  {
+    id: 'pot-m01',
+    name: 'Traditional Terracotta Mitti Matka Pot',
+    slug: 'traditional-terracotta-mitti-matka-pot',
+    category_id: 'cat-pots-soil-mitti',
+    short_description: 'Pure eco-friendly natural clay matka pot handcrafted by local artisans.',
+    description: 'Classic natural red soil matka pot from Shweta Matka Bhandar. Highly porous clay walls allow natural root breathing and prevent soil overheating.',
+    suitable_for: ['Balcony Garden', 'Outdoor Garden', 'Tulsi Vrindavan'],
+    plant_care_difficulty: 'N/A',
+    availability_status: 'In Stock',
+    sizes: ['8 inch Round', '10 inch Matka', '12 inch Wide Rim', '14 inch Large'],
+    colors: ['Natural Clay Red', 'Traditional Terracotta'],
+    cloudinary_url: 'https://images.unsplash.com/photo-1584589167171-541ce45f1eea?q=80&w=800&auto=format&fit=crop',
+    features: ['100% Eco-Friendly Clay', 'Natural Root Aeration', 'Shweta Matka Bhandar Special'],
+    specifications: { 'Material': 'Pure Organic River Clay' },
+    is_published: true,
+    is_featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+
+  // --------------------------------------------------------------------------
+  // OTHER PRODUCTS
+  // --------------------------------------------------------------------------
+  {
+    id: 'oth-w01',
+    name: '3-Tier Cascading Rock Waterfall Fountain with LED',
+    slug: '3-tier-cascading-rock-waterfall-fountain-led',
+    category_id: 'cat-other-fountains',
+    short_description: 'Soothing water fountain featuring natural rock strata and warm underwater LEDs.',
+    description: 'Create a tranquil oasis in your balcony or living room. Includes a silent submersible recirculating pump and warm ambient LED lighting.',
+    suitable_for: ['Living Room Corner', 'Balcony Oasis', 'Society Reception'],
+    plant_care_difficulty: 'N/A',
+    availability_status: 'In Stock',
+    sizes: ['1.5 ft Desktop', '3 ft Garden Floor Fountain'],
+    colors: ['Natural Slate Stone', 'Mossy Bronze'],
+    cloudinary_url: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=800&auto=format&fit=crop',
+    features: ['Silent Recirculating Pump', 'Underwater LED Light', 'Calming Waterfall Sound'],
+    specifications: { 'Power': 'Standard 220V Plug', 'Water Cap': '5 Litres' },
+    is_published: true,
+    is_featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+];
+
+export function getSeedProductsByCategory(categorySlugPath: string): Product[] {
+  if (!categorySlugPath) return SEED_PRODUCTS;
+
+  const parts = categorySlugPath.split('/').filter(Boolean);
+  if (parts.length === 0) return SEED_PRODUCTS;
+
+  if (parts.length >= 2) {
+    const parent = parts[0];
+    const child = parts[1];
+
+    if (parent === 'plants' && child === 'indoor') {
+      return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-indoor');
+    }
+    if (parent === 'plants' && child === 'outdoor') {
+      return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-outdoor');
+    }
+    if (parent === 'pots') {
+      if (child === 'ceramic') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-ceramic');
+      if (child === 'chinese-premium') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-chinese-premium');
+      if (child === 'plastic') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-plastic');
+      if (child === 'fiber') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-fiber');
+      if (child === 'soil-mitti') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-soil-mitti');
+    }
+    if (parent === 'other') {
+      if (child === 'diwali-decoration') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-other-diwali');
+      if (child === 'water-fountains') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-other-fountains');
+      if (child === 'ganpati-murti') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-other-ganpati');
+    }
+  }
+
+  const group = parts[0];
+  if (group === 'plants') {
+    return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-indoor' || p.category_id === 'cat-outdoor');
+  }
+  if (group === 'pots') {
+    return SEED_PRODUCTS.filter((p) => p.category_id?.startsWith('cat-pots'));
+  }
+  if (group === 'other') {
+    return SEED_PRODUCTS.filter((p) => p.category_id?.startsWith('cat-other'));
+  }
+
+  return SEED_PRODUCTS;
+}
+
+export function getSeedPopularPlants(type: 'indoor' | 'outdoor'): Product[] {
+  const categoryId = type === 'indoor' ? 'cat-indoor' : 'cat-outdoor';
+  return SEED_PRODUCTS.filter(
+    (p) => p.category_id === categoryId && (p.is_popular || p.show_on_homepage)
+  );
+}
