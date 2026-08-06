@@ -36,8 +36,8 @@ export const ServicesOverviewSection: React.FC = () => {
     {
       id: 'garden-services',
       title: 'Garden Services',
-      subtitle: 'Society Landscaping & Terrace Gardens',
-      description: 'Complete landscape design, society garden development, lawn maintenance, terrace garden setup, and cascading water features.',
+      subtitle: 'Transforming Balconies, Terraces & Societies into Green Spaces',
+      description: 'Complete garden solutions for homes, apartments, societies, and commercial spaces. From balcony & terrace garden setup to premium plants, pots, stands, installation, and regular maintenance—we create and maintain beautiful green spaces.',
       image: '/images/hero-2.jpeg',
       badge: 'Professional Care',
       badgeBg: 'bg-secondary/90 text-emerald-100 border-emerald-400/30',
@@ -65,7 +65,7 @@ export const ServicesOverviewSection: React.FC = () => {
   return (
     <section className="py-10 sm:py-12 bg-background-cream relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 relative z-10">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-widest border border-primary/20">
