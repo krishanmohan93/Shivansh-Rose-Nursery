@@ -96,6 +96,36 @@ export async function fetchPopularPlants(type: 'indoor' | 'outdoor'): Promise<Pr
   return getSeedPopularPlants(type);
 }
 
+export async function fetchPopularChinesePots(): Promise<Product[]> {
+  if (isSupabaseConfigured()) {
+    try {
+      const supabase = createClient();
+      const { data: category } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('slug', 'chinese-premium')
+        .single();
+
+      if (category) {
+        const { data: dbProducts } = await supabase
+          .from('products')
+          .select('*')
+          .eq('category_id', category.id)
+          .eq('is_published', true)
+          .limit(6);
+
+        if (dbProducts && dbProducts.length > 0) {
+          return dbProducts as Product[];
+        }
+      }
+    } catch (err) {
+      console.warn('Supabase popular chinese pots query fallback:', err);
+    }
+  }
+
+  return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-chinese-premium').slice(0, 6);
+}
+
 export async function getProductBySlug(slug: string): Promise<{ product: Product | null; categoryPath: string }> {
   if (isSupabaseConfigured()) {
     try {

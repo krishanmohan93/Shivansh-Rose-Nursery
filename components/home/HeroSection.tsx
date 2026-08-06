@@ -29,8 +29,8 @@ export const HeroSection: React.FC = () => {
       ref={containerRef}
       className="relative overflow-hidden rounded-b-[2.5rem] bg-surface-low border-b border-surface-default pt-4 pb-12 lg:pt-8 lg:pb-16"
     >
-      {/* Static Colorful Nursery Background Image */}
-      <div className="absolute inset-0 z-0 opacity-35 pointer-events-none">
+      {/* Soft Watermark Nursery Background Image */}
+      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
         <Image
           src="/images/hero-bg-overlay.png"
           alt="Shivansh Rose Nursery Garden Background"
@@ -40,8 +40,8 @@ export const HeroSection: React.FC = () => {
         />
       </div>
 
-      {/* Balanced Tint Overlay for High Contrast & Visible Image */}
-      <div className="absolute inset-0 bg-gradient-to-r from-surface-low/80 via-surface-low/55 to-surface-low/30 pointer-events-none z-0" />
+      {/* Soft Tint Overlay for Pristine Legibility & Subtle Foliage */}
+      <div className="absolute inset-0 bg-gradient-to-r from-surface-low/90 via-surface-low/70 to-surface-low/45 pointer-events-none z-0" />
 
       {/* Floating Animated Leaf Elements */}
       {floatingLeaves.map((leaf, index) => (
