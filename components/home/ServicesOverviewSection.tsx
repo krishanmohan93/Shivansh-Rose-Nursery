@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Leaf, Sparkles, MapPin, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Leaf, Sparkles, MapPin, ArrowRight, Store } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export const ServicesOverviewSection: React.FC = () => {
@@ -34,10 +34,22 @@ export const ServicesOverviewSection: React.FC = () => {
       ctaText: 'Explore Planters',
     },
     {
+      id: 'retail-wholesale',
+      title: 'Retail & Wholesale',
+      subtitle: 'Single Home Plants & Bulk Society Orders',
+      description: 'We supply to both individual home gardeners for single plant orders as well as housing societies, corporate offices, and developers for bulk wholesale plant & pot supplies.',
+      image: '/images/hero-3.jpeg',
+      badge: 'Retail & Wholesale',
+      badgeBg: 'bg-emerald-900/90 text-emerald-100 border-emerald-400/30',
+      icon: <Store className="w-5 h-5 text-emerald-300" />,
+      link: '/contact',
+      ctaText: 'Wholesale & Retail Rates',
+    },
+    {
       id: 'garden-services',
       title: 'Garden Services',
-      subtitle: 'Transforming Balconies, Terraces & Societies into Green Spaces',
-      description: 'Complete garden solutions for homes, apartments, societies, and commercial spaces. From balcony & terrace garden setup to premium plants, pots, stands, installation, and regular maintenance—we create and maintain beautiful green spaces.',
+      subtitle: 'Transforming Balconies, Terraces & Societies',
+      description: 'Complete garden solutions for homes, apartments, societies, and commercial spaces. From balcony & terrace garden setup to plants, pots, installation, and AMC maintenance.',
       image: '/images/hero-2.jpeg',
       badge: 'Professional Care',
       badgeBg: 'bg-secondary/90 text-emerald-100 border-emerald-400/30',
@@ -98,23 +110,23 @@ export const ServicesOverviewSection: React.FC = () => {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-widest border border-primary/20">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" /> Digital Catalogue & Services
+            <Sparkles className="w-3.5 h-3.5 text-emerald-600" /> Digital Catalogue &amp; Services
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">
             Explore Everything We Offer
           </h2>
           <p className="font-body text-slate-700 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-            Providing premium quality plants, luxury planters, and complete landscaping services for homes, balconies, and residential societies across Pune.
+            Providing premium quality plants, luxury planters, retail &amp; wholesale supply, and complete landscaping services for homes and societies across Pune.
           </p>
         </div>
 
-        {/* 3 Visual Feature Cards Grid */}
+        {/* 4 Visual Feature Cards Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {services.map((item) => (
             <motion.div
@@ -126,7 +138,7 @@ export const ServicesOverviewSection: React.FC = () => {
             >
               <div>
                 {/* Top Image Banner Container */}
-                <div className="relative h-60 sm:h-64 w-full overflow-hidden">
+                <div className="relative h-56 w-full overflow-hidden">
                   <motion.div
                     variants={imageVariants}
                     className="absolute inset-0"
@@ -136,7 +148,7 @@ export const ServicesOverviewSection: React.FC = () => {
                       src={item.image}
                       alt={item.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       className="object-cover object-center"
                     />
                   </motion.div>
@@ -160,30 +172,30 @@ export const ServicesOverviewSection: React.FC = () => {
 
                   {/* Image Bottom Headline */}
                   <div className="absolute bottom-4 left-4 right-4 z-10 text-white space-y-0.5">
-                    <h3 className="font-display text-2xl font-bold leading-tight">
+                    <h3 className="font-display text-xl font-bold leading-tight">
                       {item.title}
                     </h3>
-                    <p className="font-body text-xs text-emerald-100 font-medium">
+                    <p className="font-body text-[11px] text-emerald-100 font-medium line-clamp-1">
                       {item.subtitle}
                     </p>
                   </div>
                 </div>
 
                 {/* Card Content Body */}
-                <div className="p-6 sm:p-7 space-y-4">
-                  <p className="font-body text-sm sm:text-base text-slate-600 leading-relaxed">
+                <div className="p-5 space-y-3">
+                  <p className="font-body text-xs sm:text-sm text-slate-600 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
               </div>
 
               {/* Card Footer Link Button */}
-              <div className="px-6 pb-6 pt-2">
+              <div className="px-5 pb-5 pt-1">
                 <Link href={item.link} className="block">
                   <Button
-                    size="md"
+                    size="sm"
                     variant="outline"
-                    className="w-full justify-between group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300 shadow-xs"
+                    className="w-full justify-between group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300 shadow-xs text-xs"
                     icon={
                       <motion.span variants={buttonVariants}>
                         <ArrowRight className="w-4 h-4" />

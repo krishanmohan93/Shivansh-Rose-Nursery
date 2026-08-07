@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Leaf, MapPin, CheckCircle2, Sparkles, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Leaf, MapPin, CheckCircle2, Sparkles, Star, ChevronLeft, ChevronRight, Store } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 const HERO_IMAGES = [
@@ -96,18 +96,18 @@ export const HeroSection: React.FC = () => {
       className="relative overflow-hidden rounded-b-[2.5rem] bg-surface-low border-b border-surface-default pt-4 pb-12 lg:pt-8 lg:pb-16"
     >
       {/* Soft Watermark Nursery Background Image */}
-      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+      <div className="absolute inset-0 z-0 opacity-25 pointer-events-none">
         <Image
-          src="/images/hero-bg-overlay.png"
+          src="/images/plants/home-bg.png"
           alt="Shivansh Rose Nursery Garden Background"
           fill
           priority
-          className="object-cover object-center scale-105 blur-[1px]"
+          className="object-cover object-center scale-105"
         />
       </div>
 
       {/* Soft Tint Overlay for Pristine Legibility & Subtle Foliage */}
-      <div className="absolute inset-0 bg-gradient-to-r from-surface-low/90 via-surface-low/70 to-surface-low/45 pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-gradient-to-r from-surface-low/95 via-surface-low/80 to-surface-low/50 pointer-events-none z-0" />
 
       {/* Floating Animated Leaf Elements */}
       {floatingLeaves.map((leaf, index) => (
@@ -155,16 +155,28 @@ export const HeroSection: React.FC = () => {
                 <span>Trusted by 5,000+ Pune homeowners & societies</span>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/90 text-primary border border-emerald-300 text-xs sm:text-sm font-semibold"
-              >
-                <Sparkles className="w-4 h-4 text-emerald-700 shrink-0" />
-                <span>Pune&apos;s Premium Nursery & Garden Care</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-              </motion.div>
+              <div className="flex flex-wrap items-center gap-2">
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/90 text-primary border border-emerald-300 text-xs sm:text-sm font-semibold"
+                >
+                  <Sparkles className="w-4 h-4 text-emerald-700 shrink-0" />
+                  <span>Pune&apos;s Premium Nursery &amp; Garden Care</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.15 }}
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/90 text-primary border border-emerald-300 text-xs sm:text-sm font-semibold"
+                >
+                  <Store className="w-4 h-4 text-emerald-700 shrink-0" />
+                  <span>Retail &amp; Wholesale</span>
+                </motion.div>
+              </div>
             </div>
 
             {/* Main Headline */}
