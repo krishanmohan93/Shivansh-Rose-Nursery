@@ -2,15 +2,15 @@ import React from 'react';
 import Link from 'next/link';
 import { CATEGORY_STRUCTURE } from '@/lib/data/categories';
 import { fetchProductsByCategory } from '@/lib/supabase/products';
-import { ProductCard } from '@/components/products/ProductCard';
+import { ProductFilterSection } from '@/components/products/ProductFilterSection';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { Leaf, Sparkles, MapPin, Phone, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Leaf, Sparkles, Phone, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export const revalidate = 300;
 
 export default async function ProductsMainPage() {
-  const { products } = await fetchProductsByCategory('', 1, 16);
+  const { products } = await fetchProductsByCategory('', 1, 100);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-14">
@@ -64,8 +64,8 @@ export default async function ProductsMainPage() {
         ))}
       </div>
 
-      {/* All Product Catalogue Grid */}
-      <div className="space-y-8">
+      {/* All Product Catalogue Grid with Combinable Search & Filters */}
+      <div className="space-y-8 pt-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-surface-default pb-4">
           <div>
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-slate-900">
@@ -82,11 +82,8 @@ export default async function ProductsMainPage() {
           </a>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {products.map((product, idx) => (
-            <ProductCard key={product.id} product={product} priorityImage={idx < 4} />
-          ))}
-        </div>
+        {/* Filter & Search Interface Component */}
+        <ProductFilterSection initialProducts={products} />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone, Search, ChevronDown, Leaf, Sparkles, Box, Droplets, Flame, Smile, Crown, Shield, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -14,6 +14,7 @@ export const Header: React.FC = () => {
   const [productsMegaOpen, setProductsMegaOpen] = useState(false);
   const [mobileAccordionOpen, setMobileAccordionOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +28,30 @@ export const Header: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleSearchClick = () => {
+    if (mobileMenuOpen) setMobileMenuOpen(false);
+
+    const el = document.getElementById('products-search-input');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      (el as HTMLInputElement).focus();
+    } else {
+      router.push('/products?focusSearch=true');
+    }
+  };
+
+  // Global keyboard shortcut (Ctrl+K or /) to focus search bar
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        handleSearchClick();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [pathname]);
 
   const iconMap: Record<string, React.ReactNode> = {
     indoor: <Leaf className="w-4 h-4 text-emerald-600" />,
@@ -179,13 +204,14 @@ export const Header: React.FC = () => {
 
           {/* Right Actions */}
           <div className="hidden sm:flex items-center gap-3">
-            <Link
-              href="/products"
+            <button
+              onClick={handleSearchClick}
               aria-label="Search catalogue"
-              className="p-2 text-slate-600 hover:text-primary hover:bg-surface-low rounded-full transition-colors"
+              className="p-2 text-slate-600 hover:text-primary hover:bg-surface-low rounded-full transition-colors flex items-center gap-2 group"
+              title="Focus search bar (Ctrl+K)"
             >
-              <Search className="w-5 h-5" />
-            </Link>
+              <Search className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            </button>
             <a
               href="https://wa.me/918007634856"
               target="_blank"
@@ -197,8 +223,16 @@ export const Header: React.FC = () => {
             </a>
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <div className="flex lg:hidden items-center gap-2">
+          {/* Mobile Hamburger & Search Buttons */}
+          <div className="flex lg:hidden items-center gap-1.5">
+            <button
+              onClick={handleSearchClick}
+              aria-label="Search catalogue"
+              className="p-2 text-slate-600 hover:text-primary hover:bg-surface-low rounded-full transition-colors"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle navigation menu"

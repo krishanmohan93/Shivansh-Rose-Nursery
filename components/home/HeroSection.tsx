@@ -1,14 +1,80 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Leaf, MapPin, CheckCircle2, Sparkles, Star } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Leaf, MapPin, CheckCircle2, Sparkles, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
+const HERO_IMAGES = [
+  '/images/plants/hero1.jpeg',
+  '/images/plants/hero3.jpeg',
+  '/images/plants/hero4.jpeg',
+  '/images/plants/hero5.jpeg',
+  '/images/plants/hero6.jpeg',
+  '/images/plants/hero7.jpeg',
+  '/images/plants/hero8.jpeg',
+  '/images/plants/hero9.jpeg',
+];
+
+/**
+ * HeroSection component displays the main nursery introduction banner with an interactive,
+ * smooth Ken-Burns auto-playing image slider, trust badges, and primary call-to-actions.
+ */
 export const HeroSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const touchStartXRef = useRef<number | null>(null);
+
+  // Preload all slider images to prevent any flickering or delay on initial slide transition
+  useEffect(() => {
+    HERO_IMAGES.forEach((src) => {
+      const img = new window.Image();
+      img.src = src;
+    });
+  }, []);
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+  }, []);
+
+  const handlePrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + HERO_IMAGES.length) % HERO_IMAGES.length);
+  }, []);
+
+  // Autoplay timer (4500ms interval) - pauses when hovered
+  useEffect(() => {
+    if (isHovered) return;
+
+    const timer = setInterval(() => {
+      handleNext();
+    }, 4500);
+
+    return () => clearInterval(timer);
+  }, [isHovered, handleNext]);
+
+  // Mobile Touch Swipe Handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartXRef.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaX = touchStartXRef.current - touchEndX;
+
+    // Minimum swipe threshold of 40px
+    if (Math.abs(deltaX) > 40) {
+      if (deltaX > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    }
+    touchStartXRef.current = null;
+  };
 
   const trustBadges = [
     { title: '8+ Years Experience' },
@@ -101,7 +167,7 @@ export const HeroSection: React.FC = () => {
               </motion.div>
             </div>
 
-            {/* Main Headline (Display Large - Playfair Display) */}
+            {/* Main Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -112,7 +178,7 @@ export const HeroSection: React.FC = () => {
               <span className="text-secondary italic font-normal">To Your Home</span>
             </motion.h1>
 
-            {/* Subheading (Body Large - Inter) */}
+            {/* Subheading */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -175,28 +241,97 @@ export const HeroSection: React.FC = () => {
 
           </div>
 
-          {/* Right Column: Hero Showcase Visual Card */}
+          {/* Right Column: Hero Showcase Interactive Image Slider Card */}
           <div className="lg:col-span-5 relative flex justify-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="relative w-full max-w-lg lg:max-w-none"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              className="relative w-full max-w-lg lg:max-w-none group select-none"
             >
-              {/* Frame Blur */}
+              {/* Frame Ambient Blur */}
               <div className="absolute -inset-2 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-[2.5rem] blur-xl opacity-70 -z-10" />
 
-              {/* Showcase Image */}
-              <div className="relative rounded-[2rem] overflow-hidden border-4 border-white shadow-soft-lg aspect-[4/5] sm:aspect-square lg:aspect-[4/5]">
-                <Image
-                  src="/images/hero-2.jpeg"
-                  alt="Shivansh Rose Nursery Plant Collection"
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
-                  priority
-                  className="object-cover object-center hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              {/* Showcase Image Container with Ken-Burns Crossfade Slider */}
+              <div className="relative rounded-[2rem] overflow-hidden border-4 border-white shadow-soft-lg aspect-[4/5] sm:aspect-square lg:aspect-[4/5] bg-slate-900">
+                
+                <AnimatePresence mode="sync">
+                  <motion.div
+                    key={currentIndex}
+                    initial={{ opacity: 0, scale: 1.08 }}
+                    animate={{ 
+                      opacity: 1, 
+                      scale: 1.00,
+                      transition: { 
+                        opacity: { duration: 1.3, ease: 'easeInOut' },
+                        scale: { duration: 4.5, ease: 'linear' }
+                      } 
+                    }}
+                    exit={{ 
+                      opacity: 0,
+                      transition: { duration: 1.3, ease: 'easeInOut' } 
+                    }}
+                    className="absolute inset-0"
+                    style={{ willChange: 'transform, opacity' }}
+                  >
+                    <Image
+                      src={HERO_IMAGES[currentIndex]}
+                      alt={`Shivansh Rose Nursery Showcase Image ${currentIndex + 3}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
+                      priority={currentIndex === 0}
+                      className="object-cover object-center"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Subtle Dark Gradient Overlay for Contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/20 z-10 pointer-events-none" />
+
+                {/* Left & Right Navigation Arrows (Visible on Hover / Desktop) */}
+                <div className="absolute inset-x-3 top-1/2 -translate-y-1/2 flex items-center justify-between z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePrev();
+                    }}
+                    aria-label="Previous slide"
+                    className="w-9 h-9 rounded-full bg-white/80 hover:bg-white text-slate-800 backdrop-blur-md flex items-center justify-center shadow-md transition-all pointer-events-auto hover:scale-110"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    aria-label="Next slide"
+                    className="w-9 h-9 rounded-full bg-white/80 hover:bg-white text-slate-800 backdrop-blur-md flex items-center justify-center shadow-md transition-all pointer-events-auto hover:scale-110"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Pagination Dots Indicator Inside Showcase Card */}
+                <div className="absolute bottom-4 left-0 right-0 z-30 flex items-center justify-center gap-1.5 pointer-events-none">
+                  {HERO_IMAGES.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentIndex(idx)}
+                      aria-label={`Go to slide ${idx + 1}`}
+                      className={`h-2 rounded-full transition-all duration-500 pointer-events-auto ${
+                        currentIndex === idx
+                          ? 'w-6 bg-white shadow-sm'
+                          : 'w-2 bg-white/50 hover:bg-white/80'
+                      }`}
+                    />
+                  ))}
+                </div>
+
               </div>
 
               {/* Floating Badge 1: Top Left */}
@@ -204,7 +339,7 @@ export const HeroSection: React.FC = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="absolute top-2 -left-4 sm:-left-6 glass-card p-3 rounded-2xl shadow-glass flex items-center gap-3 border border-white/80 z-20"
+                className="absolute top-2 -left-4 sm:-left-6 glass-card p-3 rounded-2xl shadow-glass flex items-center gap-3 border border-white/80 z-40"
               >
                 <div className="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shrink-0">
                   <Leaf className="w-5 h-5" />
@@ -224,7 +359,7 @@ export const HeroSection: React.FC = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="absolute -bottom-4 -right-4 sm:-right-6 glass-card p-3.5 rounded-2xl shadow-glass flex items-center gap-3 border border-white/80"
+                className="absolute -bottom-4 -right-4 sm:-right-6 glass-card p-3.5 rounded-2xl shadow-glass flex items-center gap-3 border border-white/80 z-40"
               >
                 <div className="w-10 h-10 rounded-xl bg-secondary text-white flex items-center justify-center shrink-0">
                   <MapPin className="w-5 h-5" />

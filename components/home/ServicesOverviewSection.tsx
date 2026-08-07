@@ -60,6 +60,35 @@ export const ServicesOverviewSection: React.FC = () => {
   const cardVariants = {
     hidden: { opacity: 0, y: 24 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+    hover: {
+      y: -10,
+      scale: 1.025,
+      boxShadow: '0 24px 60px -8px rgba(16, 185, 129, 0.30), 0 8px 24px -4px rgba(16,185,129,0.18)',
+      borderColor: 'rgba(16,185,129,0.5)',
+      transition: { duration: 0.38, ease: [0.25, 0.46, 0.45, 0.94] },
+    },
+  };
+
+  const imageVariants = {
+    hover: {
+      scale: 1.1,
+      transition: { duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] },
+    },
+  };
+
+  const overlayVariants = {
+    initial: { opacity: 0 },
+    hover: {
+      opacity: 1,
+      transition: { duration: 0.35 },
+    },
+  };
+
+  const buttonVariants = {
+    hover: {
+      x: 4,
+      transition: { duration: 0.25, ease: 'easeOut' },
+    },
   };
 
   return (
@@ -91,20 +120,35 @@ export const ServicesOverviewSection: React.FC = () => {
             <motion.div
               key={item.id}
               variants={cardVariants}
-              className="group bg-white rounded-3xl overflow-hidden border border-emerald-100 shadow-soft hover:shadow-soft-xl hover:-translate-y-1.5 transition-all duration-500 flex flex-col justify-between"
+              whileHover="hover"
+              className="group bg-white rounded-3xl overflow-hidden border border-emerald-100 shadow-soft flex flex-col justify-between cursor-pointer"
+              style={{ willChange: 'transform', borderWidth: '1px', borderStyle: 'solid' }}
             >
               <div>
                 {/* Top Image Banner Container */}
                 <div className="relative h-60 sm:h-64 w-full overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
-                  />
+                  <motion.div
+                    variants={imageVariants}
+                    className="absolute inset-0"
+                    style={{ willChange: 'transform' }}
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover object-center"
+                    />
+                  </motion.div>
                   {/* Subtle Dark Gradient Overlay for Contrast */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-[1]" />
+
+                  {/* Hover shimmer overlay */}
+                  <motion.div
+                    variants={overlayVariants}
+                    initial="initial"
+                    className="absolute inset-0 bg-gradient-to-br from-emerald-400/10 via-transparent to-emerald-600/10 z-[2]"
+                  />
 
                   {/* Top Badge Overlay */}
                   <div className="absolute top-4 left-4 z-10">
@@ -140,7 +184,11 @@ export const ServicesOverviewSection: React.FC = () => {
                     size="md"
                     variant="outline"
                     className="w-full justify-between group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300 shadow-xs"
-                    icon={<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
+                    icon={
+                      <motion.span variants={buttonVariants}>
+                        <ArrowRight className="w-4 h-4" />
+                      </motion.span>
+                    }
                   >
                     {item.ctaText}
                   </Button>

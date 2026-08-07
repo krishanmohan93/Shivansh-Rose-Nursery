@@ -3,6 +3,8 @@ import { HeroSection } from '@/components/home/HeroSection';
 import { PopularPlantsSection } from '@/components/home/PopularPlantsSection';
 import { ServicesOverviewSection } from '@/components/home/ServicesOverviewSection';
 import { WhyChooseUsSection } from '@/components/home/WhyChooseUsSection';
+import { FaqSection } from '@/components/home/FaqSection';
+import { CustomerReviewsSection } from '@/components/home/CustomerReviewsSection';
 import { fetchPopularPlants, fetchPopularChinesePots } from '@/lib/supabase/products';
 
 export default async function HomePage() {
@@ -27,6 +29,12 @@ export default async function HomePage() {
 
       {/* Why Choose Us Section */}
       <WhyChooseUsSection />
+
+      {/* Frequently Asked Questions (FAQ) Section */}
+      <FaqSection />
+
+      {/* Customer Reviews & Feedback Section */}
+      <CustomerReviewsSection />
     </div>
   );
 }

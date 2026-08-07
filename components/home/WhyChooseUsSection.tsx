@@ -94,6 +94,26 @@ export const WhyChooseUsSection: React.FC = () => {
   const cardVariants = {
     hidden: { opacity: 0, y: 24 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+    hover: {
+      y: -10,
+      scale: 1.025,
+      boxShadow: '0 24px 60px -8px rgba(16, 185, 129, 0.28), 0 8px 24px -4px rgba(16,185,129,0.15)',
+      borderColor: 'rgba(16,185,129,0.45)',
+      transition: { duration: 0.38, ease: [0.25, 0.46, 0.45, 0.94] },
+    },
+  };
+
+  const overlayVariants = {
+    initial: { opacity: 0 },
+    hover: { opacity: 1, transition: { duration: 0.35 } },
+  };
+
+  const iconVariants = {
+    hover: {
+      scale: 1.18,
+      rotate: -6,
+      transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] },
+    },
   };
 
   return (
@@ -150,17 +170,26 @@ export const WhyChooseUsSection: React.FC = () => {
             <motion.div
               key={feature.id}
               variants={cardVariants}
-              className="group relative bg-white/90 backdrop-blur-md rounded-3xl p-7 sm:p-8 border border-emerald-100/80 shadow-soft hover:shadow-soft-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+              whileHover="hover"
+              className="group relative bg-white/90 backdrop-blur-md rounded-3xl p-7 sm:p-8 border border-emerald-100/80 shadow-soft flex flex-col justify-between overflow-hidden cursor-pointer"
+              style={{ willChange: 'transform', borderWidth: '1px', borderStyle: 'solid' }}
             >
               {/* Subtle Ambient Hover Gradient */}
-              <div className={`absolute top-0 right-0 w-36 h-36 bg-gradient-to-bl ${feature.accentColor} rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
+              <motion.div
+                variants={overlayVariants}
+                initial="initial"
+                className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${feature.accentColor} rounded-bl-full pointer-events-none`}
+              />
 
               <div className="space-y-5 relative z-10">
                 {/* Header Row: Icon + Badge */}
                 <div className="flex items-center justify-between">
-                  <div className={`w-13 h-13 sm:w-14 sm:h-14 rounded-2xl ${feature.iconBg} flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform duration-300 shrink-0`}>
+                  <motion.div
+                    variants={iconVariants}
+                    className={`w-13 h-13 sm:w-14 sm:h-14 rounded-2xl ${feature.iconBg} flex items-center justify-center shadow-xs shrink-0`}
+                  >
                     {feature.icon}
-                  </div>
+                  </motion.div>
                   <span className={`text-[11px] sm:text-xs font-semibold px-3 py-1 rounded-full border ${feature.bgLight}`}>
                     {feature.badge}
                   </span>
@@ -168,7 +197,7 @@ export const WhyChooseUsSection: React.FC = () => {
 
                 {/* Card Title & Content */}
                 <div className="space-y-2.5">
-                  <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-primary transition-colors leading-snug">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-primary transition-colors duration-300 leading-snug">
                     {feature.title}
                   </h3>
                   <p className="font-body text-slate-600 text-sm sm:text-base leading-relaxed">

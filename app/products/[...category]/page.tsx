@@ -24,7 +24,7 @@ export default async function CategoryPage({
     notFound();
   }
 
-  const { products, total } = await fetchProductsByCategory(fullPath, 1, 16);
+  const { products, total } = await fetchProductsByCategory(fullPath, 1, 100);
 
   const categoryName = 'name' in categoryMeta ? categoryMeta.name : categoryMeta.groupName;
   const categoryDesc = 'description' in categoryMeta ? categoryMeta.description : '';
@@ -91,7 +91,7 @@ export default async function CategoryPage({
         </div>
       )}
 
-      {/* Product Grid */}
+      {/* Clean Category Products Grid (No Filter Sidebar) */}
       {products.length > 0 ? (
         <div className="space-y-10">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -100,7 +100,7 @@ export default async function CategoryPage({
             ))}
           </div>
 
-          {/* Inquiry Banner */}
+          {/* Wholesale Inquiry Banner */}
           <div className="p-6 sm:p-8 rounded-card bg-surface-low border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left shadow-soft">
             <div className="space-y-1">
               <h3 className="font-display font-bold text-lg text-slate-900">
