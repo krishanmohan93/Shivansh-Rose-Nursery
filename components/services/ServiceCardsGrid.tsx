@@ -2,211 +2,206 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/Button';
 import {
-  Compass,
-  Building2,
-  Sprout,
-  Box,
   Scissors,
-  Droplets,
-  CheckCircle2,
+  RefreshCw,
+  Sparkles,
+  Bug,
+  HeartPulse,
+  HelpCircle,
   ArrowRight,
+  CheckCircle2,
+  ShieldCheck,
+  Award,
+  CalendarCheck,
 } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
-export const ServiceCardsGrid: React.FC = () => {
-  const servicesList = [
-    {
-      id: 'garden-design',
-      title: 'Garden Design & Planning',
-      description: 'Custom architectural 2D/3D landscape planning and bespoke layouts tailored to your space, light, and soil conditions.',
-      image: '/images/hero-1.jpeg',
-      icon: <Compass className="w-6 h-6 text-emerald-700" />,
-      badgeBg: 'bg-emerald-100 text-emerald-800',
-      offerings: [
-        'Landscape planning & 3D site layout',
-        'Custom garden zoning & theme planning',
-        'Decorative flower bed & hedge placement',
-      ],
-    },
-    {
-      id: 'society-apartment',
-      title: 'Society & Apartment Gardening',
-      description: 'End-to-end greening for residential societies, apartments, common lawns, clubhouse surroundings, and entrances.',
-      image: '/images/hero-2.jpeg',
-      icon: <Building2 className="w-6 h-6 text-sky-700" />,
-      badgeBg: 'bg-sky-100 text-sky-800',
-      offerings: [
-        'Society garden development & lawn turfing',
-        'Common area & clubhouse landscaping',
-        'Entrance plantation & terrace garden setup',
-      ],
-    },
-    {
-      id: 'plant-supply',
-      title: 'Bulk Plant Supply & Wholesale',
-      description: 'Direct nursery-grown healthy plants supplied at competitive rates for homes, developers, and institutions.',
-      image: '/images/plants/peace lily.jpg',
-      icon: <Sprout className="w-6 h-6 text-emerald-700" />,
-      badgeBg: 'bg-emerald-100 text-emerald-800',
-      offerings: [
-        'Air-purifying indoor & outdoor flowering plants',
-        'Avenue trees, boundary hedges & creepers',
-        'Exotic succulents, bonsai & seasonal blooms',
-      ],
-    },
-    {
-      id: 'pot-installation',
-      title: 'Pot & Designer Planter Setup',
-      description: 'Professional selection and placement of handcrafted ceramic, heavy-duty fiber, and lightweight luxury pots.',
-      image: '/images/plants/1.jpeg',
-      icon: <Box className="w-6 h-6 text-amber-700" />,
-      badgeBg: 'bg-amber-100 text-amber-800',
-      offerings: [
-        'Handcrafted Chinese & ceramic pot styling',
-        'Lightweight fiber & weather-proof planters',
-        'Soil matka pots & vertical planter walls',
-      ],
-    },
-    {
-      id: 'garden-maintenance',
-      title: 'Garden Maintenance & AMC',
-      description: 'Regular monthly or weekly gardener visits for pruning, organic fertilizing, pest management, and plant replacements.',
-      image: '/images/hero-showcase.png',
-      icon: <Scissors className="w-6 h-6 text-teal-700" />,
-      badgeBg: 'bg-teal-100 text-teal-800',
-      offerings: [
-        'Regular lawn mowing, pruning & hedge shaping',
-        'Organic cow dung manure & fertilizing',
-        'Weed removal, pest treatment & free replacement',
-      ],
-    },
-    {
-      id: 'water-features',
-      title: 'Water Fountains & Features',
-      description: 'Installation of soothing cascading water fountains, lotus ponds, and decorative garden water features.',
-      image: '/images/plants/5.jpeg',
-      icon: <Droplets className="w-6 h-6 text-cyan-700" />,
-      badgeBg: 'bg-cyan-100 text-cyan-800',
-      offerings: [
-        'Decorative indoor & outdoor stone fountains',
-        'Cascading waterfall & lotus pond setup',
-        'Fountain pump installation & maintenance',
-      ],
-    },
-  ];
+interface ServiceCardsGridProps {
+  language: 'en' | 'hi';
+  onBookClick: () => void;
+}
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+export const ServiceCardsGrid: React.FC<ServiceCardsGridProps> = ({ language, onBookClick }) => {
+  const scrollToPlans = () => {
+    const el = document.getElementById('garden-plans');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-    <section className="py-16 sm:py-20 bg-white relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <section className="py-16 sm:py-24 bg-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-widest border border-primary/20">
-            🌿 Complete Garden Solutions
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">
-            Services We Offer
-          </h2>
-          <p className="font-body text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-            From initial site consultation to full plantation and ongoing maintenance, we handle everything required for a thriving green environment.
-          </p>
-        </div>
+        {/* Main 2-Column Professional Overview Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 items-center">
+          
+          {/* Left Column: Comprehensive Paragraph & Structured Services Details (7 Cols) */}
+          <div className="lg:col-span-7 space-y-6">
+            
+            <div className="space-y-3">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs sm:text-sm font-semibold uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                <span>{language === 'hi' ? 'पौधों की संपूर्ण देखभाल' : 'Complete Plant Care Solutions'}</span>
+              </span>
 
-        {/* 6 Modern Service Cards Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {servicesList.map((service) => (
-            <motion.div
-              key={service.id}
-              variants={cardVariants}
-              className="group bg-white rounded-3xl overflow-hidden border border-emerald-100 shadow-soft hover:shadow-soft-xl hover:-translate-y-1.5 transition-all duration-500 flex flex-col justify-between"
-            >
-              <div>
-                {/* Top Service Image Banner */}
-                <div className="relative h-56 w-full overflow-hidden">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/30 to-transparent" />
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight leading-tight">
+                {language === 'hi'
+                  ? 'गार्डन मेंटेनेंस में हम क्या-क्या करते हैं'
+                  : 'What We Do in Our Garden Maintenance Service'}
+              </h2>
+            </div>
 
-                  {/* Icon Badge */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <div className={`p-3 rounded-2xl ${service.badgeBg} shadow-xs border border-white/40`}>
-                      {service.icon}
-                    </div>
+            {/* Comprehensive Detail Paragraph */}
+            <p className="font-body text-slate-700 text-sm sm:text-base lg:text-lg leading-relaxed">
+              {language === 'hi'
+                ? 'हमारी पेशेवर गार्डन मेंटेनेंस सेवा आपके घर, बालकनी और टैरेस के पौधों को पूरे वर्ष स्वस्थ, सुंदर और हरा-भरा रखने के लिए बनाई गई है। हर विज़िट में हमारे अनुभवी माली आपके पौधों की स्थिति के अनुसार संपूर्ण व्यक्तिगत देखभाल प्रदान करते हैं।'
+                : 'Our professional garden maintenance service is designed to keep your home, balcony, and terrace plants healthy, vibrant, and thriving throughout the year. During every visit, our trained gardeners provide hands-on, end-to-end plant care tailored specifically to your plants\' needs.'}
+            </p>
+
+            {/* Structured Inclusions Operations List */}
+            <div className="space-y-4 pt-2">
+              <h3 className="font-display font-bold text-lg text-slate-900 flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-[#0b6b2e]" />
+                <span>
+                  {language === 'hi' ? 'हर विज़िट में शामिल मुख्य कार्य:' : 'Core Maintenance Tasks Included in Every Visit:'}
+                </span>
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                {/* Task 1: Pruning */}
+                <div className="p-4 rounded-2xl bg-surface-low border border-emerald-100 space-y-1">
+                  <div className="flex items-center gap-2 text-[#0b6b2e] font-bold text-sm">
+                    <Scissors className="w-4 h-4 shrink-0" />
+                    <span>{language === 'hi' ? '१. प्रूनिंग व कटाई-छंटाई' : '1. Pruning & Trimming'}</span>
                   </div>
-
-                  {/* Title Overlay */}
-                  <div className="absolute bottom-4 left-4 right-4 z-10 text-white">
-                    <h3 className="font-display text-2xl font-bold leading-tight">
-                      {service.title}
-                    </h3>
-                  </div>
-                </div>
-
-                {/* Card Description & Offerings */}
-                <div className="p-6 sm:p-7 space-y-4">
-                  <p className="font-body text-sm text-slate-600 leading-relaxed">
-                    {service.description}
+                  <p className="text-xs text-slate-600 font-body leading-relaxed">
+                    {language === 'hi'
+                      ? 'सूखी, पीली और अवांछित पत्तियों व शाखाओं की कटाई ताकि पौधे सुंदर आकार में घने बढ़ें।'
+                      : 'Trimming unwanted, dead, or overgrown branches to maintain healthy foliage and compact shape.'}
                   </p>
-
-                  <div className="space-y-2 pt-2 border-t border-slate-100">
-                    {service.offerings.map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs font-semibold text-slate-700">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
+
+                {/* Task 2: Repotting */}
+                <div className="p-4 rounded-2xl bg-surface-low border border-emerald-100 space-y-1">
+                  <div className="flex items-center gap-2 text-[#0b6b2e] font-bold text-sm">
+                    <RefreshCw className="w-4 h-4 shrink-0" />
+                    <span>{language === 'hi' ? '२. रीपोटिंग (गमला बदलना)' : '2. Plant Repotting'}</span>
+                  </div>
+                  <p className="text-xs text-slate-600 font-body leading-relaxed">
+                    {language === 'hi'
+                      ? 'पौधों को पुराने गमले से नए बड़े गमले में ताजी मिट्टी के साथ रीपॉट करने में सहायता।'
+                      : 'Shifting root-bound plants into suitable new pots with fresh, nutrient-rich soil mix.'}
+                  </p>
+                </div>
+
+                {/* Task 3: Fertilizers */}
+                <div className="p-4 rounded-2xl bg-surface-low border border-emerald-100 space-y-1">
+                  <div className="flex items-center gap-2 text-[#0b6b2e] font-bold text-sm">
+                    <Sparkles className="w-4 h-4 shrink-0" />
+                    <span>{language === 'hi' ? '३. जैविक खाद व पोषण' : '3. Organic Fertilizers'}</span>
+                  </div>
+                  <p className="text-xs text-slate-600 font-body leading-relaxed">
+                    {language === 'hi'
+                      ? 'भरपूर फूल आने और तेज़ विकास के लिए प्रीमियम वर्मीकम्पोस्ट व जैविक पोषक तत्वों का प्रयोग।'
+                      : 'Applying organic vermicompost & micro-nutrients to boost plant growth & flowering.'}
+                  </p>
+                </div>
+
+                {/* Task 4: Pesticide Spray */}
+                <div className="p-4 rounded-2xl bg-surface-low border border-emerald-100 space-y-1">
+                  <div className="flex items-center gap-2 text-[#0b6b2e] font-bold text-sm">
+                    <Bug className="w-4 h-4 shrink-0" />
+                    <span>{language === 'hi' ? '४. कीटनाशक व फंगस स्प्रे' : '4. Pest & Fungus Spray'}</span>
+                  </div>
+                  <p className="text-xs text-slate-600 font-body leading-relaxed">
+                    {language === 'hi'
+                      ? 'फंगस, सफेद कीड़ों व बीमारियों के लिए सुरक्षित जैविक कीटनाशक स्प्रे का छिड़काव।'
+                      : 'Spraying organic eco-friendly pesticides & fungicides if plants show pests or fungal spots.'}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Clear Pricing Rule Highlight Box */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-50 via-surface-low to-emerald-50 border border-emerald-200 text-xs sm:text-sm font-body text-slate-700 space-y-1 shadow-xs">
+              <span className="font-bold text-[#0b6b2e] flex items-center gap-1.5 text-sm">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                {language === 'hi' ? 'पारदर्शी मेंटेनेंस नीति:' : 'Transparent Service Guarantee:'}
+              </span>
+              <p className="text-slate-600 leading-relaxed">
+                {language === 'hi'
+                  ? 'हमारे सभी प्लान्स में ये सभी सेवाएं शामिल हैं! प्लान की कीमत केवल आपके गमलों की संख्या और उनके आकार (इंच) के आधार पर बदलती है।'
+                  : 'All our maintenance plans include ALL these core services! The plan pricing changes only based on the total number of pots and planter sizes.'}
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="pt-2 flex flex-col sm:flex-row items-center gap-4">
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={scrollToPlans}
+                icon={<ArrowRight className="w-5 h-5" />}
+                className="w-full sm:w-auto shadow-md"
+              >
+                {language === 'hi' ? 'मेंटेनेंस प्लान चुनें' : 'Choose Maintenance Plan'}
+              </Button>
+
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={onBookClick}
+                icon={<CalendarCheck className="w-5 h-5 text-[#0b6b2e]" />}
+                className="w-full sm:w-auto"
+              >
+                {language === 'hi' ? 'अपॉइंटमेंट बुक करें' : 'Book Appointment'}
+              </Button>
+            </div>
+
+          </div>
+
+          {/* Right Column: Professional Gardener Image (5 Cols) */}
+          <div className="lg:col-span-5 relative">
+            <div className="relative h-[450px] sm:h-[550px] w-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-100 group">
+              <Image
+                src="/images/plants/gardener-balcony.png"
+                alt="Shivansh Rose Nursery professional gardener pruning balcony plants in Pune"
+                fill
+                priority
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
+
+              {/* Top Floating Badge */}
+              <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-bold text-[#0b6b2e] shadow-lg border border-emerald-100 flex items-center gap-1.5">
+                <Award className="w-4 h-4 text-emerald-600" />
+                <span>{language === 'hi' ? 'प्रशिक्षित नर्सरी माली' : 'Trained Nursery Gardener'}</span>
               </div>
 
-              {/* Action Button: Links Directly to Contact Page with pre-filled service */}
-              <div className="px-6 pb-6 pt-2">
-                <Link
-                  href={`/contact?service=${encodeURIComponent(service.title)}#contact-inquiry-form`}
-                  className="block w-full"
-                >
-                  <Button
-                    size="md"
-                    variant="outline"
-                    className="w-full justify-between group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300 shadow-xs text-xs"
-                    icon={<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
-                  >
-                    Book Service / Estimate
-                  </Button>
-                </Link>
+              {/* Bottom Floating Card */}
+              <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl text-white space-y-1 border border-white/20 shadow-xl">
+                <div className="flex items-center justify-between text-xs text-emerald-300 font-bold">
+                  <span>Shivansh Rose Nursery Pune</span>
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    Doorstep Service
+                  </span>
+                </div>
+                <h4 className="font-display font-bold text-base text-white">
+                  {language === 'hi' ? 'बालकनी व सोसायटियों के लिए गार्डन केयर' : 'Balcony & Society Garden Maintenance'}
+                </h4>
+                <p className="text-xs text-slate-300">
+                  {language === 'hi' ? 'वाकड, हिंजेवाडी और पुणे में 500+ खुश ग्राहक।' : 'Serving 500+ housing societies across Wakad, Hinjawadi & Pune.'}
+                </p>
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
+            </div>
+          </div>
+
+        </div>
 
       </div>
     </section>

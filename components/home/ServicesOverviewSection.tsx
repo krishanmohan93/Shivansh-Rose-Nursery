@@ -38,7 +38,7 @@ export const ServicesOverviewSection: React.FC = () => {
       title: 'Retail & Wholesale',
       subtitle: 'Single Home Plants & Bulk Society Orders',
       description: 'We supply to both individual home gardeners for single plant orders as well as housing societies, corporate offices, and developers for bulk wholesale plant & pot supplies.',
-      image: '/images/hero-3.jpeg',
+      image: '/images/plants/retail-wholesale.png',
       badge: 'Retail & Wholesale',
       badgeBg: 'bg-emerald-900/90 text-emerald-100 border-emerald-400/30',
       icon: <Store className="w-5 h-5 text-emerald-300" />,

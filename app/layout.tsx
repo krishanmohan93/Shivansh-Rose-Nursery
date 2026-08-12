@@ -3,6 +3,7 @@ import { playfair, inter, poppins } from '@/lib/fonts';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { FloatingCTAs } from '@/components/layout/FloatingCTAs';
+import { MainContentWrapper } from '@/components/layout/MainContentWrapper';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ export default function RootLayout({
     >
       <body className="font-body text-slate-800 bg-background antialiased flex flex-col min-h-screen">
         <Header />
-        <main className="flex-grow pt-20">{children}</main>
+        <MainContentWrapper>{children}</MainContentWrapper>
         <Footer />
         <FloatingCTAs />
       </body>

@@ -24,12 +24,12 @@ import { Button } from '@/components/ui/Button';
 import { CATEGORY_STRUCTURE } from '@/lib/data/categories';
 
 export const Header: React.FC = () => {
+  const pathname = usePathname();
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [productsMegaOpen, setProductsMegaOpen] = useState(false);
   const [mobileAccordionOpen, setMobileAccordionOpen] = useState(false);
-  const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,6 +43,10 @@ export const Header: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   const handleSearchClick = () => {
     if (mobileMenuOpen) setMobileMenuOpen(false);

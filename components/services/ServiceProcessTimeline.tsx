@@ -6,53 +6,59 @@ import {
   PhoneCall,
   MapPin,
   MessageSquare,
-  FileSpreadsheet,
   Sprout,
   CalendarCheck,
   ChevronRight,
 } from 'lucide-react';
 
-export const ServiceProcessTimeline: React.FC = () => {
+interface ServiceProcessTimelineProps {
+  language?: 'en' | 'hi';
+}
+
+export const ServiceProcessTimeline: React.FC<ServiceProcessTimelineProps> = ({ language = 'en' }) => {
   const steps = [
     {
       number: '01',
-      title: 'Contact Us',
-      description: 'Fill out our inquiry form or reach out via WhatsApp / Call with your requirements.',
+      titleEn: 'Choose Your Plan',
+      titleHi: 'अपना प्लान चुनें',
+      descEn: 'Select the maintenance plan that best fits your plant collection and garden size.',
+      descHi: 'अपने पौधों के संग्रह और गार्डन के आकार के अनुसार सबसे उपयुक्त मेंटेनेंस प्लान चुनें।',
       icon: <PhoneCall className="w-5 h-5 text-emerald-700" />,
       bg: 'bg-emerald-100 text-emerald-800',
     },
     {
       number: '02',
-      title: 'Site Visit',
-      description: 'Our expert landscape consultant visits your society, flat, or commercial property in Pune.',
+      titleEn: 'Share Your Details',
+      titleHi: 'अपनी जानकारी साझा करें',
+      descEn: 'Fill in your society address, location, preferred service date, and time slot.',
+      descHi: 'अपनी सोसायटी का पता, इलाका, पसंदीदा सेवा तिथि और समय स्लॉट भरें।',
       icon: <MapPin className="w-5 h-5 text-sky-700" />,
       bg: 'bg-sky-100 text-sky-800',
     },
     {
       number: '03',
-      title: 'Requirement Discussion',
-      description: 'We assess sunlight, soil type, drainage, budget, and desired garden aesthetic.',
+      titleEn: 'Appointment Confirmation',
+      titleHi: 'अपॉइंटमेंट की पुष्टि',
+      descEn: 'Our team reviews your request and calls you to confirm the appointment and distance rules.',
+      descHi: 'हमारी टीम आपके अनुरोध की समीक्षा करती है और अपॉइंटमेंट की पुष्टि के लिए आपको कॉल करती है।',
       icon: <MessageSquare className="w-5 h-5 text-amber-700" />,
       bg: 'bg-amber-100 text-amber-800',
     },
     {
       number: '04',
-      title: 'Design Proposal',
-      description: 'We provide a clear layout design proposal along with transparent wholesale cost estimates.',
-      icon: <FileSpreadsheet className="w-5 h-5 text-purple-700" />,
-      bg: 'bg-purple-100 text-purple-800',
-    },
-    {
-      number: '05',
-      title: 'Plantation & Setup',
-      description: 'Our skilled gardeners deliver nursery-fresh plants, pots, soil mix, and install everything.',
+      titleEn: 'Professional Plant Care',
+      titleHi: 'पेशेवर पौधों की देखभाल',
+      descEn: 'Our expert gardener visits your location for pruning, repotting, fertilizing, and pest spray.',
+      descHi: 'हमारे विशेषज्ञ माली प्रूनिंग, रीपोटिंग, खाद और कीट स्प्रे के लिए आपके स्थान पर आते हैं।',
       icon: <Sprout className="w-5 h-5 text-teal-700" />,
       bg: 'bg-teal-100 text-teal-800',
     },
     {
-      number: '06',
-      title: 'Regular Maintenance',
-      description: 'Scheduled visits for pruning, fertilizing, pest management, and plant care support.',
+      number: '05',
+      titleEn: 'Ongoing Support',
+      titleHi: 'नियमित देखभाल व सहायता',
+      descEn: 'Enjoy healthy, thriving plants with our scheduled maintenance follow-ups and care guidance.',
+      descHi: 'हमारे निर्धारित मेंटेनेंस फॉलो-अप और देखरेख मार्गदर्शन के साथ स्वस्थ पौधों का आनंद लें।',
       icon: <CalendarCheck className="w-5 h-5 text-emerald-700" />,
       bg: 'bg-emerald-100 text-emerald-800',
     },
@@ -80,23 +86,25 @@ export const ServiceProcessTimeline: React.FC = () => {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-widest border border-primary/20">
-            📋 How It Works
+            📋 {language === 'hi' ? 'प्रक्रिया कैसे काम करती है' : 'How It Works'}
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">
-            Our Service Process
+            {language === 'hi' ? 'हमारी ५-चरणीय सेवा प्रक्रिया' : 'Our 5-Step Service Process'}
           </h2>
           <p className="font-body text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
-            A simple 6-step transparent workflow to transform your property into a vibrant green paradise.
+            {language === 'hi'
+              ? 'आसान, पारदर्शी और परेशानी मुक्त ५-चरण प्रक्रिया।'
+              : 'A transparent 5-step workflow to book and receive professional garden care right at your doorstep.'}
           </p>
         </div>
 
-        {/* Timeline Grid: Desktop 6-Columns Horizontal / Mobile Vertical Stack */}
+        {/* Timeline Grid: 5-Columns Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 relative"
+          className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 relative"
         >
           {steps.map((step, idx) => (
             <motion.div
@@ -124,10 +132,10 @@ export const ServiceProcessTimeline: React.FC = () => {
 
                 <div className="space-y-1.5">
                   <h3 className="font-display font-bold text-base text-slate-900 leading-snug">
-                    {step.title}
+                    {language === 'hi' ? step.titleHi : step.titleEn}
                   </h3>
                   <p className="font-body text-xs text-slate-600 leading-relaxed">
-                    {step.description}
+                    {language === 'hi' ? step.descHi : step.descEn}
                   </p>
                 </div>
               </div>

@@ -107,6 +107,38 @@ export const ContactSection: React.FC = () => {
         </p>
       </div>
 
+      {/* Quick Direct Contact & Email Bar */}
+      <div className="max-w-4xl mx-auto p-6 rounded-3xl bg-emerald-900 text-white shadow-soft-lg flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-1.5 text-center md:text-left">
+          <span className="text-xs font-semibold text-emerald-300 uppercase tracking-widest block">
+            Direct Contact Email &amp; Support
+          </span>
+          <p className="font-display font-bold text-xl sm:text-2xl text-white">
+            shivanshrosenursery.com@gmail.com
+          </p>
+          <p className="text-xs text-emerald-100">
+            Store Hours: 8:00 AM – 10:30 PM (All 7 Days)
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <a
+            href="https://wa.me/918007634856"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2.5 rounded-xl bg-emerald-500 text-white font-semibold text-xs hover:bg-emerald-400 transition-colors flex items-center gap-1.5"
+          >
+            <MessageCircle className="w-4 h-4 fill-current" /> WhatsApp (8007634856)
+          </a>
+          <a
+            href="tel:8007634856"
+            className="px-4 py-2.5 rounded-xl bg-white/20 text-white font-semibold text-xs hover:bg-white/30 transition-colors flex items-center gap-1.5"
+          >
+            <Phone className="w-4 h-4" /> Call Direct
+          </a>
+        </div>
+      </div>
+
       {/* Store Location Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
         {/* Store 1 */}
@@ -143,7 +175,7 @@ export const ContactSection: React.FC = () => {
               Store 2 — Shweta Matka Bhandar & Nursery
             </span>
             <span className="text-xs font-semibold px-3 py-1 rounded-full bg-amber-100 text-amber-800">
-              Matka & Planters Branch
+              Second Branch
             </span>
           </div>
 
@@ -218,9 +250,8 @@ export const ContactSection: React.FC = () => {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="e.g. Rahul Sharma"
-                    className={`w-full px-4 py-3 rounded-xl bg-white border text-sm font-medium text-slate-900 focus:outline-none focus:border-primary transition-all ${
-                      errors.name ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200'
-                    }`}
+                    className={`w-full px-4 py-3 rounded-xl bg-white border text-sm font-medium text-slate-900 focus:outline-none focus:border-primary transition-all ${errors.name ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200'
+                      }`}
                   />
                   {errors.name && (
                     <span className="text-xs text-rose-600 font-semibold flex items-center gap-1">
@@ -239,9 +270,8 @@ export const ContactSection: React.FC = () => {
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="e.g. 8007634856"
-                    className={`w-full px-4 py-3 rounded-xl bg-white border text-sm font-medium text-slate-900 focus:outline-none focus:border-primary transition-all ${
-                      errors.phone ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200'
-                    }`}
+                    className={`w-full px-4 py-3 rounded-xl bg-white border text-sm font-medium text-slate-900 focus:outline-none focus:border-primary transition-all ${errors.phone ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200'
+                      }`}
                   />
                   {errors.phone && (
                     <span className="text-xs text-rose-600 font-semibold flex items-center gap-1">
@@ -302,9 +332,8 @@ export const ContactSection: React.FC = () => {
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                     placeholder="e.g. Wakad, Hinjawadi Phase 1, Baner"
-                    className={`w-full px-4 py-3 rounded-xl bg-white border text-sm font-medium text-slate-900 focus:outline-none focus:border-primary transition-all ${
-                      errors.location ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200'
-                    }`}
+                    className={`w-full px-4 py-3 rounded-xl bg-white border text-sm font-medium text-slate-900 focus:outline-none focus:border-primary transition-all ${errors.location ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200'
+                      }`}
                   />
                   {errors.location && (
                     <span className="text-xs text-rose-600 font-semibold flex items-center gap-1">

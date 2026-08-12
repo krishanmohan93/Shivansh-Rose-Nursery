@@ -1,11 +1,20 @@
 import React from 'react';
+import { Metadata } from 'next';
 import { HeroSection } from '@/components/home/HeroSection';
 import { PopularPlantsSection } from '@/components/home/PopularPlantsSection';
-import { ServicesOverviewSection } from '@/components/home/ServicesOverviewSection';
 import { WhyChooseUsSection } from '@/components/home/WhyChooseUsSection';
-import { FaqSection } from '@/components/home/FaqSection';
+import { AboutSummaryTeaser } from '@/components/home/AboutSummaryTeaser';
+import { ServicesOverviewSection } from '@/components/home/ServicesOverviewSection';
+import { PlantCareTipsSection } from '@/components/home/PlantCareTipsSection';
+import { GallerySection } from '@/components/home/GallerySection';
 import { CustomerReviewsSection } from '@/components/home/CustomerReviewsSection';
+import { FaqSection } from '@/components/home/FaqSection';
 import { fetchPopularPlants, fetchPopularChinesePots } from '@/lib/supabase/products';
+
+export const metadata: Metadata = {
+  title: 'Shivansh Rose Nursery — Premium Nursery & Garden Care Pune',
+  description: 'Explore 500+ indoor & outdoor plants, handcrafted ceramic pots, Chinese porcelain planters, and society garden maintenance services in Wakad & Hinjawadi, Pune.',
+};
 
 export default async function HomePage() {
   const indoorPopular = await fetchPopularPlants('indoor');
@@ -13,28 +22,37 @@ export default async function HomePage() {
   const chinesePotsPopular = await fetchPopularChinesePots();
 
   return (
-    <div className="space-y-0 pb-8">
-      {/* Premium Hero Section */}
+    <div className="space-y-0 pb-8 overflow-hidden">
+      {/* 1. Hero Section */}
       <HeroSection />
 
-      {/* Shop by Popular Plants & Pots Section */}
+      {/* 2. Featured Products Preview (Phase 2 Data) */}
       <PopularPlantsSection
         indoorPlants={indoorPopular}
         outdoorPlants={outdoorPopular}
         chinesePots={chinesePotsPopular}
       />
 
-      {/* Visual Services & Offerings Overview Section with Images */}
-      <ServicesOverviewSection />
-
-      {/* Why Choose Us Section */}
+      {/* 3. Why Choose Us Section */}
       <WhyChooseUsSection />
 
-      {/* Frequently Asked Questions (FAQ) Section */}
-      <FaqSection />
+      {/* 4. About Us Summary Teaser (linking to /about) */}
+      <AboutSummaryTeaser />
 
-      {/* Customer Reviews & Feedback Section */}
+      {/* 5. Garden Services Teaser (linking to /services) */}
+      <ServicesOverviewSection />
+
+      {/* 6. Plant Care Tips Section */}
+      <PlantCareTipsSection />
+
+      {/* 7. Pinterest-style Masonry Gallery Preview */}
+      <GallerySection />
+
+      {/* 8. Customer Reviews & Testimonials */}
       <CustomerReviewsSection />
+
+      {/* 9. Frequently Asked Questions (FAQ) */}
+      <FaqSection />
     </div>
   );
 }

@@ -2,106 +2,136 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-import { Sparkles, CalendarCheck, MessageCircle, ShieldCheck, MapPin } from 'lucide-react';
+import { Sparkles, CalendarCheck, ShieldCheck, ArrowRight, Sprout } from 'lucide-react';
 
-export const ServiceHero: React.FC = () => {
+interface ServiceHeroProps {
+  language: 'en' | 'hi';
+  setLanguage: (lang: 'en' | 'hi') => void;
+  onBookClick: () => void;
+}
+
+export const ServiceHero: React.FC<ServiceHeroProps> = ({
+  language,
+  setLanguage,
+  onBookClick,
+}) => {
+  const scrollToPlans = () => {
+    const el = document.getElementById('garden-plans');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="relative py-16 sm:py-24 bg-gradient-to-b from-surface-low via-background-cream to-surface-low border-b border-surface-default overflow-hidden">
-      {/* Ambient Decorative Foliage Background Image */}
-      <div className="absolute inset-0 opacity-15 pointer-events-none">
+    <section className="relative py-16 sm:py-24 bg-slate-950 text-white overflow-hidden">
+      {/* Background Nursery Image */}
+      <div className="absolute inset-0">
         <Image
-          src="/images/hero-2.jpeg"
-          alt="Nursery garden landscape background"
+          src="/images/plants/home-bg.png"
+          alt="Lush green nursery background"
           fill
+          priority
           className="object-cover object-center"
         />
+        {/* Original Background Overlay */}
+        <div className="absolute inset-0 bg-slate-950/40" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-8 text-center max-w-4xl mx-auto">
-        {/* Top Pill Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs sm:text-sm font-semibold tracking-wide uppercase"
-        >
-          <Sparkles className="w-4 h-4 text-emerald-600" />
-          <span>Pune&apos;s Trusted Landscaping &amp; Garden Care Experts</span>
-        </motion.div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col items-center text-center max-w-4xl mx-auto space-y-6">
+          
+          {/* Top Language Switcher Bar & Badge */}
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#072412]/90 text-emerald-300 text-xs font-bold uppercase tracking-widest border border-emerald-400/50 shadow-md backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              <span>{language === 'hi' ? 'शिवंश रोज़ नर्सरी पुणे' : 'Shivansh Rose Nursery Pune'}</span>
+            </span>
 
-        {/* Display Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-tight"
-        >
-          Professional Garden Development &amp; <br className="hidden sm:inline" />
-          <span className="text-primary italic font-normal">Maintenance Services</span>
-        </motion.h1>
+            {/* Language Toggle Button */}
+            <div className="inline-flex items-center bg-[#072412]/90 p-1 rounded-full border border-emerald-400/40 shadow-md backdrop-blur-md">
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                  language === 'en'
+                    ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                    : 'text-emerald-200 hover:text-white'
+                }`}
+              >
+                🇺🇸 English
+              </button>
+              <button
+                onClick={() => setLanguage('hi')}
+                className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                  language === 'hi'
+                    ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                    : 'text-emerald-200 hover:text-white'
+                }`}
+              >
+                🇮🇳 हिंदी
+              </button>
+            </div>
+          </div>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="font-body text-slate-700 text-base sm:text-xl leading-relaxed max-w-3xl mx-auto"
-        >
-          We design, develop, beautify, and maintain green spaces for residential societies, apartments, offices, villas, schools, and commercial properties.
-        </motion.p>
+          {/* Main Title & Subtitle */}
+          <div className="space-y-3">
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+              {language === 'hi' ? 'गार्डन मेंटेनेंस सेवा' : 'Garden Maintenance Service'}
+            </h1>
+            <p className="font-display text-xl sm:text-2xl font-bold text-amber-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+              {language === 'hi'
+                ? 'आपकी दहलीज़ पर पेशेवर पौधों की देखभाल'
+                : 'Professional Plant Care, Right at Your Doorstep'}
+            </p>
+          </div>
 
-        {/* Action CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2"
-        >
-          <Link href="/contact?service=Garden+Service+Site+Visit#contact-inquiry-form" className="w-full sm:w-auto">
+          {/* Description */}
+          <p className="font-body text-slate-100 font-medium text-sm sm:text-base lg:text-lg leading-relaxed max-w-3xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+            {language === 'hi'
+              ? 'हमारे पेशेवर गार्डन मेंटेनेंस सेवाओं के साथ अपने पौधों को स्वस्थ, सुंदर और हरा-भरा रखें। प्रूनिंग (कटाई) और रीपोटिंग से लेकर खाद और कीट प्रबंधन तक, हम आपके पौधों की आवश्यकता के अनुसार देखभाल करते हैं।'
+              : 'Keep your plants healthy, beautiful, and thriving with our professional garden maintenance services. From pruning and repotting to fertilizer application and pest management, we take care of your plants according to their needs.'}
+          </p>
+
+          {/* Highlights Badges */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-bold text-white pt-2">
+            <div className="flex items-center justify-center gap-1.5 bg-[#072412]/90 px-4 py-2.5 rounded-xl border border-emerald-400/40 shadow-md backdrop-blur-md">
+              <Sprout className="w-4 h-4 text-emerald-400" />
+              <span>{language === 'hi' ? 'विशेषज्ञ माली' : 'Expert Gardeners'}</span>
+            </div>
+            <div className="flex items-center justify-center gap-1.5 bg-[#072412]/90 px-4 py-2.5 rounded-xl border border-emerald-400/40 shadow-md backdrop-blur-md">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>{language === 'hi' ? 'ऑर्गेनिक खाद पोषण' : 'Organic Nutrition'}</span>
+            </div>
+            <div className="col-span-2 sm:col-span-1 flex items-center justify-center gap-1.5 bg-[#072412]/90 px-4 py-2.5 rounded-xl border border-emerald-400/40 shadow-md backdrop-blur-md">
+              <CalendarCheck className="w-4 h-4 text-emerald-400" />
+              <span>{language === 'hi' ? 'घर पर विज़िट सेवा' : 'Doorstep Visit'}</span>
+            </div>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 w-full sm:w-auto">
             <Button
-              size="lg"
               variant="primary"
-              className="w-full sm:w-auto shadow-md"
-              icon={<CalendarCheck className="w-5 h-5" />}
-            >
-              Request Free Site Visit
-            </Button>
-          </Link>
-
-          <a
-            href="https://wa.me/918007634856?text=Hi%20Shivansh%20Rose%20Nursery,%20I%20would%20like%20to%20enquire%20about%20your%20Garden%20Services!"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto"
-          >
-            <Button
               size="lg"
-              variant="outline"
-              className="w-full sm:w-auto border-emerald-700 text-emerald-900 hover:bg-emerald-50"
-              icon={<MessageCircle className="w-5 h-5 text-emerald-600" />}
+              onClick={scrollToPlans}
+              icon={<ArrowRight className="w-5 h-5" />}
+              className="w-full sm:w-auto shadow-xl"
             >
-              Contact on WhatsApp
+              {language === 'hi' ? 'मेंटेनेंस प्लान देखें' : 'View Maintenance Plans'}
             </Button>
-          </a>
-        </motion.div>
 
-        {/* Key Feature Trust Badges */}
-        <div className="pt-8 grid grid-cols-2 md:grid-cols-3 gap-4 text-xs sm:text-sm text-slate-700 font-semibold max-w-2xl mx-auto border-t border-slate-200/80">
-          <div className="flex items-center justify-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>100% Free Site Estimate</span>
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={onBookClick}
+              icon={<CalendarCheck className="w-5 h-5 text-emerald-950" />}
+              className="w-full sm:w-auto shadow-xl"
+            >
+              {language === 'hi' ? 'अभी सेवा बुक करें' : 'Book a Service'}
+            </Button>
           </div>
-          <div className="flex items-center justify-center gap-1.5">
-            <MapPin className="w-4 h-4 text-emerald-600" />
-            <span>Serving All Pune &amp; PCMC</span>
-          </div>
-          <div className="flex items-center justify-center gap-1.5 col-span-2 md:col-span-1">
-            <Sparkles className="w-4 h-4 text-amber-600" />
-            <span>Residential &amp; Commercial</span>
-          </div>
+
         </div>
       </div>
     </section>
