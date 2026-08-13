@@ -32,7 +32,7 @@ export const CategoryManager: React.FC = () => {
 
     setCategoryGroups((prev) =>
       prev.map((group) =>
-        group.id === selectedGroupId
+        group.groupSlug === selectedGroupId
           ? { ...group, items: [...group.items, newItem] }
           : group
       )
@@ -47,7 +47,7 @@ export const CategoryManager: React.FC = () => {
     if (confirm('Delete this subcategory?')) {
       setCategoryGroups((prev) =>
         prev.map((group) =>
-          group.id === groupId
+          group.groupSlug === groupId
             ? { ...group, items: group.items.filter((item) => item.slug !== slug) }
             : group
         )
@@ -101,7 +101,7 @@ export const CategoryManager: React.FC = () => {
             >
               <option value="plants">Plants</option>
               <option value="pots">Pots &amp; Planters</option>
-              <option value="seasonal-special">Water Fountains &amp; Special</option>
+              <option value="other">Other Products</option>
             </select>
           </div>
 
@@ -128,10 +128,10 @@ export const CategoryManager: React.FC = () => {
       {/* Categories Tree Display */}
       <div className="space-y-6">
         {categoryGroups.map((group) => (
-          <div key={group.id} className="bg-white rounded-3xl border border-emerald-100 shadow-soft p-6 space-y-4">
+          <div key={group.groupSlug} className="bg-white rounded-3xl border border-emerald-100 shadow-soft p-6 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <h4 className="font-display font-bold text-xl text-slate-900">{group.name}</h4>
+                <h4 className="font-display font-bold text-xl text-slate-900">{group.groupName}</h4>
                 <p className="text-xs text-slate-500">{group.description}</p>
               </div>
               <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
@@ -155,7 +155,7 @@ export const CategoryManager: React.FC = () => {
                   </div>
 
                   <button
-                    onClick={() => handleDeleteSubcategory(group.id, item.slug)}
+                    onClick={() => handleDeleteSubcategory(group.groupSlug, item.slug)}
                     className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors shrink-0"
                     title="Delete subcategory"
                   >

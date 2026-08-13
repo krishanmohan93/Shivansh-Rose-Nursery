@@ -17,8 +17,8 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { SEED_PRODUCTS } from '@/lib/data/products-seed';
 import { Product } from '@/types/database';
+import { getStoredProducts } from '@/lib/store/productsStore';
 import { Button } from '@/components/ui/Button';
 
 interface SearchModalProps {
@@ -74,10 +74,14 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     'Monstera',
   ];
 
+  const activeProducts = typeof window !== 'undefined'
+    ? getStoredProducts().filter((p) => p.is_published !== false)
+    : [];
+
   // Filter products based on search query
   const filteredProducts = query.trim() === '' 
-    ? SEED_PRODUCTS.slice(0, 6) // Show top 6 featured products by default
-    : SEED_PRODUCTS.filter((product) => {
+    ? activeProducts.slice(0, 6) // Show top 6 featured products by default
+    : activeProducts.filter((product) => {
         const q = query.toLowerCase();
         return (
           product.name.toLowerCase().includes(q) ||

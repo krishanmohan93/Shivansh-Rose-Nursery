@@ -4,6 +4,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Product } from '@/types/database';
+import { getStoredProducts, PRODUCTS_UPDATED_EVENT } from '@/lib/store/productsStore';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Button } from '@/components/ui/Button';
 import {
@@ -23,6 +24,7 @@ interface ProductFilterSectionProps {
 export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
   initialProducts,
 }) => {
+  const [activeProducts, setActiveProducts] = useState<Product[]>(initialProducts);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedCare, setSelectedCare] = useState<string>('all');
@@ -32,6 +34,22 @@ export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
+
+  // Load from persistent local store on mount & listen to store updates
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = getStoredProducts().filter((p) => p.is_published !== false);
+      setActiveProducts(stored);
+
+      const handleUpdate = () => {
+        const updated = getStoredProducts().filter((p) => p.is_published !== false);
+        setActiveProducts(updated);
+      };
+
+      window.addEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+      return () => window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+    }
+  }, []);
 
   // Auto focus & scroll into view if navigated via Header Search icon
   useEffect(() => {
@@ -94,9 +112,34 @@ export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
     selectedSunlight !== 'all' ||
     selectedAvailability !== 'all';
 
+function matchesCategoryFilter(productCategoryId: string | undefined, selectedCat: string): boolean {
+  if (!selectedCat || selectedCat === 'all') return true;
+  if (!productCategoryId) return false;
+
+  const prodCat = productCategoryId.toLowerCase();
+  const selCat = selectedCat.toLowerCase();
+
+  if (prodCat === selCat) return true;
+
+  const coreSel = selCat
+    .replace(/^cat-other-/, '')
+    .replace(/^cat-pots-/, '')
+    .replace(/^cat-/, '');
+
+  const coreProd = prodCat
+    .replace(/^cat-other-/, '')
+    .replace(/^cat-pots-/, '')
+    .replace(/^cat-/, '');
+
+  if (coreProd === coreSel) return true;
+  if (prodCat.includes(coreSel) || selCat.includes(coreProd)) return true;
+
+  return false;
+}
+
   // Combinable AND filtering logic
   const filteredProducts = useMemo(() => {
-    return initialProducts.filter((product) => {
+    return activeProducts.filter((product) => {
       // 1. Text Search Filter (name, short_description, description, features)
       if (searchQuery.trim() !== '') {
         const q = searchQuery.toLowerCase();
@@ -109,9 +152,9 @@ export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
         }
       }
 
-      // 2. Category Filter
+      // 2. Category Filter (flexible matching)
       if (selectedCategory !== 'all') {
-        if (product.category_id !== selectedCategory) {
+        if (!matchesCategoryFilter(product.category_id, selectedCategory)) {
           return false;
         }
       }
@@ -140,7 +183,7 @@ export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
       return true;
     });
   }, [
-    initialProducts,
+    activeProducts,
     searchQuery,
     selectedCategory,
     selectedCare,
@@ -163,6 +206,26 @@ export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
 
+  const isPlantCategorySelected =
+    selectedCategory === 'all' ||
+    selectedCategory.includes('indoor') ||
+    selectedCategory.includes('outdoor') ||
+    selectedCategory.includes('plants');
+
+  const handleSelectCategory = (catValue: string) => {
+    setSelectedCategory(catValue);
+    const isPlant =
+      catValue === 'all' ||
+      catValue.includes('indoor') ||
+      catValue.includes('outdoor') ||
+      catValue.includes('plants');
+    if (!isPlant) {
+      setSelectedCare('all');
+      setSelectedSunlight('all');
+    }
+  };
+
+  // Group 1: Category Filter
   return (
     <div id="products-search-section" className="space-y-8">
       {/* Top Search Bar & Result Counter Header */}
@@ -242,7 +305,7 @@ export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
               {categoryOptions.map((opt) => (
                 <button
                   key={opt.value}
-                  onClick={() => setSelectedCategory(opt.value)}
+                  onClick={() => handleSelectCategory(opt.value)}
                   className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-between ${
                     selectedCategory === opt.value
                       ? 'bg-primary text-white font-bold shadow-xs'
@@ -256,50 +319,53 @@ export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
             </div>
           </div>
 
-          {/* Group 2: Plant Care Difficulty */}
-          <div className="space-y-2 pt-3 border-t border-slate-100">
-            <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
-              Plant Care Level
-            </label>
-            <div className="flex flex-wrap gap-1.5">
-              {careOptions.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => setSelectedCare(opt.value)}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all ${
-                    selectedCare === opt.value
-                      ? 'bg-emerald-800 text-white border-emerald-800 shadow-xs'
-                      : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-emerald-50'
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Group 2 & 3: Plant Care Level & Sunlight Needed (Only shown for plant categories) */}
+          {isPlantCategorySelected && (
+            <>
+              <div className="space-y-2 pt-3 border-t border-slate-100">
+                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
+                  Plant Care Level
+                </label>
+                <div className="flex flex-wrap gap-1.5">
+                  {careOptions.map((opt) => (
+                    <button
+                      key={opt.value}
+                      onClick={() => setSelectedCare(opt.value)}
+                      className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all ${
+                        selectedCare === opt.value
+                          ? 'bg-emerald-800 text-white border-emerald-800 shadow-xs'
+                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-emerald-50'
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          {/* Group 3: Sunlight Requirement */}
-          <div className="space-y-2 pt-3 border-t border-slate-100">
-            <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
-              Sunlight Needed
-            </label>
-            <div className="space-y-1">
-              {sunlightOptions.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => setSelectedSunlight(opt.value)}
-                  className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-between ${
-                    selectedSunlight === opt.value
-                      ? 'bg-emerald-800 text-white font-bold shadow-xs'
-                      : 'text-slate-700 hover:bg-slate-100'
-                  }`}
-                >
-                  <span>{opt.label}</span>
-                  {selectedSunlight === opt.value && <Check className="w-3.5 h-3.5" />}
-                </button>
-              ))}
-            </div>
-          </div>
+              <div className="space-y-2 pt-3 border-t border-slate-100">
+                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
+                  Sunlight Needed
+                </label>
+                <div className="space-y-1">
+                  {sunlightOptions.map((opt) => (
+                    <button
+                      key={opt.value}
+                      onClick={() => setSelectedSunlight(opt.value)}
+                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-between ${
+                        selectedSunlight === opt.value
+                          ? 'bg-emerald-800 text-white font-bold shadow-xs'
+                          : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      <span>{opt.label}</span>
+                      {selectedSunlight === opt.value && <Check className="w-3.5 h-3.5" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Group 4: Availability Status */}
           <div className="space-y-2 pt-3 border-t border-slate-100">
@@ -400,7 +466,7 @@ export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
                     {categoryOptions.map((opt) => (
                       <button
                         key={opt.value}
-                        onClick={() => setSelectedCategory(opt.value)}
+                        onClick={() => handleSelectCategory(opt.value)}
                         className={`px-3 py-2 rounded-xl text-xs font-semibold border text-left truncate ${
                           selectedCategory === opt.value
                             ? 'bg-primary text-white border-primary'
@@ -413,24 +479,26 @@ export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="font-bold text-slate-800 uppercase tracking-wider text-xs">Care Level</label>
-                  <div className="flex flex-wrap gap-2">
-                    {careOptions.map((opt) => (
-                      <button
-                        key={opt.value}
-                        onClick={() => setSelectedCare(opt.value)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border ${
-                          selectedCare === opt.value
-                            ? 'bg-emerald-800 text-white border-emerald-800'
-                            : 'bg-slate-50 text-slate-700 border-slate-200'
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
+                {isPlantCategorySelected && (
+                  <div className="space-y-2">
+                    <label className="font-bold text-slate-800 uppercase tracking-wider text-xs">Care Level</label>
+                    <div className="flex flex-wrap gap-2">
+                      {careOptions.map((opt) => (
+                        <button
+                          key={opt.value}
+                          onClick={() => setSelectedCare(opt.value)}
+                          className={`px-3 py-1.5 rounded-full text-xs font-semibold border ${
+                            selectedCare === opt.value
+                              ? 'bg-emerald-800 text-white border-emerald-800'
+                              : 'bg-slate-50 text-slate-700 border-slate-200'
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Drawer Apply Button */}
