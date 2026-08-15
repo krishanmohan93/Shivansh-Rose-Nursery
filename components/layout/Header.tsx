@@ -94,24 +94,29 @@ export const Header: React.FC = () => {
     { name: 'Contact', href: '/contact' },
   ];
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 bg-white border-b border-gray-200 h-20 sm:h-22 md:h-24 flex items-center ${
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 bg-white border-b border-gray-200 h-16 sm:h-20 md:h-24 flex items-center ${
         isScrolled ? 'shadow-md bg-white/98 backdrop-blur-md' : 'shadow-xs bg-white'
       }`}
     >
-      <div className="w-full px-6 sm:px-12 md:px-16 lg:px-20 flex items-center justify-between">
+      <div className="w-full px-3 sm:px-8 md:px-12 lg:px-20 flex items-center justify-between gap-2">
         
-        {/* LEFT SECTION: Logo & Company Name (Fixed Left, Never Shrinks) */}
-        <Link href="/" className="flex items-center gap-3.5 sm:gap-4 shrink-0 group">
-          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm shrink-0">
-            <Leaf className="w-6 h-6 sm:w-7 sm:h-7" />
+        {/* LEFT SECTION: Logo & Company Name */}
+        <Link href="/" className="flex items-center gap-2 sm:gap-3.5 group shrink min-w-0">
+          <div className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm shrink-0">
+            <Leaf className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
           </div>
-          <div className="shrink-0">
-            <span className="font-display font-bold text-2xl sm:text-3xl text-primary tracking-tight block leading-none">
+          <div className="min-w-0 shrink">
+            <span className="font-display font-bold text-base sm:text-2xl md:text-3xl text-primary tracking-tight block leading-tight truncate">
               Shivansh Rose Nursery
             </span>
-            <span className="font-body text-[11px] sm:text-xs tracking-widest uppercase text-slate-500 font-semibold mt-1 block">
+            <span className="font-body text-[9px] sm:text-xs tracking-widest uppercase text-slate-500 font-semibold block truncate">
               Nursery &amp; Garden Care
             </span>
           </div>
@@ -243,21 +248,22 @@ export const Header: React.FC = () => {
         </div>
 
         {/* MOBILE & TABLET ACTION CONTROLS */}
-        <div className="flex lg:hidden items-center gap-3">
+        <div className="flex lg:hidden items-center gap-1 sm:gap-2 shrink-0">
           <button
             onClick={handleSearchClick}
             aria-label="Search catalogue"
-            className="p-2 text-slate-700 hover:text-primary hover:bg-slate-100 rounded-full transition-colors"
+            className="p-2 text-slate-700 hover:text-primary hover:bg-slate-100 rounded-full transition-colors shrink-0"
           >
             <Search className="w-5 h-5" />
           </button>
 
+          {/* 3-Line Hamburger Navigation Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle navigation menu"
-            className="p-2 text-primary hover:bg-emerald-50 rounded-lg transition-colors"
+            className="p-2 bg-emerald-50 text-primary hover:bg-emerald-100 rounded-xl transition-all shadow-xs border border-emerald-200 shrink-0 active:scale-95"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="w-6 h-6 stroke-[2.5]" /> : <Menu className="w-6 h-6 stroke-[2.5]" />}
           </button>
         </div>
 
