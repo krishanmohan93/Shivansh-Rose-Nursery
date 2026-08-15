@@ -68,13 +68,33 @@ export const ContactSection: React.FC = () => {
     return errs;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const validationErrors = validate();
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      setIsSubmitted(true);
+      setIsSubmitting(true);
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          setIsSubmitted(true);
+        } else {
+          alert(data.error || 'Failed to submit inquiry. Please try again.');
+        }
+      } catch (err) {
+        alert('Network error. Please try again.');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -383,7 +403,8 @@ export const ContactSection: React.FC = () => {
                   type="submit"
                   size="lg"
                   variant="primary"
-                  className="w-full sm:w-1/2 py-3.5 justify-center shadow-md text-sm"
+                  isLoading={isSubmitting}
+                  className="w-full sm:w-1/2 py-3.5 justify-center shadow-md text-sm font-bold"
                   icon={<Send className="w-4 h-4" />}
                 >
                   Submit Inquiry
