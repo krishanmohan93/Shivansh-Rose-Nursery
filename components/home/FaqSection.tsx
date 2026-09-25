@@ -158,7 +158,7 @@ export const FaqSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 bg-gradient-to-b from-surface-low via-background-cream to-surface-low relative overflow-hidden border-t border-surface-default">
+    <section className="py-12 sm:py-16 bg-background-cream relative overflow-hidden border-t border-surface-default">
       {/* Ambient background glows */}
       <div className="absolute top-1/4 -right-32 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 -left-32 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />

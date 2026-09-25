@@ -70,7 +70,7 @@ export const ServiceInquiryForm: React.FC = () => {
   };
 
   return (
-    <section id="service-inquiry-form" className="py-16 sm:py-24 bg-white relative">
+    <section id="service-inquiry-form" className="py-16 sm:py-24 bg-background-cream border-t border-surface-default relative">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Section Header */}

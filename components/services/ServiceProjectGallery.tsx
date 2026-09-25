@@ -87,7 +87,7 @@ export const ServiceProjectGallery: React.FC = () => {
   };
 
   return (
-    <section className="py-16 sm:py-20 bg-surface-low border-t border-surface-default relative overflow-hidden">
+    <section className="py-16 sm:py-20 bg-background-cream border-t border-surface-default relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Section Header */}

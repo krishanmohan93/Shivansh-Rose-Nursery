@@ -57,7 +57,7 @@ export default function StoresPage() {
     <div className="space-y-16 pb-20">
       
       {/* 1. Top Hero Section */}
-      <section className="relative py-16 sm:py-20 bg-gradient-to-b from-surface-low via-background-cream to-surface-low border-b border-surface-default overflow-hidden">
+      <section className="relative py-16 sm:py-20 bg-background-cream border-b border-surface-default overflow-hidden">
         {/* Soft Background Image Watermark */}
         <div className="absolute inset-0 opacity-15 pointer-events-none">
           <Image
@@ -119,7 +119,7 @@ export default function StoresPage() {
 
       {/* 3. Why Visit Our Stores Feature Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-surface-low rounded-3xl p-8 sm:p-12 border border-emerald-100 shadow-soft space-y-8">
+        <div className="bg-background-cream rounded-3xl p-8 sm:p-12 border border-emerald-200/80 shadow-soft space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs font-bold text-emerald-800 uppercase tracking-widest block">
               ⭐ In-Store Customer Benefits

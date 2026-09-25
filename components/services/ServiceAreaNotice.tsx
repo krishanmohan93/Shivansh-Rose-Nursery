@@ -152,7 +152,7 @@ export const ServiceAreaNotice: React.FC<ServiceAreaNoticeProps> = ({ language }
   };
 
   return (
-    <section className="py-12 bg-white relative overflow-hidden">
+    <section className="py-12 bg-background-cream relative overflow-hidden border-t border-surface-default">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Card Banner */}

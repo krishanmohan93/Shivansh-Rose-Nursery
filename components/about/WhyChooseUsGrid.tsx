@@ -89,7 +89,7 @@ export const WhyChooseUsGrid: React.FC = () => {
   };
 
   return (
-    <section className="py-14 sm:py-18 bg-white relative">
+    <section className="py-14 sm:py-18 bg-background-cream relative border-t border-surface-default">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Section Header */}
@@ -111,7 +111,7 @@ export const WhyChooseUsGrid: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"
         >
           {items.map((item) => (
             <motion.div
@@ -119,7 +119,7 @@ export const WhyChooseUsGrid: React.FC = () => {
               variants={cardVariants}
               whileHover={{ scale: 1.05, y: -4 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="p-5 sm:p-6 rounded-3xl bg-white border border-emerald-100/90 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col items-start space-y-3 cursor-pointer group"
+              className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border border-emerald-100/90 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col items-start space-y-2.5 sm:space-y-3 cursor-pointer group"
             >
               <div className={`p-3 rounded-2xl ${item.bg} shadow-xs border border-white/60 group-hover:rotate-6 transition-transform`}>
                 {item.icon}

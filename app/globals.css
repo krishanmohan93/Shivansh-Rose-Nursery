@@ -21,15 +21,15 @@
     --on-tertiary: #ffffff;
 
     /* Background / Surface */
-    --background: #fcf9f8;
+    --background: #fffdf6;
     --background-cream: #fffdf6;
-    --surface: #fcf9f8;
+    --surface: #fffdf6;
     --surface-lowest: #ffffff;
-    --surface-low: #f6f3f2;
-    --surface-default: #f0eded;
-    --surface-high: #eae7e7;
-    --surface-highest: #e5e2e1;
-    --surface-glass: rgba(255, 255, 255, 0.7);
+    --surface-low: #fffdf6;
+    --surface-default: #f1ede2;
+    --surface-high: #eae4d5;
+    --surface-highest: #e0d9c8;
+    --surface-glass: rgba(255, 253, 246, 0.85);
 
     /* Feedback / Borders */
     --error: #ba1a1a;

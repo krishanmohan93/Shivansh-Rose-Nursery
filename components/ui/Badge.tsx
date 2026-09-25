@@ -1,4 +1,5 @@
 import React from 'react';
+import { cn } from '@/lib/utils';
 
 export interface BadgeProps {
   children: React.ReactNode;
@@ -11,7 +12,7 @@ export const Badge: React.FC<BadgeProps> = ({
   variant = 'neutral',
   className = '',
 }) => {
-  const baseStyles = 'inline-flex items-center gap-1 font-body text-[11px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider select-none';
+  const baseStyles = 'inline-flex items-center gap-1 font-body text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-0.5 rounded-full uppercase tracking-wider select-none whitespace-nowrap leading-none';
 
   const variants = {
     stock: 'bg-emerald-100 text-emerald-800 border border-emerald-300',
@@ -24,7 +25,7 @@ export const Badge: React.FC<BadgeProps> = ({
   };
 
   return (
-    <span className={`${baseStyles} ${variants[variant]} ${className}`}>
+    <span className={cn(baseStyles, variants[variant], className)}>
       {children}
     </span>
   );

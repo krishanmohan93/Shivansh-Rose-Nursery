@@ -2,7 +2,14 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { createClient } from '@/lib/supabase/client';
 
-export async function POST(request: Request) {
+/**
+ * Handles incoming garden maintenance service booking submissions.
+ * Stores booking details in Supabase inquiries table and dispatches formatted HTML email to nursery owner via Gmail SMTP.
+ * 
+ * @param {Request} request - The HTTP request object containing booking details.
+ * @returns {Promise<NextResponse>} JSON response confirming booking registration.
+ */
+export async function POST(request: Request): Promise<NextResponse> {
   try {
     const body = await request.json();
 
@@ -155,11 +162,11 @@ export async function POST(request: Request) {
     `;
 
     // 3. Dispatch Email via Nodemailer if SMTP Credentials exist
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpUser = process.env.SMTP_USER;
+    const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+    const smtpUser = process.env.SMTP_USER || 'shivanshrosenursery.com@gmail.com';
     const smtpPass = process.env.SMTP_PASS;
 
-    if (smtpHost && smtpUser && smtpPass) {
+    if (smtpPass) {
       try {
         const transporter = nodemailer.createTransport({
           host: smtpHost,
@@ -174,19 +181,21 @@ export async function POST(request: Request) {
         await transporter.sendMail({
           from: `"Shivansh Rose Nursery" <${smtpUser}>`,
           to: targetAdminEmail,
+          replyTo: customerEmail && customerEmail.includes('@') ? customerEmail : undefined,
           subject: emailSubject,
           html: htmlEmailContent,
         });
+        console.log(`✅ [Booking Email Sent] Dispatched successfully to ${targetAdminEmail}`);
       } catch (emailErr) {
-        console.warn('Nodemailer SMTP dispatch notice:', emailErr);
+        console.error('❌ [Booking Email Error]:', emailErr);
       }
     } else {
-      console.log('--- EMAIL NOTIFICATION PREVIEW (SMTP Environment Variables Not Set) ---');
+      console.log('--- 📩 BOOKING EMAIL PREVIEW (Set SMTP_PASS in .env.local for real sending) ---');
       console.log(`TO: ${targetAdminEmail}`);
       console.log(`SUBJECT: ${emailSubject}`);
       console.log(`CUSTOMER: ${name} (${cleanPhone})`);
       console.log(`ADDRESS: ${fullFormattedAddress}`);
-      console.log('-------------------------------------------------------------------');
+      console.log('-------------------------------------------------------------------------------');
     }
 
     return NextResponse.json({

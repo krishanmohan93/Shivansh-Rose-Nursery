@@ -413,10 +413,10 @@ function matchesCategoryFilter(productCategoryId: string | undefined, selectedCa
               initial="hidden"
               animate="visible"
               key={`${searchQuery}-${selectedCategory}-${selectedCare}-${selectedSunlight}-${selectedAvailability}`}
-              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6"
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-6"
             >
               {filteredProducts.map((product, idx) => (
-                <motion.div key={product.id} variants={itemVariants}>
+                <motion.div key={product.id} variants={itemVariants} className="h-full">
                   <ProductCard product={product} priorityImage={idx < 6} />
                 </motion.div>
               ))}

@@ -152,7 +152,7 @@ export const GardenMaintenancePlansSection: React.FC<GardenMaintenancePlansSecti
   onSelectPlan,
 }) => {
   return (
-    <section id="garden-plans" className="py-16 sm:py-20 bg-gradient-to-b from-background-cream via-surface-low to-background-cream relative overflow-hidden border-t border-surface-default">
+    <section id="garden-plans" className="py-16 sm:py-20 bg-background-cream relative overflow-hidden border-t border-surface-default">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 relative z-10">
         
         {/* Section Title Header */}

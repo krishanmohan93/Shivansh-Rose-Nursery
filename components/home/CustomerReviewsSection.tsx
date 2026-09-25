@@ -191,7 +191,7 @@ export const CustomerReviewsSection: React.FC = () => {
   };
 
   return (
-    <section className="py-12 sm:py-16 bg-gradient-to-b from-background-cream via-surface-low to-background-cream relative overflow-hidden border-t border-surface-default">
+    <section className="py-12 sm:py-16 bg-background-cream relative overflow-hidden border-t border-surface-default">
       {/* Background Ambient Glows */}
       <div className="absolute top-1/3 left-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-0 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />

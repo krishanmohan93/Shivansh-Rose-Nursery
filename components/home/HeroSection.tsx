@@ -93,7 +93,7 @@ export const HeroSection: React.FC = () => {
   return (
     <section
       ref={containerRef}
-      className="relative overflow-hidden rounded-b-[2.5rem] bg-surface-low border-b border-surface-default pt-4 pb-12 lg:pt-8 lg:pb-16"
+      className="relative overflow-hidden rounded-b-[2.5rem] bg-background-cream border-b border-surface-default pt-4 pb-12 lg:pt-8 lg:pb-16"
     >
       {/* Soft Watermark Nursery Background Image */}
       <div className="absolute inset-0 z-0 opacity-25 pointer-events-none">
@@ -107,7 +107,7 @@ export const HeroSection: React.FC = () => {
       </div>
 
       {/* Soft Tint Overlay for Pristine Legibility & Subtle Foliage */}
-      <div className="absolute inset-0 bg-gradient-to-r from-surface-low/95 via-surface-low/80 to-surface-low/50 pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background-cream/95 via-background-cream/80 to-background-cream/50 pointer-events-none z-0" />
 
       {/* Floating Animated Leaf Elements */}
       {floatingLeaves.map((leaf, index) => (

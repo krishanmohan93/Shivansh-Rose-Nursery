@@ -101,8 +101,8 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 bg-white border-b border-gray-200 h-16 sm:h-20 md:h-24 flex items-center ${
-        isScrolled ? 'shadow-md bg-white/98 backdrop-blur-md' : 'shadow-xs bg-white'
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 bg-background-cream border-b border-surface-default h-16 sm:h-20 md:h-24 flex items-center ${
+        isScrolled ? 'shadow-md bg-background-cream/98 backdrop-blur-md' : 'shadow-xs bg-background-cream'
       }`}
     >
       <div className="w-full px-3 sm:px-8 md:px-12 lg:px-20 flex items-center justify-between gap-2">
@@ -276,7 +276,7 @@ export const Header: React.FC = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden fixed top-20 left-0 right-0 bg-white border-b border-gray-200 shadow-2xl max-h-[85vh] overflow-y-auto z-40"
+            className="lg:hidden fixed top-20 left-0 right-0 bg-background-cream border-b border-surface-default shadow-2xl max-h-[85vh] overflow-y-auto z-40"
           >
             <div className="px-6 py-6 space-y-4">
               <Link

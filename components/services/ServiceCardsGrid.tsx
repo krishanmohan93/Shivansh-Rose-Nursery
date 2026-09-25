@@ -32,7 +32,7 @@ export const ServiceCardsGrid: React.FC<ServiceCardsGridProps> = ({ language, on
   };
 
   return (
-    <section className="py-16 sm:py-24 bg-white relative overflow-hidden">
+    <section className="py-16 sm:py-24 bg-background-cream relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Main 2-Column Professional Overview Layout */}

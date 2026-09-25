@@ -101,7 +101,7 @@ export const AboutStatsCounter: React.FC = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 bg-surface-low border-t border-b border-surface-default relative overflow-hidden">
+    <section className="py-12 sm:py-16 bg-background-cream border-t border-b border-surface-default relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-widest border border-primary/20">

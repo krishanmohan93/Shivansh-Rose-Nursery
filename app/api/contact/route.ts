@@ -2,7 +2,14 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { createClient } from '@/lib/supabase/client';
 
-export async function POST(request: Request) {
+/**
+ * Handles incoming customer contact form submissions.
+ * Saves inquiry to Supabase database and sends structured HTML email via Gmail SMTP.
+ * 
+ * @param {Request} request - The HTTP request object containing customer inquiry JSON body.
+ * @returns {Promise<NextResponse>} JSON response indicating success or error status.
+ */
+export async function POST(request: Request): Promise<NextResponse> {
   try {
     const body = await request.json();
     const { name, phone, email, propertyType, serviceRequired, location, message } = body;
@@ -96,12 +103,12 @@ export async function POST(request: Request) {
       </html>
     `;
 
-    // 3. Dispatch Email Notification
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpUser = process.env.SMTP_USER;
+    // 3. Dispatch Email Notification via Gmail SMTP
+    const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+    const smtpUser = process.env.SMTP_USER || 'shivanshrosenursery.com@gmail.com';
     const smtpPass = process.env.SMTP_PASS;
 
-    if (smtpHost && smtpUser && smtpPass) {
+    if (smtpPass) {
       try {
         const transporter = nodemailer.createTransport({
           host: smtpHost,
@@ -113,19 +120,21 @@ export async function POST(request: Request) {
         await transporter.sendMail({
           from: `"Shivansh Rose Nursery" <${smtpUser}>`,
           to: targetAdminEmail,
+          replyTo: email && email.includes('@') ? email : undefined,
           subject: emailSubject,
           html: htmlEmailContent,
         });
+        console.log(`✅ [Contact Email Sent] Dispatched successfully to ${targetAdminEmail}`);
       } catch (emailErr) {
-        console.warn('Nodemailer error:', emailErr);
+        console.error('❌ [Contact Email Error]:', emailErr);
       }
     } else {
-      console.log('--- 📩 INQUIRY EMAIL NOTIFICATION PREVIEW ---');
+      console.log('--- 📩 INQUIRY EMAIL PREVIEW (Set SMTP_PASS in .env.local for real sending) ---');
       console.log(`TO: ${targetAdminEmail}`);
       console.log(`SUBJECT: ${emailSubject}`);
       console.log(`CUSTOMER: ${name} (${cleanPhone})`);
       console.log(`MESSAGE: ${message}`);
-      console.log('---------------------------------------------');
+      console.log('---------------------------------------------------------------------------------');
     }
 
     return NextResponse.json({

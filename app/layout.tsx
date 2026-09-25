@@ -27,7 +27,7 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${inter.variable} ${poppins.variable} scroll-smooth`}
     >
-      <body className="font-body text-slate-800 bg-background antialiased flex flex-col min-h-screen">
+      <body className="font-body text-slate-800 bg-background-cream antialiased flex flex-col min-h-screen">
         <Header />
         <MainContentWrapper>{children}</MainContentWrapper>
         <Footer />
