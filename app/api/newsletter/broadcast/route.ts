@@ -95,13 +95,13 @@ export async function POST(request: Request) {
     `;
 
     // 2. Dispatch Broadcast Email via Nodemailer if SMTP configured
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
+    const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+    const smtpUser = process.env.SMTP_USER || 'shivanshrosenursery.com@gmail.com';
+    const smtpPass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
 
     let sentCount = 0;
 
-    if (smtpHost && smtpUser && smtpPass) {
+    if (smtpPass) {
       const transporter = nodemailer.createTransport({
         host: smtpHost,
         port: Number(process.env.SMTP_PORT) || 587,

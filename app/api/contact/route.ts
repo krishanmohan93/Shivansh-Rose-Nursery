@@ -106,7 +106,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     // 3. Dispatch Email Notification via Gmail SMTP
     const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
     const smtpUser = process.env.SMTP_USER || 'shivanshrosenursery.com@gmail.com';
-    const smtpPass = process.env.SMTP_PASS;
+    const smtpPass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
 
     if (smtpPass) {
       try {
