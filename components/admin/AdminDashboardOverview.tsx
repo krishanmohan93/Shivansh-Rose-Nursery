@@ -24,6 +24,13 @@ interface DashboardOverviewProps {
   setActiveTab: (tab: AdminTab) => void;
 }
 
+/**
+ * Admin Dashboard Overview component.
+ * Displays top statistics grid, monthly activity chart, and recent customer activity feed.
+ * 
+ * @param {DashboardOverviewProps} props - Component props containing tab switching handler.
+ * @returns {React.ReactElement} Rendered overview dashboard section.
+ */
 export const AdminDashboardOverview: React.FC<DashboardOverviewProps> = ({ setActiveTab }) => {
   const statCards = [
     {
@@ -108,15 +115,15 @@ export const AdminDashboardOverview: React.FC<DashboardOverviewProps> = ({ setAc
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       
       {/* Top Banner Notice */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#072412] via-[#0B6B2E] to-emerald-800 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="space-y-2 text-center md:text-left">
+      <div className="p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#072412] via-[#0B6B2E] to-emerald-800 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
+        <div className="space-y-2 text-left">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-400/20 text-emerald-300 text-xs font-semibold uppercase tracking-widest border border-emerald-400/30">
             <Sparkles className="w-3.5 h-3.5 text-emerald-400" /> Shivansh CMS Back-Office
           </span>
-          <h2 className="font-display font-bold text-2xl sm:text-3xl tracking-tight">
+          <h2 className="font-display font-bold text-xl sm:text-3xl tracking-tight">
             Nursery Content Management System
           </h2>
           <p className="font-body text-xs sm:text-sm text-emerald-100/90 max-w-xl">
@@ -126,7 +133,7 @@ export const AdminDashboardOverview: React.FC<DashboardOverviewProps> = ({ setAc
 
         <button
           onClick={() => setActiveTab('inquiries')}
-          className="px-5 py-3 rounded-2xl bg-white text-emerald-950 font-bold text-xs uppercase tracking-wider hover:bg-emerald-100 transition-colors shadow-md shrink-0 flex items-center gap-2"
+          className="w-full sm:w-auto px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl bg-white text-emerald-950 font-bold text-xs uppercase tracking-wider hover:bg-emerald-100 transition-colors shadow-md shrink-0 flex items-center justify-center gap-2"
         >
           <span>View 12 Unread Enquiries</span>
           <ArrowUpRight className="w-4 h-4" />

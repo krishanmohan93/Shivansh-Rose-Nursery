@@ -34,6 +34,12 @@ import {
 } from '@/lib/store/productsStore';
 import { CATEGORY_STRUCTURE } from '@/lib/data/categories';
 
+/**
+ * ProductManager component.
+ * Admin panel interface for managing products, categories, stock, prices, and Cloudinary image uploads.
+ * 
+ * @returns {React.ReactElement} Rendered ProductManager component.
+ */
 export const ProductManager: React.FC = () => {
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
   const [searchQuery, setSearchQuery] = useState('');

@@ -18,10 +18,17 @@ import { AdminUsersCMS } from '@/components/admin/AdminUsersCMS';
 import { SettingsManager } from '@/components/admin/SettingsManager';
 import { AdminProfileCMS } from '@/components/admin/AdminProfileCMS';
 
-export default function AdminDashboardPage() {
+/**
+ * Main Admin Dashboard Portal Page.
+ * Securely manages website CMS tabs with responsive desktop sidebar & mobile slide-over menu.
+ *
+ * @returns {React.ReactElement} The rendered admin dashboard layout.
+ */
+export default function AdminDashboardPage(): React.ReactElement {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -51,7 +58,7 @@ export default function AdminDashboardPage() {
 
   if (isAuthenticated === null || isAuthenticated === false) {
     return (
-      <div className="min-h-screen bg-[#072412] flex items-center justify-center text-white font-body">
+      <div className="min-h-screen bg-[#072412] flex items-center justify-center text-white font-body px-4">
         <div className="text-center space-y-3">
           <div className="w-12 h-12 rounded-full border-4 border-emerald-400 border-t-transparent animate-spin mx-auto" />
           <p className="text-xs font-semibold uppercase tracking-widest text-emerald-300">
@@ -63,19 +70,21 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAF8] text-slate-800 flex font-body antialiased selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen bg-[#F8FAF8] text-slate-800 flex flex-col font-body antialiased selection:bg-emerald-500 selection:text-white">
       
-      {/* 1. SaaS Collapsible Sidebar */}
+      {/* 1. Responsive Sidebar & Mobile Drawer */}
       <AdminSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         isCollapsed={isCollapsed}
         setIsCollapsed={setIsCollapsed}
+        isMobileOpen={isMobileOpen}
+        setIsMobileOpen={setIsMobileOpen}
         onLogout={handleLogout}
         unreadInquiriesCount={3}
       />
 
-      {/* 2. Main Content Area */}
+      {/* 2. Main Content Wrapper */}
       <div className="flex-1 flex flex-col min-w-0 transition-all duration-300">
         
         {/* Top Navbar */}
@@ -83,11 +92,12 @@ export default function AdminDashboardPage() {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           isCollapsed={isCollapsed}
+          setIsMobileOpen={setIsMobileOpen}
         />
 
         {/* Dynamic Body Content */}
         <main
-          className={`flex-1 p-4 sm:p-6 lg:p-8 transition-all duration-300 ${
+          className={`flex-1 p-3 sm:p-6 lg:p-8 transition-all duration-300 overflow-x-hidden ${
             isCollapsed ? 'lg:pl-24' : 'lg:pl-80'
           }`}
         >
@@ -110,7 +120,7 @@ export default function AdminDashboardPage() {
 
         {/* Footer */}
         <footer
-          className={`py-4 px-6 text-center text-xs text-slate-500 border-t border-emerald-100 bg-white transition-all duration-300 ${
+          className={`py-4 px-4 sm:px-6 text-center text-xs text-slate-500 border-t border-emerald-100 bg-white transition-all duration-300 ${
             isCollapsed ? 'lg:pl-24' : 'lg:pl-80'
           }`}
         >
