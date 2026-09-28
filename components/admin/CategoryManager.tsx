@@ -6,6 +6,12 @@ import { Layers, Plus, Trash2, Edit2, CheckCircle2, Save, X, Sparkles } from 'lu
 import { Button } from '@/components/ui/Button';
 import { CATEGORY_STRUCTURE, CategoryGroup, CategoryItem } from '@/lib/data/categories';
 
+/**
+ * CategoryManager component.
+ * Admin interface for browsing and editing nursery product category hierarchy and subcategories.
+ * 
+ * @returns {React.ReactElement} Rendered CategoryManager component.
+ */
 export const CategoryManager: React.FC = () => {
   const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>(CATEGORY_STRUCTURE);
   const [newSubcatName, setNewSubcatName] = useState('');

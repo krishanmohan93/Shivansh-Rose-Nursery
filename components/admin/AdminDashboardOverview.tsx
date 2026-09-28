@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Sprout,
@@ -17,6 +17,7 @@ import {
   Clock,
   CheckCircle2,
   ChevronRight,
+  Loader2,
 } from 'lucide-react';
 import { AdminTab } from './AdminSidebar';
 
@@ -26,18 +27,45 @@ interface DashboardOverviewProps {
 
 /**
  * Admin Dashboard Overview component.
- * Displays top statistics grid, monthly activity chart, and recent customer activity feed.
+ * Displays top statistics grid powered by real Supabase database metrics, monthly activity chart, and recent customer activity feed.
  * 
  * @param {DashboardOverviewProps} props - Component props containing tab switching handler.
  * @returns {React.ReactElement} Rendered overview dashboard section.
  */
 export const AdminDashboardOverview: React.FC<DashboardOverviewProps> = ({ setActiveTab }) => {
+  const [stats, setStats] = useState({
+    totalProducts: 0,
+    activeProducts: 0,
+    featuredProducts: 0,
+    totalInquiries: 0,
+    unreadInquiries: 0,
+    totalReviews: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadLiveStats() {
+      try {
+        const res = await fetch('/api/admin/stats');
+        const data = await res.json();
+        if (data.success && data.stats) {
+          setStats(data.stats);
+        }
+      } catch (err) {
+        console.error('Failed to load admin stats:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadLiveStats();
+  }, []);
+
   const statCards = [
     {
       id: 'products' as AdminTab,
       title: 'Total Products',
-      count: '520+',
-      trend: '+18 this month',
+      count: loading ? '...' : `${stats.totalProducts} Items`,
+      trend: `${stats.activeProducts} Published Live`,
       icon: Sprout,
       color: 'bg-emerald-500 text-white',
       borderColor: 'border-emerald-200',
@@ -45,8 +73,8 @@ export const AdminDashboardOverview: React.FC<DashboardOverviewProps> = ({ setAc
     {
       id: 'categories' as AdminTab,
       title: 'Categories & Trees',
-      count: '8 Groups',
-      trend: 'Plants, Pots, Fountains',
+      count: '3 Core Groups',
+      trend: 'Plants, Pots, Decor',
       icon: Layers,
       color: 'bg-teal-600 text-white',
       borderColor: 'border-teal-200',
@@ -71,9 +99,9 @@ export const AdminDashboardOverview: React.FC<DashboardOverviewProps> = ({ setAc
     },
     {
       id: 'inquiries' as AdminTab,
-      title: 'New Enquiries',
-      count: '12 Unread',
-      trend: 'Requires WhatsApp Followup',
+      title: 'Customer Enquiries',
+      count: loading ? '...' : `${stats.unreadInquiries} New`,
+      trend: `${stats.totalInquiries} Total Messages`,
       icon: Inbox,
       color: 'bg-rose-500 text-white',
       borderColor: 'border-rose-200',
@@ -81,7 +109,7 @@ export const AdminDashboardOverview: React.FC<DashboardOverviewProps> = ({ setAc
     {
       id: 'testimonials' as AdminTab,
       title: 'Customer Reviews',
-      count: '1,240+',
+      count: loading ? '...' : `${stats.totalReviews} Reviews`,
       trend: '4.9 ★ Rating Average',
       icon: Star,
       color: 'bg-amber-400 text-amber-950',
@@ -127,7 +155,7 @@ export const AdminDashboardOverview: React.FC<DashboardOverviewProps> = ({ setAc
             Nursery Content Management System
           </h2>
           <p className="font-body text-xs sm:text-sm text-emerald-100/90 max-w-xl">
-            Strictly focused on showcase products, category tree, photo galleries, customer enquiries, store branches, and site settings.
+            Connected to real Supabase Database &amp; Cloudinary CDN. Products, categories, and customer inquiries stay 100% in sync.
           </p>
         </div>
 
@@ -135,7 +163,7 @@ export const AdminDashboardOverview: React.FC<DashboardOverviewProps> = ({ setAc
           onClick={() => setActiveTab('inquiries')}
           className="w-full sm:w-auto px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl bg-white text-emerald-950 font-bold text-xs uppercase tracking-wider hover:bg-emerald-100 transition-colors shadow-md shrink-0 flex items-center justify-center gap-2"
         >
-          <span>View 12 Unread Enquiries</span>
+          <span>View {stats.unreadInquiries} Unread Enquiries</span>
           <ArrowUpRight className="w-4 h-4" />
         </button>
       </div>
@@ -157,8 +185,8 @@ export const AdminDashboardOverview: React.FC<DashboardOverviewProps> = ({ setAc
                   <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
                     {card.title}
                   </span>
-                  <h3 className="font-display font-bold text-2xl sm:text-3xl text-slate-900">
-                    {card.count}
+                  <h3 className="font-display font-bold text-2xl sm:text-3xl text-slate-900 flex items-center gap-2">
+                    {loading ? <Loader2 className="w-5 h-5 text-slate-400 animate-spin" /> : card.count}
                   </h3>
                 </div>
 

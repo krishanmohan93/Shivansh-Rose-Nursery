@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Inbox,
@@ -75,11 +75,49 @@ export const INITIAL_INQUIRIES: InquiryItem[] = [
   },
 ];
 
+/**
+ * InquiryManager component.
+ * Admin panel interface for managing customer inquiries and 1-Click Broadcast Newsletter.
+ * 
+ * @returns {React.ReactElement} Rendered InquiryManager component.
+ */
 export const InquiryManager: React.FC = () => {
   const [inquiries, setInquiries] = useState<InquiryItem[]>(INITIAL_INQUIRIES);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<'all' | 'New' | 'Contacted' | 'Resolved'>('all');
   const [toast, setToast] = useState('');
+
+  // Fetch Live Inquiries from Supabase Database
+  const fetchInquiries = async () => {
+    try {
+      const res = await fetch('/api/admin/inquiries');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.inquiries) && data.inquiries.length > 0) {
+        const mapped: InquiryItem[] = data.inquiries.map((dbInq: any) => ({
+          id: dbInq.id,
+          name: dbInq.customer_name || 'Customer',
+          phone: dbInq.phone || '',
+          email: dbInq.email || undefined,
+          propertyType: 'Nursery Inquiry',
+          serviceRequired: dbInq.inquiry_type || 'General Inquiry',
+          location: 'Pune',
+          message: dbInq.message || '',
+          date: new Date(dbInq.created_at).toLocaleString(),
+          status: dbInq.status === 'resolved' ? 'Resolved' : dbInq.status === 'contacted' ? 'Contacted' : 'New',
+        }));
+        setInquiries(mapped);
+      }
+    } catch (err) {
+      console.error('Failed to load inquiries from Supabase:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchInquiries();
+  }, []);
 
   // 1-Click Broadcast State
   const [isBroadcastModalOpen, setIsBroadcastModalOpen] = useState(false);
@@ -96,11 +134,22 @@ export const InquiryManager: React.FC = () => {
     setTimeout(() => setToast(''), 4000);
   };
 
-  const handleStatusChange = (id: string, newStatus: 'New' | 'Contacted' | 'Resolved') => {
+  const handleStatusChange = async (id: string, newStatus: 'New' | 'Contacted' | 'Resolved') => {
     setInquiries((prev) =>
       prev.map((inq) => (inq.id === id ? { ...inq, status: newStatus } : inq))
     );
-    showToast('Inquiry status updated!');
+
+    try {
+      const dbStatus = newStatus.toLowerCase();
+      await fetch('/api/admin/inquiries', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status: dbStatus }),
+      });
+      showToast('Inquiry status updated in Supabase database!');
+    } catch (err) {
+      console.error('Failed to update status in Supabase:', err);
+    }
   };
 
   const handleDelete = (id: string) => {

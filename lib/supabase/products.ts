@@ -1,263 +1,231 @@
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@supabase/supabase-js';
 import { Product } from '@/types/database';
-import { getStoredProducts } from '@/lib/store/productsStore';
+import { SEED_PRODUCTS } from '@/lib/data/products-seed';
 
-function isSupabaseConfigured(): boolean {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  return Boolean(url && !url.includes('placeholder') && url.startsWith('http'));
+function getSupabaseAdmin() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  return createClient(url, serviceKey, {
+    auth: { persistSession: false },
+  });
 }
 
 /**
- * Gets published products from stored products (localStorage / fallback).
+ * Fetches published products from Supabase database filtered by category path.
+ *
+ * @param {string} categoryPathSlug - Category path slug (e.g. 'pots/ceramic', 'plants/indoor').
+ * @param {number} page - Page number.
+ * @param {number} limit - Items per page.
+ * @returns {Promise<{ products: Product[]; total: number; hasMore: boolean }>} Fetched products.
  */
-function getActiveStoredProducts(): Product[] {
-  const all = getStoredProducts();
-  return all.filter((p) => p.is_published !== false);
-}
-
 export async function fetchProductsByCategory(
   categoryPathSlug: string,
   page: number = 1,
-  limit: number = 12
+  limit: number = 100
 ): Promise<{ products: Product[]; total: number; hasMore: boolean }> {
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = createClient();
-      const parts = categoryPathSlug ? categoryPathSlug.split('/').filter(Boolean) : [];
-      const leafSlug = parts.length > 0 ? parts[parts.length - 1] : null;
+  try {
+    const supabase = getSupabaseAdmin();
+    const parts = categoryPathSlug ? categoryPathSlug.split('/').filter(Boolean) : [];
+    const parentGroup = parts[0] || '';
+    const subSlug = parts[1] || parts[0] || '';
 
-      if (leafSlug) {
-        if (leafSlug === 'plants') {
-          const from = (page - 1) * limit;
-          const to = from + limit - 1;
-          const { data: dbProducts, count } = await supabase
-            .from('products')
-            .select('*', { count: 'exact' })
-            .in('category_id', ['cat-indoor', 'cat-outdoor'])
-            .eq('is_published', true)
-            .range(from, to)
-            .order('created_at', { ascending: false });
+    let query = supabase.from('products').select('*', { count: 'exact' }).eq('is_published', true);
 
-          if (dbProducts && dbProducts.length > 0) {
-            const total = count || dbProducts.length;
-            return {
-              products: dbProducts as Product[],
-              total,
-              hasMore: from + dbProducts.length < total,
-            };
-          }
-        } else {
-          const { data: category } = await supabase
-            .from('categories')
-            .select('id')
-            .eq('slug', leafSlug)
-            .single();
-
-          if (category) {
-            const from = (page - 1) * limit;
-            const to = from + limit - 1;
-
-            const { data: dbProducts, count } = await supabase
-              .from('products')
-              .select('*', { count: 'exact' })
-              .eq('category_id', category.id)
-              .eq('is_published', true)
-              .range(from, to)
-              .order('created_at', { ascending: false });
-
-            if (dbProducts && dbProducts.length > 0) {
-              const total = count || dbProducts.length;
-              return {
-                products: dbProducts as Product[],
-                total,
-                hasMore: from + dbProducts.length < total,
-              };
-            }
-          }
-        }
+    if (parts.length >= 2) {
+      if (subSlug === 'indoor') {
+        query = query.or('category_id.eq.cat-indoor,category_id.ilike.%indoor%');
+      } else if (subSlug === 'outdoor') {
+        query = query.or('category_id.eq.cat-outdoor,category_id.ilike.%outdoor%');
+      } else if (subSlug === 'ceramic') {
+        query = query.or('category_id.eq.cat-pots-ceramic,category_id.eq.cat-pots,category_id.ilike.%ceramic%');
+      } else if (subSlug === 'chinese-premium') {
+        query = query.or('category_id.eq.cat-pots-chinese-premium,category_id.eq.cat-chinese-pots,category_id.ilike.%chinese%');
+      } else if (subSlug === 'fiber') {
+        query = query.or('category_id.eq.cat-pots-fiber,category_id.ilike.%fiber%');
+      } else if (subSlug === 'plastic') {
+        query = query.or('category_id.eq.cat-pots-plastic,category_id.ilike.%plastic%');
+      } else if (subSlug === 'soil-mitti') {
+        query = query.or('category_id.eq.cat-pots-soil-mitti,category_id.ilike.%soil%,category_id.ilike.%mitti%');
+      } else if (subSlug === 'water-fountains') {
+        query = query.or('category_id.eq.cat-other-fountains,category_id.ilike.%fountain%');
+      } else if (subSlug === 'ganpati-murti') {
+        query = query.or('category_id.eq.cat-other-ganpati,category_id.ilike.%ganpati%');
+      } else if (subSlug === 'diwali-decoration') {
+        query = query.or('category_id.eq.cat-other-diwali,category_id.ilike.%diwali%');
+      } else {
+        query = query.ilike('category_id', `%${subSlug}%`);
       }
-    } catch (err) {
-      console.warn('Supabase product query fallback to local store data:', err);
+    } else if (parts.length === 1) {
+      if (parentGroup === 'plants') {
+        query = query.or('category_id.eq.cat-indoor,category_id.eq.cat-outdoor,category_id.ilike.%indoor%,category_id.ilike.%outdoor%,category_id.ilike.%plant%');
+      } else if (parentGroup === 'pots') {
+        query = query.or('category_id.ilike.%pot%,category_id.ilike.%ceramic%,category_id.ilike.%fiber%,category_id.ilike.%plastic%,category_id.ilike.%chinese%,category_id.ilike.%mitti%');
+      } else if (parentGroup === 'other') {
+        query = query.or('category_id.ilike.%other%,category_id.ilike.%fountain%,category_id.ilike.%ganpati%,category_id.ilike.%diwali%');
+      }
     }
+
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+
+    const { data: dbProducts, count, error } = await query
+      .order('created_at', { ascending: false })
+      .range(from, to);
+
+    if (!error && dbProducts && dbProducts.length > 0) {
+      const total = count || dbProducts.length;
+      return {
+        products: dbProducts as Product[],
+        total,
+        hasMore: from + dbProducts.length < total,
+      };
+    }
+  } catch (err) {
+    console.error('Supabase fetchProductsByCategory error:', err);
   }
 
-  // Fallback to active stored products
-  let allProducts = getActiveStoredProducts();
-  
+  let fallback = SEED_PRODUCTS.filter((p) => p.is_published !== false);
   if (categoryPathSlug) {
     const parts = categoryPathSlug.split('/').filter(Boolean);
-    const leafSlug = parts.length > 0 ? parts[parts.length - 1] : null;
-    if (leafSlug) {
-      if (leafSlug === 'plants') {
-        allProducts = allProducts.filter(
-          (p) =>
-            p.category_id === 'cat-indoor' ||
-            p.category_id === 'cat-outdoor' ||
-            p.category_id.includes('indoor') ||
-            p.category_id.includes('outdoor') ||
-            p.category_id.includes('plant')
-        );
-      } else if (leafSlug === 'pots') {
-        allProducts = allProducts.filter((p) => p.category_id.includes('pot'));
-      } else if (leafSlug === 'other') {
-        allProducts = allProducts.filter(
-          (p) =>
-            p.category_id.includes('other') ||
-            p.category_id.includes('fountain') ||
-            p.category_id.includes('ganpati') ||
-            p.category_id.includes('diwali')
-        );
-      } else if (leafSlug === 'indoor') {
-        allProducts = allProducts.filter((p) => p.category_id === 'cat-indoor' || p.category_id.includes('indoor'));
-      } else if (leafSlug === 'outdoor') {
-        allProducts = allProducts.filter((p) => p.category_id === 'cat-outdoor' || p.category_id.includes('outdoor'));
-      } else if (leafSlug.startsWith('cat-')) {
-        allProducts = allProducts.filter((p) => p.category_id === leafSlug || p.category_id.includes(leafSlug.replace('cat-', '')));
-      } else {
-        allProducts = allProducts.filter((p) => p.category_id.includes(leafSlug));
-      }
-    }
+    const sub = parts[parts.length - 1] || '';
+    if (sub === 'indoor') fallback = fallback.filter((p) => p.category_id === 'cat-indoor');
+    else if (sub === 'outdoor') fallback = fallback.filter((p) => p.category_id === 'cat-outdoor');
+    else if (sub === 'ceramic') fallback = fallback.filter((p) => p.category_id === 'cat-pots-ceramic' || p.category_id === 'cat-pots');
+    else if (sub === 'chinese-premium') fallback = fallback.filter((p) => p.category_id === 'cat-pots-chinese-premium' || p.category_id === 'cat-chinese-pots');
+    else if (sub === 'fiber') fallback = fallback.filter((p) => p.category_id === 'cat-pots-fiber');
+    else if (sub === 'plastic') fallback = fallback.filter((p) => p.category_id === 'cat-pots-plastic');
+    else if (sub === 'soil-mitti') fallback = fallback.filter((p) => p.category_id === 'cat-pots-soil-mitti');
+    else if (sub === 'water-fountains') fallback = fallback.filter((p) => p.category_id === 'cat-other-fountains');
   }
 
-  const from = (page - 1) * limit;
-  const sliced = allProducts.slice(from, from + limit);
-
   return {
-    products: sliced,
-    total: allProducts.length,
-    hasMore: from + sliced.length < allProducts.length,
+    products: fallback,
+    total: fallback.length,
+    hasMore: false,
   };
 }
 
+/**
+ * Fetches popular plant specimens for homepage sections directly from Supabase.
+ *
+ * @param {'indoor' | 'outdoor'} type - Plant category.
+ * @returns {Promise<Product[]>} Popular products list.
+ */
 export async function fetchPopularPlants(type: 'indoor' | 'outdoor'): Promise<Product[]> {
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = createClient();
-      const targetCategorySlug = type === 'indoor' ? 'indoor' : 'outdoor';
+  try {
+    const supabase = getSupabaseAdmin();
+    const targetCat = type === 'indoor' ? 'cat-indoor' : 'cat-outdoor';
 
-      const { data: category } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('slug', targetCategorySlug)
-        .single();
+    const { data: dbProducts, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('is_published', true)
+      .or(`category_id.eq.${targetCat},category_id.ilike.%${type}%`)
+      .limit(6);
 
-      if (category) {
-        const { data: dbProducts } = await supabase
-          .from('products')
-          .select('*')
-          .eq('category_id', category.id)
-          .eq('is_published', true)
-          .or('show_on_homepage.eq.true,is_popular.eq.true,is_featured.eq.true')
-          .limit(6);
-
-        if (dbProducts && dbProducts.length > 0) {
-          return dbProducts as Product[];
-        }
-      }
-    } catch (err) {
-      console.warn('Supabase popular plants query fallback:', err);
+    if (!error && dbProducts && dbProducts.length > 0) {
+      return dbProducts as Product[];
     }
+  } catch (err) {
+    console.error('Supabase fetchPopularPlants error:', err);
   }
 
   const targetCategory = type === 'indoor' ? 'cat-indoor' : 'cat-outdoor';
-  return getActiveStoredProducts()
-    .filter((p) => p.category_id === targetCategory && (p.show_on_homepage || p.is_popular || p.is_featured))
-    .slice(0, 6);
+  return SEED_PRODUCTS.filter((p) => p.category_id === targetCategory && p.is_published).slice(0, 6);
 }
 
+/**
+ * Fetches popular Chinese & Ceramic pots directly from Supabase.
+ *
+ * @returns {Promise<Product[]>} Popular pots list.
+ */
 export async function fetchPopularChinesePots(): Promise<Product[]> {
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = createClient();
-      const { data: category } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('slug', 'chinese-premium')
-        .single();
+  try {
+    const supabase = getSupabaseAdmin();
+    const { data: dbProducts, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('is_published', true)
+      .or('category_id.eq.cat-pots-chinese-premium,category_id.eq.cat-chinese-pots,category_id.ilike.%chinese%,category_id.ilike.%ceramic%')
+      .limit(6);
 
-      if (category) {
-        const { data: dbProducts } = await supabase
-          .from('products')
-          .select('*')
-          .eq('category_id', category.id)
-          .eq('is_published', true)
-          .limit(6);
-
-        if (dbProducts && dbProducts.length > 0) {
-          return dbProducts as Product[];
-        }
-      }
-    } catch (err) {
-      console.warn('Supabase popular chinese pots query fallback:', err);
+    if (!error && dbProducts && dbProducts.length > 0) {
+      return dbProducts as Product[];
     }
+  } catch (err) {
+    console.error('Supabase fetchPopularChinesePots error:', err);
   }
 
-  return getActiveStoredProducts()
-    .filter((p) => p.category_id === 'cat-pots-chinese-premium' || p.category_id === 'cat-chinese-pots')
-    .slice(0, 6);
+  return SEED_PRODUCTS.filter((p) => p.category_id.includes('pot') && p.is_published).slice(0, 6);
 }
 
+/**
+ * Fetches single product details by slug directly from Supabase.
+ *
+ * @param {string} slug - Product slug string.
+ * @returns {Promise<{ product: Product | null; categoryPath: string }>} Single product details and breadcrumb path.
+ */
 export async function getProductBySlug(slug: string): Promise<{ product: Product | null; categoryPath: string }> {
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = createClient();
-      const { data: dbProduct } = await supabase
-        .from('products')
-        .select('*, categories(slug, parent_id)')
-        .eq('slug', slug)
-        .single();
+  try {
+    const supabase = getSupabaseAdmin();
+    const { data: dbProduct, error } = await supabase
+      .from('products')
+      .select('*')
+      .or(`slug.eq.${slug},id.eq.${slug}`)
+      .single();
 
-      if (dbProduct) {
-        let categoryPath = '/products';
-        if (dbProduct.categories?.slug) {
-          categoryPath = `/products/plants/${dbProduct.categories.slug}`;
-        }
-        return { product: dbProduct as Product, categoryPath };
-      }
-    } catch (err) {
-      console.warn('Supabase getProductBySlug fallback to stored data:', err);
+    if (!error && dbProduct) {
+      let categoryPath = '/products';
+      const catId = dbProduct.category_id || '';
+      if (catId.includes('indoor')) categoryPath = '/products/plants/indoor';
+      else if (catId.includes('outdoor')) categoryPath = '/products/plants/outdoor';
+      else if (catId.includes('ceramic')) categoryPath = '/products/pots/ceramic';
+      else if (catId.includes('chinese')) categoryPath = '/products/pots/chinese-premium';
+      else if (catId.includes('fiber')) categoryPath = '/products/pots/fiber';
+      else if (catId.includes('plastic')) categoryPath = '/products/pots/plastic';
+      else if (catId.includes('soil') || catId.includes('mitti')) categoryPath = '/products/pots/soil-mitti';
+      else if (catId.includes('fountain')) categoryPath = '/products/other/water-fountains';
+      else if (catId.includes('ganpati')) categoryPath = '/products/other/ganpati-murti';
+
+      return { product: dbProduct as Product, categoryPath };
     }
+  } catch (err) {
+    console.error('Supabase getProductBySlug error:', err);
   }
 
-  const storedProduct = getActiveStoredProducts().find((p) => p.slug === slug);
-  if (storedProduct) {
-    let categoryPath = '/products';
-    if (storedProduct.category_id === 'cat-indoor') categoryPath = '/products/plants/indoor';
-    else if (storedProduct.category_id === 'cat-outdoor') categoryPath = '/products/plants/outdoor';
-    else if (storedProduct.category_id?.startsWith('cat-pots')) {
-      const sub = storedProduct.category_id.replace('cat-pots-', '');
-      categoryPath = `/products/pots/${sub}`;
-    } else if (storedProduct.category_id?.startsWith('cat-other')) {
-      const sub = storedProduct.category_id.replace('cat-other-', '');
-      categoryPath = `/products/other/${sub}`;
-    }
-    return { product: storedProduct, categoryPath };
+  const seedMatch = SEED_PRODUCTS.find((p) => p.slug === slug || p.id === slug);
+  if (seedMatch) {
+    return { product: seedMatch, categoryPath: '/products/plants/indoor' };
   }
 
   return { product: null, categoryPath: '/products' };
 }
 
+/**
+ * Fetches related products in the same category from Supabase database.
+ *
+ * @param {string} categoryId - Category ID string.
+ * @param {string} currentProductId - Current product ID to exclude.
+ * @param {number} [limit=4] - Max items to return.
+ * @returns {Promise<Product[]>} Related products list.
+ */
 export async function getRelatedProducts(categoryId: string, currentProductId: string, limit: number = 4): Promise<Product[]> {
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = createClient();
-      const { data: dbProducts } = await supabase
-        .from('products')
-        .select('*')
-        .eq('category_id', categoryId)
-        .neq('id', currentProductId)
-        .eq('is_published', true)
-        .limit(limit);
+  try {
+    const supabase = getSupabaseAdmin();
+    const { data: dbProducts, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('category_id', categoryId)
+      .neq('id', currentProductId)
+      .eq('is_published', true)
+      .limit(limit);
 
-      if (dbProducts && dbProducts.length > 0) {
-        return dbProducts as Product[];
-      }
-    } catch (err) {
-      console.warn('Supabase getRelatedProducts fallback:', err);
+    if (!error && dbProducts && dbProducts.length > 0) {
+      return dbProducts as Product[];
     }
+  } catch (err) {
+    console.error('Supabase getRelatedProducts error:', err);
   }
 
-  return getActiveStoredProducts()
-    .filter((p) => p.category_id === categoryId && p.id !== currentProductId)
-    .slice(0, limit);
+  return SEED_PRODUCTS.filter((p) => p.category_id === categoryId && p.id !== currentProductId && p.is_published).slice(0, limit);
 }
