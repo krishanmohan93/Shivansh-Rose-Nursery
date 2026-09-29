@@ -72,12 +72,12 @@ export async function fetchProductsByCategory(
       .order('created_at', { ascending: false })
       .range(from, to);
 
-    if (!error && dbProducts && dbProducts.length > 0) {
-      const total = count || dbProducts.length;
+    if (!error) {
+      const total = count || (dbProducts ? dbProducts.length : 0);
       return {
-        products: dbProducts as Product[],
+        products: (dbProducts || []) as Product[],
         total,
-        hasMore: from + dbProducts.length < total,
+        hasMore: from + (dbProducts ? dbProducts.length : 0) < total,
       };
     }
   } catch (err) {
@@ -96,6 +96,9 @@ export async function fetchProductsByCategory(
     else if (sub === 'plastic') fallback = fallback.filter((p) => p.category_id === 'cat-pots-plastic');
     else if (sub === 'soil-mitti') fallback = fallback.filter((p) => p.category_id === 'cat-pots-soil-mitti');
     else if (sub === 'water-fountains') fallback = fallback.filter((p) => p.category_id === 'cat-other-fountains');
+    else if (sub === 'ganpati-murti') fallback = fallback.filter((p) => p.category_id === 'cat-other-ganpati');
+    else if (sub === 'diwali-decoration') fallback = fallback.filter((p) => p.category_id === 'cat-other-diwali');
+    else fallback = [];
   }
 
   return {
