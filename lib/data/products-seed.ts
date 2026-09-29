@@ -1,8 +1,12 @@
 import { Product } from '@/types/database';
 
+/**
+ * Master Real Product Catalog for Shivansh Rose Nursery.
+ * Contains only verified real nursery products (6 Indoor, 6 Outdoor, 6 Premium Chinese Pots).
+ */
 export const SEED_PRODUCTS: Product[] = [
   // --------------------------------------------------------------------------
-  // TOP SELLING INDOOR PLANTS (plants/indoor)
+  // 1. INDOOR PLANTS (cat-indoor)
   // --------------------------------------------------------------------------
   {
     id: 'ind-01',
@@ -150,7 +154,7 @@ export const SEED_PRODUCTS: Product[] = [
   },
 
   // --------------------------------------------------------------------------
-  // TOP SELLING OUTDOOR & FLOWERING PLANTS (plants/outdoor)
+  // 2. OUTDOOR & FLOWERING PLANTS (cat-outdoor)
   // --------------------------------------------------------------------------
   {
     id: 'out-01',
@@ -298,51 +302,7 @@ export const SEED_PRODUCTS: Product[] = [
   },
 
   // --------------------------------------------------------------------------
-  // CERAMIC POTS (pots/ceramic)
-  // --------------------------------------------------------------------------
-  {
-    id: 'pot-c01',
-    name: 'Nordic Ribbed White Ceramic Planter',
-    slug: 'nordic-ribbed-white-ceramic-planter',
-    category_id: 'cat-pots-ceramic',
-    short_description: 'Minimalist vertical ribbed ceramic pot with matching saucer.',
-    description: 'Handglazed premium ceramic planter featuring textured fluted ribs and built-in drainage holes for healthy indoor root growth.',
-    suitable_for: ['Living Room Table', 'Office Desk', 'Plant Display Shelf'],
-    plant_care_difficulty: 'N/A',
-    availability_status: 'In Stock',
-    sizes: ['6 inch', '8 inch', '10 inch', '12 inch'],
-    colors: ['Matte Off-White', 'Warm Sand', 'Sage Green'],
-    cloudinary_url: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=800&auto=format&fit=crop',
-    features: ['Handcrafted Ceramic', 'Bottom Drainage Hole', 'UV Protected Glaze'],
-    specifications: { 'Material': 'High-Fired Clay', 'Finish': 'Matte Satin' },
-    is_published: true,
-    is_featured: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 'pot-c02',
-    name: 'Terracotta Glazed Bell Ceramic Pot',
-    slug: 'terracotta-glazed-bell-ceramic-pot',
-    category_id: 'cat-pots-ceramic',
-    short_description: 'Dual-tone glazed ceramic pot with warm rustic earthen base.',
-    description: 'Combines traditional terracotta warm tones with glossy mint-green glazing on top. Perfect for monsteras and rubber plants.',
-    suitable_for: ['Balcony Corner', 'Living Room Floor', 'Console Table'],
-    plant_care_difficulty: 'N/A',
-    availability_status: 'In Stock',
-    sizes: ['8 inch', '10 inch', '14 inch Heavy'],
-    colors: ['Terracotta & Mint Green', 'Terracotta & Turquoise'],
-    cloudinary_url: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=800&auto=format&fit=crop',
-    features: ['Dual Tone Finish', 'Breathable Clay Base', 'Heavy Anti-Tip Base'],
-    specifications: { 'Material': 'Natural Terracotta Ceramic' },
-    is_published: true,
-    is_featured: false,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-
-  // --------------------------------------------------------------------------
-  // CHINESE PREMIUM POTS (pots/chinese-premium)
+  // 3. CHINESE PREMIUM PORCELAIN POTS (cat-pots-chinese-premium)
   // --------------------------------------------------------------------------
   {
     id: 'pot-cp01',
@@ -476,78 +436,6 @@ export const SEED_PRODUCTS: Product[] = [
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   },
-
-  // --------------------------------------------------------------------------
-  // FIBER POTS (pots/fiber)
-  // --------------------------------------------------------------------------
-  {
-    id: 'pot-f01',
-    name: 'Tapered Tall Fiber FRP Planter',
-    slug: 'tapered-tall-fiber-frp-planter',
-    category_id: 'cat-pots-fiber',
-    short_description: 'Ultra-lightweight high-strength fiber glass planter for modern architectural spaces.',
-    description: 'Designed for residential societies, office lobbies, and outdoor gardens. Weatherproof, frost-proof, unbreakable FRP fiber construction.',
-    suitable_for: ['Society Entrance', 'Hotel Lobby', 'Terrace Garden', 'Villa Driveway'],
-    plant_care_difficulty: 'N/A',
-    availability_status: 'In Stock',
-    sizes: ['2 ft Height', '3 ft Height', '4 ft Giant Pillar'],
-    colors: ['Textured Concrete Grey', 'Matte Black', 'Snow White', 'Bronze Finish'],
-    cloudinary_url: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=800&auto=format&fit=crop',
-    features: ['Unbreakable FRP Fiber', 'Ultra Lightweight', 'All-Weather UV Proof'],
-    specifications: { 'Material': 'Fiberglass Reinforced Polymer', 'Warranty': '5 Years Weatherproof' },
-    is_published: true,
-    is_featured: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-
-  // --------------------------------------------------------------------------
-  // SOIL (MITTI) POTS (pots/soil-mitti)
-  // --------------------------------------------------------------------------
-  {
-    id: 'pot-m01',
-    name: 'Traditional Terracotta Mitti Matka Pot',
-    slug: 'traditional-terracotta-mitti-matka-pot',
-    category_id: 'cat-pots-soil-mitti',
-    short_description: 'Pure eco-friendly natural clay matka pot handcrafted by local artisans.',
-    description: 'Classic natural red soil matka pot from Shweta Matka Bhandar. Highly porous clay walls allow natural root breathing and prevent soil overheating.',
-    suitable_for: ['Balcony Garden', 'Outdoor Garden', 'Tulsi Vrindavan'],
-    plant_care_difficulty: 'N/A',
-    availability_status: 'In Stock',
-    sizes: ['8 inch Round', '10 inch Matka', '12 inch Wide Rim', '14 inch Large'],
-    colors: ['Natural Clay Red', 'Traditional Terracotta'],
-    cloudinary_url: 'https://images.unsplash.com/photo-1584589167171-541ce45f1eea?q=80&w=800&auto=format&fit=crop',
-    features: ['100% Eco-Friendly Clay', 'Natural Root Aeration', 'Shweta Matka Bhandar Special'],
-    specifications: { 'Material': 'Pure Organic River Clay' },
-    is_published: true,
-    is_featured: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-
-  // --------------------------------------------------------------------------
-  // OTHER PRODUCTS
-  // --------------------------------------------------------------------------
-  {
-    id: 'oth-w01',
-    name: '3-Tier Cascading Rock Waterfall Fountain with LED',
-    slug: '3-tier-cascading-rock-waterfall-fountain-led',
-    category_id: 'cat-other-fountains',
-    short_description: 'Soothing water fountain featuring natural rock strata and warm underwater LEDs.',
-    description: 'Create a tranquil oasis in your balcony or living room. Includes a silent submersible recirculating pump and warm ambient LED lighting.',
-    suitable_for: ['Living Room Corner', 'Balcony Oasis', 'Society Reception'],
-    plant_care_difficulty: 'N/A',
-    availability_status: 'In Stock',
-    sizes: ['1.5 ft Desktop', '3 ft Garden Floor Fountain'],
-    colors: ['Natural Slate Stone', 'Mossy Bronze'],
-    cloudinary_url: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=800&auto=format&fit=crop',
-    features: ['Silent Recirculating Pump', 'Underwater LED Light', 'Calming Waterfall Sound'],
-    specifications: { 'Power': 'Standard 220V Plug', 'Water Cap': '5 Litres' },
-    is_published: true,
-    is_featured: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
 ];
 
 export function getSeedProductsByCategory(categorySlugPath: string): Product[] {
@@ -567,16 +455,9 @@ export function getSeedProductsByCategory(categorySlugPath: string): Product[] {
       return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-outdoor');
     }
     if (parent === 'pots') {
-      if (child === 'ceramic') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-ceramic');
-      if (child === 'chinese-premium') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-chinese-premium');
-      if (child === 'plastic') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-plastic');
-      if (child === 'fiber') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-fiber');
-      if (child === 'soil-mitti') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-soil-mitti');
-    }
-    if (parent === 'other') {
-      if (child === 'diwali-decoration') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-other-diwali');
-      if (child === 'water-fountains') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-other-fountains');
-      if (child === 'ganpati-murti') return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-other-ganpati');
+      if (child === 'chinese-premium' || child === 'ceramic') {
+        return SEED_PRODUCTS.filter((p) => p.category_id === 'cat-pots-chinese-premium');
+      }
     }
   }
 
@@ -586,9 +467,6 @@ export function getSeedProductsByCategory(categorySlugPath: string): Product[] {
   }
   if (group === 'pots') {
     return SEED_PRODUCTS.filter((p) => p.category_id?.startsWith('cat-pots'));
-  }
-  if (group === 'other') {
-    return SEED_PRODUCTS.filter((p) => p.category_id?.startsWith('cat-other'));
   }
 
   return SEED_PRODUCTS;
