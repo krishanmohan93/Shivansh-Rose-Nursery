@@ -6,7 +6,6 @@ import { WhyChooseUsSection } from '@/components/home/WhyChooseUsSection';
 import { AboutSummaryTeaser } from '@/components/home/AboutSummaryTeaser';
 import { ServicesOverviewSection } from '@/components/home/ServicesOverviewSection';
 import { PlantCareTipsSection } from '@/components/home/PlantCareTipsSection';
-import { GallerySection } from '@/components/home/GallerySection';
 import { CustomerReviewsSection } from '@/components/home/CustomerReviewsSection';
 import { FaqSection } from '@/components/home/FaqSection';
 import { fetchPopularPlants, fetchPopularChinesePots } from '@/lib/supabase/products';
@@ -45,13 +44,10 @@ export default async function HomePage() {
       {/* 6. Plant Care Tips Section */}
       <PlantCareTipsSection />
 
-      {/* 7. Pinterest-style Masonry Gallery Preview */}
-      <GallerySection />
-
-      {/* 8. Customer Reviews & Testimonials */}
+      {/* 7. Customer Reviews & Testimonials */}
       <CustomerReviewsSection />
 
-      {/* 9. Frequently Asked Questions (FAQ) */}
+      {/* 8. Frequently Asked Questions (FAQ) */}
       <FaqSection />
     </div>
   );
