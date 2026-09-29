@@ -146,7 +146,8 @@ export async function fetchPopularChinesePots(): Promise<Product[]> {
       .from('products')
       .select('*')
       .eq('is_published', true)
-      .or('category_id.eq.cat-pots-chinese-premium,category_id.eq.cat-chinese-pots,category_id.ilike.%chinese%,category_id.ilike.%ceramic%')
+      .or('category_id.eq.cat-pots-chinese-premium,category_id.eq.cat-chinese-pots,category_id.ilike.%chinese%')
+      .order('created_at', { ascending: false })
       .limit(6);
 
     if (!error && dbProducts && dbProducts.length > 0) {
@@ -156,7 +157,9 @@ export async function fetchPopularChinesePots(): Promise<Product[]> {
     console.error('Supabase fetchPopularChinesePots error:', err);
   }
 
-  return SEED_PRODUCTS.filter((p) => p.category_id.includes('pot') && p.is_published).slice(0, 6);
+  return SEED_PRODUCTS.filter(
+    (p) => (p.category_id === 'cat-pots-chinese-premium' || p.category_id.includes('chinese')) && p.is_published
+  ).slice(0, 6);
 }
 
 /**
