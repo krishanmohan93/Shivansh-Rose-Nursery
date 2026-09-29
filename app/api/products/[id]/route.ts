@@ -34,8 +34,9 @@ export async function PUT(
       updated_at: new Date().toISOString(),
     };
 
-    // Don't allow updating id directly
+    // Don't allow updating id directly or non-existent columns
     delete updatePayload.id;
+    delete updatePayload.cloudinary_public_id;
 
     const { data: updatedProduct, error } = await supabase
       .from('products')

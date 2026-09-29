@@ -43,6 +43,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         name: p.name,
         slug: p.slug,
         category_id: p.category_id,
+        category_slug: p.category_id,
         short_description: p.short_description || '',
         description: p.description || '',
         suitable_for: p.suitable_for || ['Indoor', 'Living Room'],
@@ -152,10 +153,11 @@ export async function POST(request: Request): Promise<NextResponse> {
     const baseSlug = cleanName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     const slug = `${baseSlug}-${Date.now().toString().slice(-4)}`;
 
-    const newProductPayload: Partial<Product> = {
+    const newProductPayload: Record<string, any> = {
       name: cleanName,
       slug,
       category_id: category_id.trim(),
+      category_slug: category_id.trim(),
       short_description: (short_description || cleanName).trim(),
       description: (description || short_description || cleanName).trim(),
       suitable_for: ['Home & Garden Decor'],
@@ -166,7 +168,6 @@ export async function POST(request: Request): Promise<NextResponse> {
       sizes: Array.isArray(sizes) && sizes.length > 0 ? sizes : ['Standard'],
       colors: Array.isArray(colors) && colors.length > 0 ? colors : ['Default'],
       cloudinary_url: cloudinary_url || '/images/plants/peace lily.jpg',
-      cloudinary_public_id: cloudinary_public_id || null,
       features: ['Nursery Specimen', 'Hand Selected'],
       specifications: specifications || { Placement: 'Indoor & Outdoor' },
       is_published: Boolean(is_published),
