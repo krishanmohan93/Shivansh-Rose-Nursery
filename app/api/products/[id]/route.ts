@@ -9,6 +9,8 @@ function getSupabaseAdmin() {
   });
 }
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 /**
  * Handles updating an existing product in Supabase.
  *
@@ -38,19 +40,42 @@ export async function PUT(
     delete updatePayload.id;
     delete updatePayload.cloudinary_public_id;
 
-    const { data: updatedProduct, error } = await supabase
-      .from('products')
-      .update(updatePayload)
-      .or(`id.eq.${id},slug.eq.${id}`)
-      .select();
+    // Resolve category if updated
+    if (body.category_id) {
+      const catInput = body.category_id.trim();
+      updatePayload.category_slug = catInput;
+      if (UUID_REGEX.test(catInput)) {
+        updatePayload.category_id = catInput;
+      } else {
+        const { data: cat } = await supabase
+          .from('categories')
+          .select('id')
+          .eq('slug', catInput)
+          .maybeSingle();
+        updatePayload.category_id = cat?.id || null;
+      }
+    }
+
+    let query = supabase.from('products').update(updatePayload);
+    if (UUID_REGEX.test(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+
+    const { data: updatedProducts, error } = await query.select();
 
     if (error) {
       throw error;
     }
 
+    const updatedProduct = updatedProducts?.[0] || null;
+
     return NextResponse.json({
       success: true,
-      product: updatedProduct?.[0] || null,
+      product: updatedProduct
+        ? { ...updatedProduct, category_id: updatedProduct.category_slug || updatedProduct.category_id }
+        : null,
       message: 'Product updated successfully in Supabase database!',
     });
   } catch (error: any) {
@@ -81,10 +106,14 @@ export async function DELETE(
 
     const supabase = getSupabaseAdmin();
 
-    const { error } = await supabase
-      .from('products')
-      .delete()
-      .or(`id.eq.${id},slug.eq.${id}`);
+    let query = supabase.from('products').delete();
+    if (UUID_REGEX.test(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+
+    const { error } = await query;
 
     if (error) {
       console.error('Supabase Product Delete Error:', error);

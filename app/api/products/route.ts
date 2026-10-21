@@ -11,9 +11,27 @@ function getSupabaseAdmin() {
   });
 }
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Resolves a category slug (e.g. 'cat-indoor') or UUID to a valid category UUID from categories table.
+ */
+async function resolveCategoryUuid(supabase: any, categoryInput: string): Promise<string | null> {
+  if (!categoryInput) return null;
+  if (UUID_REGEX.test(categoryInput)) return categoryInput;
+
+  const { data } = await supabase
+    .from('categories')
+    .select('id')
+    .eq('slug', categoryInput.trim())
+    .maybeSingle();
+
+  return data?.id || null;
+}
+
 /**
  * Handles fetching products from Supabase with filtering & pagination.
- * If database is empty, seeds initial catalog into Supabase automatically.
+ * If database is empty, seeds initial catalog into Supabase automatically with proper foreign keys.
  *
  * @param {Request} request - The HTTP request object.
  * @returns {Promise<NextResponse>} JSON response containing products list.
@@ -38,11 +56,18 @@ export async function GET(request: Request): Promise<NextResponse> {
 
     if (initialCount === 0 || initialCount === null) {
       console.log('⚡ Supabase products table is empty. Auto-seeding catalog...');
+
+      // Fetch category lookup
+      const { data: allCategories } = await supabase.from('categories').select('id, slug');
+      const catMap = new Map<string, string>();
+      if (allCategories) {
+        allCategories.forEach((c: { id: string; slug: string }) => catMap.set(c.slug, c.id));
+      }
+
       const seedPayload = SEED_PRODUCTS.map((p) => ({
-        id: p.id,
         name: p.name,
         slug: p.slug,
-        category_id: p.category_id,
+        category_id: catMap.get(p.category_id) || null,
         category_slug: p.category_id,
         short_description: p.short_description || '',
         description: p.description || '',
@@ -64,7 +89,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         updated_at: p.updated_at || new Date().toISOString(),
       }));
 
-      await supabase.from('products').upsert(seedPayload);
+      await supabase.from('products').insert(seedPayload);
     }
 
     // 2. Query Products from Supabase
@@ -78,9 +103,9 @@ export async function GET(request: Request): Promise<NextResponse> {
       query = query.eq('is_featured', true);
     }
 
-    if (categorySlug) {
-      // Filter by category_id or slug matching
-      query = query.or(`category_id.eq.${categorySlug},category_id.ilike.%${categorySlug}%`);
+    if (categorySlug && categorySlug !== 'all') {
+      // Filter by category_slug column (safe text search, avoids UUID cast errors)
+      query = query.or(`category_slug.eq.${categorySlug},category_slug.ilike.%${categorySlug}%`);
     }
 
     if (searchQuery) {
@@ -98,9 +123,15 @@ export async function GET(request: Request): Promise<NextResponse> {
       throw error;
     }
 
+    // Map output so frontend always gets category_id as the taxonomy slug (e.g. 'cat-indoor')
+    const mappedProducts = (dbProducts || []).map((p: any) => ({
+      ...p,
+      category_id: p.category_slug || p.category_id,
+    }));
+
     return NextResponse.json({
       success: true,
-      data: dbProducts || [],
+      data: mappedProducts,
       total: count || 0,
       page,
       limit,
@@ -134,7 +165,6 @@ export async function POST(request: Request): Promise<NextResponse> {
       sizes = [],
       colors = [],
       cloudinary_url,
-      cloudinary_public_id,
       is_published = true,
       is_featured = false,
       specifications = {},
@@ -153,11 +183,14 @@ export async function POST(request: Request): Promise<NextResponse> {
     const baseSlug = cleanName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     const slug = `${baseSlug}-${Date.now().toString().slice(-4)}`;
 
+    // Resolve category UUID if a taxonomy slug was provided
+    const resolvedCatUuid = await resolveCategoryUuid(supabase, category_id);
+
     const newProductPayload: Record<string, any> = {
       name: cleanName,
       slug,
-      category_id: category_id.trim(),
-      category_slug: category_id.trim(),
+      category_id: resolvedCatUuid, // Foreign key UUID or null
+      category_slug: category_id.trim(), // String taxonomy slug (e.g. 'cat-pots-ceramic')
       short_description: (short_description || cleanName).trim(),
       description: (description || short_description || cleanName).trim(),
       suitable_for: ['Home & Garden Decor'],
@@ -191,7 +224,10 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     return NextResponse.json({
       success: true,
-      product: insertedProduct,
+      product: {
+        ...insertedProduct,
+        category_id: insertedProduct.category_slug || insertedProduct.category_id,
+      },
       message: 'Product added successfully to Supabase database!',
     });
   } catch (error: any) {

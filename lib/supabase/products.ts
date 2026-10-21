@@ -18,6 +18,23 @@ function getSupabaseAdmin() {
  * @param {number} limit - Items per page.
  * @returns {Promise<{ products: Product[]; total: number; hasMore: boolean }>} Fetched products.
  */
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function normalizeProduct(p: any): Product {
+  return {
+    ...p,
+    category_id: p.category_slug || p.category_id,
+  };
+}
+
+/**
+ * Fetches published products from Supabase database filtered by category path.
+ *
+ * @param {string} categoryPathSlug - Category path slug (e.g. 'pots/ceramic', 'plants/indoor').
+ * @param {number} page - Page number.
+ * @param {number} limit - Items per page.
+ * @returns {Promise<{ products: Product[]; total: number; hasMore: boolean }>} Fetched products.
+ */
 export async function fetchProductsByCategory(
   categoryPathSlug: string,
   page: number = 1,
@@ -33,35 +50,35 @@ export async function fetchProductsByCategory(
 
     if (parts.length >= 2) {
       if (subSlug === 'indoor') {
-        query = query.or('category_id.eq.cat-indoor,category_id.ilike.%indoor%');
+        query = query.or('category_slug.eq.cat-indoor,category_slug.ilike.%indoor%');
       } else if (subSlug === 'outdoor') {
-        query = query.or('category_id.eq.cat-outdoor,category_id.ilike.%outdoor%');
+        query = query.or('category_slug.eq.cat-outdoor,category_slug.ilike.%outdoor%');
       } else if (subSlug === 'ceramic') {
-        query = query.or('category_id.eq.cat-pots-ceramic,category_id.eq.cat-pots,category_id.ilike.%ceramic%');
+        query = query.or('category_slug.eq.cat-pots-ceramic,category_slug.ilike.%ceramic%');
       } else if (subSlug === 'chinese-premium') {
-        query = query.or('category_id.eq.cat-pots-chinese-premium,category_id.eq.cat-chinese-pots,category_id.ilike.%chinese%');
+        query = query.or('category_slug.eq.cat-pots-chinese-premium,category_slug.ilike.%chinese%');
       } else if (subSlug === 'fiber') {
-        query = query.or('category_id.eq.cat-pots-fiber,category_id.ilike.%fiber%');
+        query = query.or('category_slug.eq.cat-pots-fiber,category_slug.ilike.%fiber%');
       } else if (subSlug === 'plastic') {
-        query = query.or('category_id.eq.cat-pots-plastic,category_id.ilike.%plastic%');
+        query = query.or('category_slug.eq.cat-pots-plastic,category_slug.ilike.%plastic%');
       } else if (subSlug === 'soil-mitti') {
-        query = query.or('category_id.eq.cat-pots-soil-mitti,category_id.ilike.%soil%,category_id.ilike.%mitti%');
+        query = query.or('category_slug.eq.cat-pots-soil-mitti,category_slug.ilike.%soil%,category_slug.ilike.%mitti%');
       } else if (subSlug === 'water-fountains') {
-        query = query.or('category_id.eq.cat-other-fountains,category_id.ilike.%fountain%');
+        query = query.or('category_slug.eq.cat-other-fountains,category_slug.ilike.%fountain%');
       } else if (subSlug === 'ganpati-murti') {
-        query = query.or('category_id.eq.cat-other-ganpati,category_id.ilike.%ganpati%');
+        query = query.or('category_slug.eq.cat-other-ganpati,category_slug.ilike.%ganpati%');
       } else if (subSlug === 'diwali-decoration') {
-        query = query.or('category_id.eq.cat-other-diwali,category_id.ilike.%diwali%');
+        query = query.or('category_slug.eq.cat-other-diwali,category_slug.ilike.%diwali%');
       } else {
-        query = query.ilike('category_id', `%${subSlug}%`);
+        query = query.ilike('category_slug', `%${subSlug}%`);
       }
     } else if (parts.length === 1) {
       if (parentGroup === 'plants') {
-        query = query.or('category_id.eq.cat-indoor,category_id.eq.cat-outdoor,category_id.ilike.%indoor%,category_id.ilike.%outdoor%,category_id.ilike.%plant%');
+        query = query.or('category_slug.eq.cat-indoor,category_slug.eq.cat-outdoor,category_slug.ilike.%indoor%,category_slug.ilike.%outdoor%,category_slug.ilike.%plant%');
       } else if (parentGroup === 'pots') {
-        query = query.or('category_id.ilike.%pot%,category_id.ilike.%ceramic%,category_id.ilike.%fiber%,category_id.ilike.%plastic%,category_id.ilike.%chinese%,category_id.ilike.%mitti%');
+        query = query.or('category_slug.ilike.%pot%,category_slug.ilike.%ceramic%,category_slug.ilike.%fiber%,category_slug.ilike.%plastic%,category_slug.ilike.%chinese%,category_slug.ilike.%mitti%');
       } else if (parentGroup === 'other') {
-        query = query.or('category_id.ilike.%other%,category_id.ilike.%fountain%,category_id.ilike.%ganpati%,category_id.ilike.%diwali%');
+        query = query.or('category_slug.ilike.%other%,category_slug.ilike.%fountain%,category_slug.ilike.%ganpati%,category_slug.ilike.%diwali%');
       }
     }
 
@@ -75,7 +92,7 @@ export async function fetchProductsByCategory(
     if (!error) {
       const total = count || (dbProducts ? dbProducts.length : 0);
       return {
-        products: (dbProducts || []) as Product[],
+        products: (dbProducts || []).map(normalizeProduct),
         total,
         hasMore: from + (dbProducts ? dbProducts.length : 0) < total,
       };
@@ -90,8 +107,8 @@ export async function fetchProductsByCategory(
     const sub = parts[parts.length - 1] || '';
     if (sub === 'indoor') fallback = fallback.filter((p) => p.category_id === 'cat-indoor');
     else if (sub === 'outdoor') fallback = fallback.filter((p) => p.category_id === 'cat-outdoor');
-    else if (sub === 'ceramic') fallback = fallback.filter((p) => p.category_id === 'cat-pots-ceramic' || p.category_id === 'cat-pots');
-    else if (sub === 'chinese-premium') fallback = fallback.filter((p) => p.category_id === 'cat-pots-chinese-premium' || p.category_id === 'cat-chinese-pots');
+    else if (sub === 'ceramic') fallback = fallback.filter((p) => p.category_id === 'cat-pots-ceramic');
+    else if (sub === 'chinese-premium') fallback = fallback.filter((p) => p.category_id === 'cat-pots-chinese-premium');
     else if (sub === 'fiber') fallback = fallback.filter((p) => p.category_id === 'cat-pots-fiber');
     else if (sub === 'plastic') fallback = fallback.filter((p) => p.category_id === 'cat-pots-plastic');
     else if (sub === 'soil-mitti') fallback = fallback.filter((p) => p.category_id === 'cat-pots-soil-mitti');
@@ -123,11 +140,11 @@ export async function fetchPopularPlants(type: 'indoor' | 'outdoor'): Promise<Pr
       .from('products')
       .select('*')
       .eq('is_published', true)
-      .or(`category_id.eq.${targetCat},category_id.ilike.%${type}%`)
+      .or(`category_slug.eq.${targetCat},category_slug.ilike.%${type}%`)
       .limit(6);
 
     if (!error && dbProducts && dbProducts.length > 0) {
-      return dbProducts as Product[];
+      return dbProducts.map(normalizeProduct);
     }
   } catch (err) {
     console.error('Supabase fetchPopularPlants error:', err);
@@ -149,12 +166,12 @@ export async function fetchPopularChinesePots(): Promise<Product[]> {
       .from('products')
       .select('*')
       .eq('is_published', true)
-      .or('category_id.eq.cat-pots-chinese-premium,category_id.eq.cat-chinese-pots,category_id.ilike.%chinese%')
+      .or('category_slug.eq.cat-pots-chinese-premium,category_slug.ilike.%chinese%')
       .order('created_at', { ascending: false })
       .limit(6);
 
     if (!error && dbProducts && dbProducts.length > 0) {
-      return dbProducts as Product[];
+      return dbProducts.map(normalizeProduct);
     }
   } catch (err) {
     console.error('Supabase fetchPopularChinesePots error:', err);
@@ -174,15 +191,19 @@ export async function fetchPopularChinesePots(): Promise<Product[]> {
 export async function getProductBySlug(slug: string): Promise<{ product: Product | null; categoryPath: string }> {
   try {
     const supabase = getSupabaseAdmin();
-    const { data: dbProduct, error } = await supabase
-      .from('products')
-      .select('*')
-      .or(`slug.eq.${slug},id.eq.${slug}`)
-      .single();
+    let query = supabase.from('products').select('*');
+    if (UUID_REGEX.test(slug)) {
+      query = query.or(`slug.eq.${slug},id.eq.${slug}`);
+    } else {
+      query = query.eq('slug', slug);
+    }
+
+    const { data: dbProduct, error } = await query.maybeSingle();
 
     if (!error && dbProduct) {
+      const product = normalizeProduct(dbProduct);
       let categoryPath = '/products';
-      const catId = dbProduct.category_id || '';
+      const catId = product.category_id || '';
       if (catId.includes('indoor')) categoryPath = '/products/plants/indoor';
       else if (catId.includes('outdoor')) categoryPath = '/products/plants/outdoor';
       else if (catId.includes('ceramic')) categoryPath = '/products/pots/ceramic';
@@ -193,7 +214,7 @@ export async function getProductBySlug(slug: string): Promise<{ product: Product
       else if (catId.includes('fountain')) categoryPath = '/products/other/water-fountains';
       else if (catId.includes('ganpati')) categoryPath = '/products/other/ganpati-murti';
 
-      return { product: dbProduct as Product, categoryPath };
+      return { product, categoryPath };
     }
   } catch (err) {
     console.error('Supabase getProductBySlug error:', err);
@@ -218,16 +239,23 @@ export async function getProductBySlug(slug: string): Promise<{ product: Product
 export async function getRelatedProducts(categoryId: string, currentProductId: string, limit: number = 4): Promise<Product[]> {
   try {
     const supabase = getSupabaseAdmin();
-    const { data: dbProducts, error } = await supabase
+    let query = supabase
       .from('products')
       .select('*')
-      .eq('category_id', categoryId)
-      .neq('id', currentProductId)
+      .eq('category_slug', categoryId)
       .eq('is_published', true)
       .limit(limit);
 
+    if (UUID_REGEX.test(currentProductId)) {
+      query = query.neq('id', currentProductId);
+    } else {
+      query = query.neq('slug', currentProductId);
+    }
+
+    const { data: dbProducts, error } = await query;
+
     if (!error && dbProducts && dbProducts.length > 0) {
-      return dbProducts as Product[];
+      return dbProducts.map(normalizeProduct);
     }
   } catch (err) {
     console.error('Supabase getRelatedProducts error:', err);
