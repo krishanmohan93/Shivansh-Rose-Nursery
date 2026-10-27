@@ -1,4 +1,5 @@
 import React from 'react';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -28,6 +29,60 @@ import {
 } from 'lucide-react';
 
 export const revalidate = 300;
+
+/**
+ * Generates dynamic SEO metadata for product detail page.
+ * @param props Component route parameters containing product slug.
+ * @returns Metadata object with localized title, description, and canonical URL.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const { product } = await getProductBySlug(params.slug);
+
+  if (!product) {
+    return {
+      title: 'Product Not Found | Shivansh Rose Nursery Pune',
+    };
+  }
+
+  const title = `${product.name} | Buy at Nursery in Wakad & Hinjewadi Pune`;
+  const description =
+    product.description ||
+    `Buy authentic ${product.name} at Shivansh Rose Nursery in Wakad & Hinjewadi, Pune. Inquire on WhatsApp or visit our nursery store today.`;
+  const canonicalPath = `/products/p/${product.slug}`;
+  const images = product.cloudinary_url ? [product.cloudinary_url] : ['/images/hero-1.jpeg'];
+
+  return {
+    title,
+    description,
+    keywords: [
+      product.name.toLowerCase(),
+      `buy ${product.name.toLowerCase()} pune`,
+      `${product.name.toLowerCase()} nursery wakad`,
+      'plant nursery pune',
+      'nursery near me',
+    ],
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      title: `${product.name} | Shivansh Rose Nursery`,
+      description,
+      url: canonicalPath,
+      images: [
+        {
+          url: images[0],
+          width: 800,
+          height: 600,
+          alt: product.name,
+        },
+      ],
+    },
+  };
+}
 
 export default async function ProductDetailPage({
   params,
@@ -66,8 +121,39 @@ export default async function ProductDetailPage({
     'N/A': 'neutral',
   } as const;
 
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    image: product.cloudinary_url ? [product.cloudinary_url] : [],
+    description: product.description || `${product.name} available at Shivansh Rose Nursery Pune`,
+    sku: product.id,
+    brand: {
+      '@type': 'Brand',
+      name: 'Shivansh Rose Nursery',
+    },
+    offers: {
+      '@type': 'Offer',
+      url: `https://shivanshrosenursery.com/products/p/${product.slug}`,
+      priceCurrency: 'INR',
+      price: '0',
+      availability:
+        product.availability_status === 'Out of Stock'
+          ? 'https://schema.org/OutOfStock'
+          : 'https://schema.org/InStock',
+      seller: {
+        '@type': 'LocalBusiness',
+        name: 'Shivansh Rose Nursery Pune',
+      },
+    },
+  };
+
   return (
     <ProductDetailClientGuard productId={product.id} productSlug={product.slug}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-14 pb-24 lg:pb-16">
         {/* Breadcrumb Navigation */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-slate-500 font-medium overflow-x-auto py-1">

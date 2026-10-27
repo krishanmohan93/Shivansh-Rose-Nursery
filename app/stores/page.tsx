@@ -5,8 +5,28 @@ import { StoreCard, StoreData } from '@/components/stores/StoreCard';
 import { Sparkles, MapPin, ShieldCheck, Clock, PhoneCall, HeartHandshake } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Our Nursery Stores in Wakad & Hinjawadi | Shivansh Rose Nursery Pune',
-  description: 'Visit our two nursery branches in Wakad and Hinjawadi Jakatnaka, Pune. Explore 500+ plants, handcrafted ceramic pots, Chinese porcelain planters, and matka pots.',
+  title: 'Our Nursery Stores in Wakad & Hinjawadi | Plant Nursery Near Me Pune',
+  description:
+    'Visit our 2 nursery branches in Wakad (Atlanta 2) & Hinjewadi Jakatnaka, Pune. Browse 500+ fresh indoor/outdoor plants, ceramic pots, Chinese porcelain planters, matka pots, and get free expert gardening advice.',
+  keywords: [
+    'nursery in wakad',
+    'plant nursery hinjewadi',
+    'nursery near me wakad',
+    'shweta matka bhandar hinjawadi',
+    'shivansh rose nursery wakad',
+    'plant shop pune',
+    'garden store near me',
+    'pots store wakad',
+  ],
+  alternates: {
+    canonical: '/stores',
+  },
+  openGraph: {
+    title: 'Our Nursery Stores in Wakad & Hinjawadi | Shivansh Rose Nursery',
+    description:
+      'Visit our two nursery locations in Wakad and Hinjawadi Jakatnaka, Pune. Over 500+ fresh plant varieties, ceramic pots, and garden supplies.',
+    url: '/stores',
+  },
 };
 
 const STORES: StoreData[] = [

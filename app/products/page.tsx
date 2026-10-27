@@ -1,4 +1,5 @@
 import React from 'react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { CATEGORY_STRUCTURE } from '@/lib/data/categories';
 import { fetchProductsByCategory } from '@/lib/supabase/products';
@@ -6,6 +7,30 @@ import { ProductFilterSection } from '@/components/products/ProductFilterSection
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Leaf, Sparkles, Phone, ArrowRight, CheckCircle2 } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Plants, Ceramic Pots & Planters Catalogue | Nursery in Pune',
+  description:
+    'Browse our catalogue of 500+ healthy plants, Chinese porcelain pots, ceramic planters, matka pots, and soil fertilizers available at our Wakad & Hinjewadi stores.',
+  keywords: [
+    'buy plants in pune',
+    'indoor plants wakad',
+    'outdoor plants hinjewadi',
+    'chinese pots pune',
+    'ceramic planters wakad',
+    'nursery catalogue pune',
+    'garden plants near me',
+  ],
+  alternates: {
+    canonical: '/products',
+  },
+  openGraph: {
+    title: 'Plant & Pot Catalogue | Shivansh Rose Nursery Pune',
+    description:
+      'Explore indoor & outdoor plants, ceramic & Chinese pots, fertilizers, and gardening supplies in Wakad & Hinjewadi Pune.',
+    url: '/products',
+  },
+};
 
 export const revalidate = 300;
 

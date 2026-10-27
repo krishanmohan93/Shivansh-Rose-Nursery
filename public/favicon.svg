@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Emerald Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#022c22" />
+      <stop offset="45%" stop-color="#064e3b" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <!-- Golden Leaf & Rose Stem Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <!-- Vibrant Emerald Leaf Gradient -->
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="60%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <!-- Rose Petal Radiant Gradient -->
+    <linearGradient id="roseGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="40%" stop-color="#fecdd3" />
+      <stop offset="80%" stop-color="#fb7185" />
+      <stop offset="100%" stop-color="#e11d48" />
+    </linearGradient>
+
+    <!-- Drop Shadow for Depth -->
+    <filter id="shadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Circular Base Badge -->
+  <circle cx="256" cy="256" r="244" fill="url(#bgGrad)" stroke="#10b981" stroke-width="8" stroke-opacity="0.4" />
+
+  <!-- Outer Golden Ring Accent -->
+  <circle cx="256" cy="256" r="228" fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-dasharray="14 8" opacity="0.85" />
+
+  <!-- Botanical Emblem Container with Shadow -->
+  <g filter="url(#shadow)">
+    <!-- Right Sprouting Green Leaf -->
+    <path d="M256 370 C340 370 410 300 400 200 C370 200 300 220 256 290 Z" fill="url(#leafGrad)" />
+    <!-- Leaf Center Vein -->
+    <path d="M256 370 C300 320 350 260 400 200" stroke="#a7f3d0" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.8" />
+
+    <!-- Left Sprouting Emerald Leaf -->
+    <path d="M256 370 C172 370 102 300 112 200 C142 200 212 220 256 290 Z" fill="url(#leafGrad)" />
+    <!-- Left Leaf Vein -->
+    <path d="M256 370 C212 320 162 260 112 200" stroke="#a7f3d0" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.8" />
+
+    <!-- Nursery Central Plant Stem -->
+    <path d="M256 420 L256 260" stroke="url(#goldGrad)" stroke-width="14" stroke-linecap="round" />
+
+    <!-- Blooming Rose Blossom Motif (Shivansh Rose) -->
+    <!-- Outer Petals Layer -->
+    <path d="M256 120 C290 120 330 150 330 190 C330 240 280 270 256 280 C232 270 182 240 182 190 C182 150 222 120 256 120 Z" fill="url(#roseGrad)" />
+
+    <!-- Middle Rose Petals Fold -->
+    <path d="M220 160 C235 140 275 140 292 160 C305 180 295 210 275 230 C256 245 238 230 220 210 C210 190 210 175 220 160 Z" fill="#ffffff" opacity="0.9" />
+
+    <!-- Rose Core Swirl -->
+    <path d="M245 168 C256 158 270 162 272 174 C275 186 260 198 250 196 C242 194 240 184 245 178 Z" fill="#e11d48" />
+
+    <!-- Small Golden Sparkle Stars -->
+    <polygon points="256,70 262,88 280,94 262,100 256,118 250,100 232,94 250,88" fill="#fde047" opacity="0.95" />
+    <polygon points="370,140 374,152 386,156 374,160 370,172 366,160 354,156 366,152" fill="#fde047" opacity="0.85" />
+    <polygon points="142,140 146,152 158,156 146,160 142,172 138,160 126,156 138,152" fill="#fde047" opacity="0.85" />
+  </g>
+</svg>

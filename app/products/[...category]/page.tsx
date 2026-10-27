@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { findCategoryByPath } from '@/lib/data/categories';
@@ -9,6 +10,55 @@ import { ChevronRight, Home, Leaf, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export const revalidate = 300;
+
+/**
+ * Generates dynamic SEO metadata for category and subcategory listing pages.
+ * @param props Component route parameters containing category path segments.
+ * @returns Metadata object with localized title, description, and canonical URL.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: { category: string[] };
+}): Promise<Metadata> {
+  const categorySegments = params.category || [];
+  const categoryMeta = findCategoryByPath(categorySegments);
+
+  if (!categoryMeta) {
+    return {
+      title: 'Category Not Found | Shivansh Rose Nursery Pune',
+    };
+  }
+
+  const categoryName = 'name' in categoryMeta ? categoryMeta.name : categoryMeta.groupName;
+  const categoryDesc =
+    'description' in categoryMeta && categoryMeta.description
+      ? categoryMeta.description
+      : `Explore our collection of ${categoryName} available at Shivansh Rose Nursery in Wakad and Hinjewadi, Pune.`;
+
+  const canonicalPath = `/products/${categorySegments.join('/')}`;
+
+  return {
+    title: `${categoryName} in Pune | Nursery in Wakad & Hinjewadi`,
+    description: `${categoryDesc} Visit our Wakad & Hinjewadi nursery stores or inquire on WhatsApp.`,
+    keywords: [
+      categoryName.toLowerCase(),
+      `${categoryName.toLowerCase()} pune`,
+      `${categoryName.toLowerCase()} wakad`,
+      `${categoryName.toLowerCase()} hinjewadi`,
+      'nursery near me',
+      'plants in pune',
+    ],
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      title: `${categoryName} | Shivansh Rose Nursery Pune`,
+      description: categoryDesc,
+      url: canonicalPath,
+    },
+  };
+}
 
 export default async function CategoryPage({
   params,

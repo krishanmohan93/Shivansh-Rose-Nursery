@@ -11,8 +11,12 @@ import { FaqSection } from '@/components/home/FaqSection';
 import { fetchPopularPlants, fetchPopularChinesePots } from '@/lib/supabase/products';
 
 export const metadata: Metadata = {
-  title: 'Shivansh Rose Nursery — Premium Nursery & Garden Care Pune',
-  description: 'Explore 500+ indoor & outdoor plants, handcrafted ceramic pots, Chinese porcelain planters, and society garden maintenance services in Wakad & Hinjawadi, Pune.',
+  title: 'Shivansh Rose Nursery — Best Plant Nursery in Pune | Wakad & Hinjewadi',
+  description:
+    'Looking for the best plant nursery near you in Pune? Shivansh Rose Nursery in Wakad & Hinjewadi offers 500+ indoor & outdoor plants, ceramic pots, Chinese planters, red soil, and residential garden maintenance services.',
+  alternates: {
+    canonical: '/',
+  },
 };
 
 export default async function HomePage() {
