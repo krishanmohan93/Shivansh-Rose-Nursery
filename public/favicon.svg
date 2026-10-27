@@ -7,7 +7,7 @@
       <stop offset="100%" stop-color="#047857" />
     </linearGradient>
 
-    <!-- Golden Leaf & Rose Stem Gradient -->
+    <!-- Golden Leaf & Stem Gradient -->
     <linearGradient id="goldGrad" x1="0%" y1="100%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#fbbf24" />
       <stop offset="50%" stop-color="#f59e0b" />
@@ -22,53 +22,66 @@
     </linearGradient>
 
     <!-- Rose Petal Radiant Gradient -->
-    <linearGradient id="roseGrad" x1="20%" y1="0%" x2="80%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" />
-      <stop offset="40%" stop-color="#fecdd3" />
-      <stop offset="80%" stop-color="#fb7185" />
+    <linearGradient id="roseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fda4af" />
+      <stop offset="40%" stop-color="#fb7185" />
+      <stop offset="80%" stop-color="#f43f5e" />
       <stop offset="100%" stop-color="#e11d48" />
     </linearGradient>
 
+    <!-- Inner Rose Glow -->
+    <radialGradient id="roseGlow" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#ffe4e6" />
+      <stop offset="60%" stop-color="#fb7185" />
+      <stop offset="100%" stop-color="#be123c" />
+    </radialGradient>
+
     <!-- Drop Shadow for Depth -->
     <filter id="shadow" x="-10%" y="-10%" width="125%" height="125%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35" />
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.35" />
     </filter>
   </defs>
 
   <!-- Circular Base Badge -->
   <circle cx="256" cy="256" r="244" fill="url(#bgGrad)" stroke="#10b981" stroke-width="8" stroke-opacity="0.4" />
 
-  <!-- Outer Golden Ring Accent -->
-  <circle cx="256" cy="256" r="228" fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-dasharray="14 8" opacity="0.85" />
+  <!-- Outer Golden Dashed Ring Accent -->
+  <circle cx="256" cy="256" r="226" fill="none" stroke="url(#goldGrad)" stroke-width="5" stroke-dasharray="14 8" opacity="0.9" />
 
   <!-- Botanical Emblem Container with Shadow -->
   <g filter="url(#shadow)">
-    <!-- Right Sprouting Green Leaf -->
-    <path d="M256 370 C340 370 410 300 400 200 C370 200 300 220 256 290 Z" fill="url(#leafGrad)" />
-    <!-- Leaf Center Vein -->
-    <path d="M256 370 C300 320 350 260 400 200" stroke="#a7f3d0" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.8" />
+    <!-- White Botanical Leaf Crest Contour -->
+    <path d="M256 100 C370 100 420 180 400 310 C370 380 290 400 256 410 C222 400 142 380 112 310 C92 180 142 100 256 100 Z" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.95" />
 
     <!-- Left Sprouting Emerald Leaf -->
-    <path d="M256 370 C172 370 102 300 112 200 C142 200 212 220 256 290 Z" fill="url(#leafGrad)" />
+    <path d="M256 360 C176 360 115 300 125 210 C155 210 220 230 256 290 Z" fill="url(#leafGrad)" />
     <!-- Left Leaf Vein -->
-    <path d="M256 370 C212 320 162 260 112 200" stroke="#a7f3d0" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.8" />
+    <path d="M256 360 C218 315 172 265 125 210" stroke="#a7f3d0" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.85" />
 
-    <!-- Nursery Central Plant Stem -->
-    <path d="M256 420 L256 260" stroke="url(#goldGrad)" stroke-width="14" stroke-linecap="round" />
+    <!-- Right Sprouting Green Leaf -->
+    <path d="M256 360 C336 360 397 300 387 210 C357 210 292 230 256 290 Z" fill="url(#leafGrad)" />
+    <!-- Right Leaf Vein -->
+    <path d="M256 360 C294 315 340 265 387 210" stroke="#a7f3d0" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.85" />
 
-    <!-- Blooming Rose Blossom Motif (Shivansh Rose) -->
-    <!-- Outer Petals Layer -->
-    <path d="M256 120 C290 120 330 150 330 190 C330 240 280 270 256 280 C232 270 182 240 182 190 C182 150 222 120 256 120 Z" fill="url(#roseGrad)" />
+    <!-- Nursery Central Plant Stem (Golden) -->
+    <line x1="256" y1="240" x2="256" y2="400" stroke="url(#goldGrad)" stroke-width="14" stroke-linecap="round" />
 
-    <!-- Middle Rose Petals Fold -->
-    <path d="M220 160 C235 140 275 140 292 160 C305 180 295 210 275 230 C256 245 238 230 220 210 C210 190 210 175 220 160 Z" fill="#ffffff" opacity="0.9" />
+    <!-- Blooming Rose Core Circle (Shivansh Rose) -->
+    <circle cx="256" cy="200" r="66" fill="url(#roseGlow)" stroke="#ffffff" stroke-width="5" />
 
-    <!-- Rose Core Swirl -->
-    <path d="M245 168 C256 158 270 162 272 174 C275 186 260 198 250 196 C242 194 240 184 245 178 Z" fill="#e11d48" />
+    <!-- Outer Rose Petal Fold Rings -->
+    <path d="M210 180 C225 155 287 155 302 180" fill="none" stroke="#ffe4e6" stroke-width="3.5" stroke-linecap="round" opacity="0.8" />
+    <path d="M205 215 C215 245 297 245 307 215" fill="none" stroke="#ffe4e6" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+
+    <!-- Bold Central "S" Monogram for Shivansh Rose Nursery -->
+    <!-- Crisp Drop Shadow / Backdrop for S -->
+    <text x="257" y="213" font-family="'Poppins', 'Segoe UI', Arial, sans-serif" font-size="76" font-weight="900" fill="#881337" text-anchor="middle" dominant-baseline="central" letter-spacing="-2">S</text>
+    <!-- Crisp Foreground White "S" -->
+    <text x="256" y="211" font-family="'Poppins', 'Segoe UI', Arial, sans-serif" font-size="76" font-weight="900" fill="#ffffff" text-anchor="middle" dominant-baseline="central" letter-spacing="-2">S</text>
 
     <!-- Small Golden Sparkle Stars -->
-    <polygon points="256,70 262,88 280,94 262,100 256,118 250,100 232,94 250,88" fill="#fde047" opacity="0.95" />
-    <polygon points="370,140 374,152 386,156 374,160 370,172 366,160 354,156 366,152" fill="#fde047" opacity="0.85" />
-    <polygon points="142,140 146,152 158,156 146,160 142,172 138,160 126,156 138,152" fill="#fde047" opacity="0.85" />
+    <polygon points="256,52 261,66 276,71 261,76 256,90 251,76 236,71 251,66" fill="#fde047" opacity="0.95" />
+    <polygon points="380,125 384,135 394,138 384,141 380,151 376,141 366,138 376,135" fill="#fde047" opacity="0.9" />
+    <polygon points="132,125 136,135 146,138 136,141 132,151 128,141 118,138 128,135" fill="#fde047" opacity="0.9" />
   </g>
 </svg>
