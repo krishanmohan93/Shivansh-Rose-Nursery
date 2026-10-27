@@ -14,18 +14,12 @@ import {
   Home,
   MessageCircle,
   Phone,
-  Sun,
-  Droplets,
-  Sprout,
   ShieldCheck,
   MapPin,
   Clock,
   CheckCircle2,
   Leaf,
-  Box,
-  Layers,
-  Shield,
-  HelpCircle,
+  Sparkles,
 } from 'lucide-react';
 
 export const revalidate = 300;
@@ -228,14 +222,6 @@ export default async function ProductDetailPage({
               )}
             </div>
 
-            {/* Detailed Full Description */}
-            {product.description && (
-              <div className="p-4 rounded-xl bg-surface-low border border-surface-default text-xs sm:text-sm text-slate-700 leading-relaxed space-y-2">
-                <span className="font-bold text-slate-900 block">About This Product:</span>
-                <p>{product.description}</p>
-              </div>
-            )}
-
             {/* Size Options Pills */}
             {product.sizes && product.sizes.length > 0 && (
               <div className="space-y-2">
@@ -249,25 +235,6 @@ export default async function ProductDetailPage({
                       className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-800 shadow-sm"
                     >
                       {size}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Color Options Pills */}
-            {product.colors && product.colors.length > 0 && (
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
-                  Available Flower / Pot Colors:
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {product.colors.map((color, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-800 shadow-sm"
-                    >
-                      {color}
                     </span>
                   ))}
                 </div>
@@ -299,191 +266,172 @@ export default async function ProductDetailPage({
                   </Button>
                 </Link>
               </div>
+
+              {/* Quick Trust Highlights */}
+              <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-600 font-medium border-t border-dashed border-slate-200">
+                <span className="flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Direct Nursery Rate
+                </span>
+                <span className="flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> 100% Real Nursery Stock
+                </span>
+                <span className="flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5 text-emerald-600" /> 8 AM – 10:30 PM Open
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* PLANT CARE GUIDE SECTION — Shown ONLY for Plants */}
-        {isPlant && (
-          <div className="space-y-6 pt-10 border-t border-surface-default">
-            <div className="space-y-1">
-              <span className="text-xs font-bold text-primary uppercase tracking-widest block">
-                Gardener Care Manual
-              </span>
-              <h2 className="font-display font-bold text-2xl sm:text-3xl text-slate-900">
-                Plant Care & Growing Guide
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600">
-                Follow these simple care guidelines to keep your plant healthy and thriving for years.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Sunlight Guide Card */}
-              <div className="p-5 rounded-2xl bg-amber-50/60 border border-amber-200/80 space-y-3 shadow-soft">
-                <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
-                  <Sun className="w-5 h-5" />
-                </div>
-                <h3 className="font-display font-bold text-base text-slate-900">Sunlight Requirement</h3>
-                <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                  {product.sunlight || 'Thrives in bright indirect sunlight. Avoid harsh direct afternoon heat.'}
-                </p>
+        {/* PROMINENT REAL ABOUT PRODUCT & PHYSICAL NURSERY DETAILS SECTION */}
+        <section className="pt-10 border-t border-surface-default space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            {/* Left 8 Columns: Genuine Description & Real Care Notes */}
+            <div className="lg:col-span-8 space-y-6">
+              <div className="space-y-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/80 text-emerald-900 text-xs font-bold uppercase tracking-wider">
+                  <Leaf className="w-3.5 h-3.5 text-emerald-700" /> About This Product
+                </span>
+                <h2 className="font-display font-bold text-2xl sm:text-3xl text-slate-900">
+                  Product Overview &amp; Details
+                </h2>
               </div>
 
-              {/* Water Guide Card */}
-              <div className="p-5 rounded-2xl bg-sky-50/60 border border-sky-200/80 space-y-3 shadow-soft">
-                <div className="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center">
-                  <Droplets className="w-5 h-5" />
+              {/* Real Description Box */}
+              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-surface-default shadow-xs space-y-5">
+                <div className="font-body text-slate-700 text-sm sm:text-base leading-relaxed whitespace-pre-line space-y-3">
+                  {product.description || product.short_description ? (
+                    <p>{product.description || product.short_description}</p>
+                  ) : (
+                    <p>
+                      Genuine {product.name} available at Shivansh Rose Nursery in Wakad and Hinjewadi, Pune. Visit our stores to handpick your favorite plant or planter, or message us directly on WhatsApp for live stock photos and quick pickup assistance.
+                    </p>
+                  )}
                 </div>
-                <h3 className="font-display font-bold text-base text-slate-900">Watering Schedule</h3>
-                <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                  {product.water || 'Water when the top 1-2 inches of soil feel dry to touch.'}
-                </p>
-              </div>
 
-              {/* Ideal Placement */}
-              <div className="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 space-y-3 shadow-soft">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                  <Sprout className="w-5 h-5" />
-                </div>
-                <h3 className="font-display font-bold text-base text-slate-900">Ideal Placement</h3>
-                <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                  {product.specifications?.['Ideal Placement'] || 'Bedrooms, Living Room Corners, Office Desks & Balconies.'}
-                </p>
-              </div>
-
-              {/* Common Issues & Maintenance */}
-              <div className="p-5 rounded-2xl bg-teal-50/60 border border-teal-200/80 space-y-3 shadow-soft">
-                <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center">
-                  <HelpCircle className="w-5 h-5" />
-                </div>
-                <h3 className="font-display font-bold text-base text-slate-900">Common Issues & Maintenance</h3>
-                <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                  Yellow leaves indicate overwatering. Wipe leaves monthly with moist cloth to keep pores clear.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* MATERIAL DETAILS SECTION — Shown ONLY for Pots */}
-        {isPot && (
-          <div className="space-y-6 pt-10 border-t border-surface-default">
-            <div className="space-y-1">
-              <span className="text-xs font-bold text-amber-700 uppercase tracking-widest block">
-                Craftsmanship & Build
-              </span>
-              <h2 className="font-display font-bold text-2xl sm:text-3xl text-slate-900">
-                Pot Material & Durability Details
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600">
-                High-fired weather-resistant construction engineered for long-lasting root health and premium home aesthetics.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="p-5 rounded-2xl bg-amber-50/60 border border-amber-200/80 space-y-3 shadow-soft">
-                <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
-                  <Box className="w-5 h-5" />
-                </div>
-                <h3 className="font-display font-bold text-base text-slate-900">Material Type</h3>
-                <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                  {product.specifications?.['Material'] || 'High-Fired Premium Glazed Ceramic Clay'}
-                </p>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 space-y-3 shadow-soft">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
-                  <Droplets className="w-5 h-5" />
-                </div>
-                <h3 className="font-display font-bold text-base text-slate-900">Root Drainage</h3>
-                <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                  Includes bottom drainage hole to prevent waterlogging and root rot.
-                </p>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-sky-50/60 border border-sky-200/80 space-y-3 shadow-soft">
-                <div className="w-10 h-10 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center">
-                  <Shield className="w-5 h-5" />
-                </div>
-                <h3 className="font-display font-bold text-base text-slate-900">Weather Resistance</h3>
-                <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                  UV-protected glaze resistant to sun fading, rainwater rust, and cracking.
-                </p>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-rose-50/60 border border-rose-200/80 space-y-3 shadow-soft">
-                <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center">
-                  <Layers className="w-5 h-5" />
-                </div>
-                <h3 className="font-display font-bold text-base text-slate-900">Weight & Stability</h3>
-                <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                  Heavy anti-tip base designed for heavy indoor and balcony foliage.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Specifications Table & Features */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-6">
-          {/* Specifications Table */}
-          {product.specifications && Object.keys(product.specifications).length > 0 && (
-            <div className="lg:col-span-6 space-y-4">
-              <h3 className="font-display font-bold text-xl text-slate-900">Specifications & Details</h3>
-              <div className="rounded-xl border border-surface-default overflow-hidden bg-white">
-                <table className="w-full text-left text-xs sm:text-sm">
-                  <tbody>
-                    {Object.entries(product.specifications).map(([key, value], idx) => (
-                      <tr key={key} className={idx % 2 === 0 ? 'bg-surface-low' : 'bg-white'}>
-                        <td className="py-3 px-4 font-semibold text-slate-700 border-r border-surface-default w-1/3">{key}</td>
-                        <td className="py-3 px-4 text-slate-800">{value}</td>
-                      </tr>
+                {/* Available Sizes Pills if present */}
+                {product.sizes && product.sizes.length > 0 && (
+                  <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                      Available Sizes:
+                    </span>
+                    {product.sizes.map((s, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-100"
+                      >
+                        {s}
+                      </span>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* Key Highlights Checkmarks */}
-          {product.features && product.features.length > 0 && (
-            <div className="lg:col-span-6 space-y-4">
-              <h3 className="font-display font-bold text-xl text-slate-900">Key Variety Highlights</h3>
-              <div className="p-5 rounded-xl border border-surface-default bg-white space-y-3">
-                {product.features.map((feat, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 font-medium">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{feat}</span>
                   </div>
-                ))}
+                )}
               </div>
-            </div>
-          )}
-        </div>
 
-        {/* Physical Stores Location & Hours Banner */}
-        <div className="p-6 sm:p-8 rounded-card bg-surface-low border border-primary/20 space-y-4 shadow-soft">
-          <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-wider">
-            <MapPin className="w-5 h-5" /> Visit Our Physical Stores in Pune
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-slate-700">
-            <div className="p-4 rounded-xl bg-white border border-surface-default space-y-1">
-              <span className="font-bold text-slate-900 block text-base">Store 1 — New Wakad</span>
-              <p className="text-slate-600">Atlanta 2 Society, New Wakad – Hinjawadi Link Rd, Pune 411057</p>
-              <div className="pt-2 text-emerald-700 font-semibold flex items-center gap-1">
-                <Clock className="w-4 h-4" /> Open 8:00 AM – 10:30 PM (All 7 Days)
+              {/* 3 Genuine Nursery Commitments */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/60 space-y-1.5">
+                  <div className="flex items-center gap-2 text-emerald-900 font-bold text-xs uppercase tracking-wide">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" /> 100% Real Nursery Stock
+                  </div>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Direct from our Wakad &amp; Hinjewadi plant nurseries. Hand-checked daily by local Pune gardeners.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/60 space-y-1.5">
+                  <div className="flex items-center gap-2 text-amber-900 font-bold text-xs uppercase tracking-wide">
+                    <Sparkles className="w-4 h-4 text-amber-600" /> Direct Wholesale &amp; Retail
+                  </div>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Zero online commissions or fake price tags. Pay genuine direct nursery rates in Pune.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-teal-50/70 border border-teal-200/60 space-y-1.5">
+                  <div className="flex items-center gap-2 text-teal-900 font-bold text-xs uppercase tracking-wide">
+                    <MessageCircle className="w-4 h-4 text-teal-600" /> Free Gardening Advice
+                  </div>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Lifelong guidance via WhatsApp for watering, soil potting mix, and sunlight placement.
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="p-4 rounded-xl bg-white border border-surface-default space-y-1">
-              <span className="font-bold text-slate-900 block text-base">Store 2 — Shweta Matka Bhandar & Nursery</span>
-              <p className="text-slate-600">Hinjewadi Jakatnaka, Wakad Rd, opposite Madhuban Hotel, Pune 411057</p>
-              <div className="pt-2 text-emerald-700 font-semibold flex items-center gap-1">
-                <Clock className="w-4 h-4" /> Open 8:00 AM – 10:30 PM (All 7 Days)
+
+            {/* Right 4 Columns: Store Visit & Quick Verification Card */}
+            <div className="lg:col-span-4 space-y-4">
+              <div className="bg-white rounded-2xl p-6 border border-emerald-900/10 shadow-sm space-y-5">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-emerald-800 font-bold text-xs uppercase tracking-wider">
+                    <MapPin className="w-4 h-4 text-emerald-600" /> Physical Store Availability
+                  </div>
+                  <h3 className="font-display font-bold text-lg text-slate-900">
+                    Visit Our Nursery in Pune
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Inspect plants and pots physically before taking them home.
+                  </p>
+                </div>
+
+                <div className="space-y-3 divide-y divide-slate-100 text-xs text-slate-700">
+                  <div className="pt-2 space-y-1">
+                    <span className="font-bold text-slate-900 block text-xs">
+                      Store 1 — Shivansh Rose Nursery
+                    </span>
+                    <p className="text-slate-600 leading-relaxed">
+                      Atlanta 2 Society, New Wakad – Hinjawadi Link Rd, Pune 411057
+                    </p>
+                    <span className="text-emerald-700 font-medium flex items-center gap-1 text-[11px] pt-0.5">
+                      <Clock className="w-3.5 h-3.5" /> 8:00 AM – 10:30 PM (All 7 Days)
+                    </span>
+                  </div>
+
+                  <div className="pt-3 space-y-1">
+                    <span className="font-bold text-slate-900 block text-xs">
+                      Store 2 — Shweta Matka Bhandar &amp; Nursery
+                    </span>
+                    <p className="text-slate-600 leading-relaxed">
+                      Hinjewadi Jakatnaka, Wakad Rd, Opp Madhuban Hotel, Pune 411057
+                    </p>
+                    <span className="text-emerald-700 font-medium flex items-center gap-1 text-[11px] pt-0.5">
+                      <Clock className="w-3.5 h-3.5" /> 8:00 AM – 10:30 PM (All 7 Days)
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-2 space-y-2">
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full"
+                  >
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="w-full text-xs py-2.5 justify-center shadow-xs"
+                      icon={<MessageCircle className="w-4 h-4 fill-current" />}
+                    >
+                      Enquire on WhatsApp
+                    </Button>
+                  </a>
+                  <a href="tel:8007634856" className="block w-full">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full text-xs py-2 justify-center"
+                      icon={<Phone className="w-3.5 h-3.5" />}
+                    >
+                      Call: 8007634856
+                    </Button>
+                  </a>
+                </div>
               </div>
             </div>
+
           </div>
-        </div>
+        </section>
 
         {/* Related Products Carousel / Grid */}
         {relatedProducts.length > 0 && (

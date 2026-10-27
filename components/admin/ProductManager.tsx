@@ -798,6 +798,25 @@ export const ProductManager: React.FC = () => {
                   />
                 </div>
 
+                {/* About Product / Detailed Description */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                      About Product (Full Details &amp; Care)
+                    </label>
+                    <span className="text-[10px] text-emerald-700 font-semibold">
+                      Shown directly below product photo
+                    </span>
+                  </div>
+                  <textarea
+                    rows={4}
+                    value={formDesc}
+                    onChange={(e) => setFormDesc(e.target.value)}
+                    placeholder="Enter complete real details about this product, measurements, material, watering advice, or customer tips..."
+                    className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm font-medium focus:ring-2 focus:ring-emerald-500/30 focus:outline-none custom-scrollbar"
+                  />
+                </div>
+
                 {/* Available Sizes & Colors */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
