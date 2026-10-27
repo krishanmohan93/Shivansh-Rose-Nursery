@@ -61,6 +61,26 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, selectedProduct, onClose]);
 
+  const [productsList, setProductsList] = useState<Product[]>([]);
+
+  // Load products from API / cache when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      fetch('/api/products?limit=200')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && Array.isArray(data.data)) {
+            setProductsList(data.data.filter((p: Product) => p.is_published !== false));
+          } else {
+            setProductsList(getStoredProducts().filter((p) => p.is_published !== false));
+          }
+        })
+        .catch(() => {
+          setProductsList(getStoredProducts().filter((p) => p.is_published !== false));
+        });
+    }
+  }, [isOpen]);
+
   // Quick suggestions
   const popularTags = [
     'Snake Plant',
@@ -74,9 +94,11 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     'Monstera',
   ];
 
-  const activeProducts = typeof window !== 'undefined'
-    ? getStoredProducts().filter((p) => p.is_published !== false)
-    : [];
+  const activeProducts = productsList.length > 0
+    ? productsList
+    : typeof window !== 'undefined'
+      ? getStoredProducts().filter((p) => p.is_published !== false)
+      : [];
 
   // Filter products based on search query
   const filteredProducts = query.trim() === '' 

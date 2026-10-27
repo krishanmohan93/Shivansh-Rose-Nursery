@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Leaf, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { getStoredProducts, PRODUCTS_UPDATED_EVENT } from '@/lib/store/productsStore';
+import { getDeletedProductIds, PRODUCTS_UPDATED_EVENT } from '@/lib/store/productsStore';
 
 interface ProductDetailClientGuardProps {
   productId: string;
@@ -22,9 +22,8 @@ export const ProductDetailClientGuard: React.FC<ProductDetailClientGuardProps> =
   useEffect(() => {
     const checkStatus = () => {
       if (typeof window !== 'undefined') {
-        const activeProducts = getStoredProducts().filter((p) => p.is_published !== false);
-        const exists = activeProducts.some((p) => p.id === productId || p.slug === productSlug);
-        if (!exists) {
+        const deletedIds = getDeletedProductIds();
+        if (deletedIds.has(productId) || deletedIds.has(productSlug)) {
           setIsRemoved(true);
         } else {
           setIsRemoved(false);

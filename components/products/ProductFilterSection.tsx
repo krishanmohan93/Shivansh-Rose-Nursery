@@ -4,7 +4,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Product } from '@/types/database';
-import { getStoredProducts, PRODUCTS_UPDATED_EVENT } from '@/lib/store/productsStore';
+import { getStoredProducts, getDeletedProductIds, PRODUCTS_UPDATED_EVENT } from '@/lib/store/productsStore';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Button } from '@/components/ui/Button';
 import {
@@ -35,21 +35,36 @@ export const ProductFilterSection: React.FC<ProductFilterSectionProps> = ({
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
 
-  // Load from persistent local store on mount & listen to store updates
+  // Load from persistent local store or keep Supabase initial products
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const stored = getStoredProducts().filter((p) => p.is_published !== false);
-      setActiveProducts(stored);
+      const deletedIds = getDeletedProductIds();
+      if (initialProducts && initialProducts.length > 0) {
+        setActiveProducts(
+          initialProducts.filter(
+            (p) => !deletedIds.has(p.id) && !deletedIds.has(p.slug) && p.is_published !== false
+          )
+        );
+      } else {
+        const stored = getStoredProducts().filter(
+          (p) => !deletedIds.has(p.id) && !deletedIds.has(p.slug) && p.is_published !== false
+        );
+        setActiveProducts(stored);
+      }
 
       const handleUpdate = () => {
-        const updated = getStoredProducts().filter((p) => p.is_published !== false);
-        setActiveProducts(updated);
+        const currentDeleted = getDeletedProductIds();
+        setActiveProducts((prev) =>
+          prev.filter(
+            (p) => !currentDeleted.has(p.id) && !currentDeleted.has(p.slug) && p.is_published !== false
+          )
+        );
       };
 
       window.addEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
       return () => window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
     }
-  }, []);
+  }, [initialProducts]);
 
   // Auto focus & scroll into view if navigated via Header Search icon
   useEffect(() => {
