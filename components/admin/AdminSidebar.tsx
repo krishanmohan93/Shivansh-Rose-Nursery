@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -105,8 +106,14 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         {/* Top Header & Brand */}
         <div className="p-5 flex items-center justify-between border-b border-emerald-900/50">
           <div className={`flex items-center gap-3 overflow-hidden ${isCollapsed ? 'justify-center w-full' : ''}`}>
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-emerald-950 flex items-center justify-center font-bold shadow-md shrink-0">
-              <Sprout className="w-5 h-5 text-emerald-950" />
+            <div className="w-10 h-10 rounded-full overflow-hidden border border-emerald-500/40 shadow-md shrink-0 bg-emerald-950">
+              <Image
+                src="/icon-192.png"
+                alt="Shivansh Rose Nursery Logo"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             {!isCollapsed && (
@@ -223,8 +230,14 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
               {/* Mobile Drawer Header */}
               <div className="pb-4 flex items-center justify-between border-b border-emerald-900/60">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-emerald-950 flex items-center justify-center font-bold shadow-md shrink-0">
-                    <Sprout className="w-5 h-5 text-emerald-950" />
+                  <div className="w-10 h-10 rounded-full overflow-hidden border border-emerald-500/40 shadow-md shrink-0 bg-emerald-950">
+                    <Image
+                      src="/icon-192.png"
+                      alt="Shivansh Rose Nursery Logo"
+                      width={40}
+                      height={40}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div>
                     <span className="font-display font-bold text-base text-white tracking-tight block">

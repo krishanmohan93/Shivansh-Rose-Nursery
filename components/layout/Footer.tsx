@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   Leaf,
@@ -138,8 +139,14 @@ export const Footer: React.FC = () => {
           {/* Column 1: Brand Story & Socials (4 Cols) */}
           <div className="lg:col-span-4 space-y-5">
             <Link href="/" className="flex items-center gap-3.5 group">
-              <div className="w-12 h-12 rounded-full bg-emerald-800/90 border border-emerald-700 flex items-center justify-center text-emerald-300 group-hover:bg-emerald-700 group-hover:text-white transition-all shadow-sm">
-                <Leaf className="w-6 h-6" />
+              <div className="w-12 h-12 rounded-full overflow-hidden border border-emerald-600/50 flex items-center justify-center bg-emerald-950 group-hover:scale-105 transition-all shadow-md shrink-0">
+                <Image
+                  src="/icon-192.png"
+                  alt="Shivansh Rose Nursery Logo"
+                  width={48}
+                  height={48}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <span className="font-display font-bold text-2xl text-white tracking-tight block leading-none">

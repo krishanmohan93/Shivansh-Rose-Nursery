@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Leaf, Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { createClient } from '@/lib/supabase/client';
@@ -106,8 +107,14 @@ export default function AdminLoginPage() {
       {/* Brand Logo Header */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 space-y-4 text-center">
         <Link href="/" className="inline-flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded-2xl p-1">
-          <div className="w-12 h-12 rounded-2xl bg-[#0b6b2e] text-white flex items-center justify-center shadow-lg group-hover:bg-emerald-700 transition-colors">
-            <Leaf className="w-6 h-6" />
+          <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg border border-emerald-500/30 group-hover:scale-105 transition-transform shrink-0">
+            <Image
+              src="/icon-192.png"
+              alt="Shivansh Rose Nursery Logo"
+              width={48}
+              height={48}
+              className="w-full h-full object-cover"
+            />
           </div>
           <span className="font-display font-extrabold text-2xl text-white tracking-tight">
             Shivansh Rose Nursery

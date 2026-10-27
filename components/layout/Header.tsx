@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -109,8 +110,15 @@ export const Header: React.FC = () => {
         
         {/* LEFT SECTION: Logo & Company Name */}
         <Link href="/" className="flex items-center gap-2 sm:gap-3.5 group shrink min-w-0">
-          <div className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm shrink-0">
-            <Leaf className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+          <div className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full overflow-hidden shadow-sm shrink-0 border border-emerald-700/20 group-hover:scale-105 transition-transform duration-300 bg-emerald-900">
+            <Image
+              src="/icon-192.png"
+              alt="Shivansh Rose Nursery Logo"
+              width={48}
+              height={48}
+              className="w-full h-full object-cover"
+              priority
+            />
           </div>
           <div className="min-w-0 shrink">
             <span className="font-display font-bold text-base sm:text-2xl md:text-3xl text-primary tracking-tight block leading-tight truncate">
